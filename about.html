@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>emme - about</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Calibri, 'Trebuchet MS', sans-serif;
+            background: #000;
+            color: #ccc;
+            min-height: 100vh;
+            padding: 40px 40px 60px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 60px;
+        }
+
+        .logo {
+            height: 35px;
+            width: auto;
+        }
+
+        .back {
+            color: #666;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .back:hover {
+            color: #fff;
+        }
+
+        .content {
+            max-width: 700px;
+        }
+
+        h1 {
+            font-weight: normal;
+            font-size: 14px;
+            margin-bottom: 40px;
+            color: #888;
+            letter-spacing: 1px;
+        }
+
+        .section {
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 11px;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .bio {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #999;
+        }
+
+        .bio p {
+            margin-bottom: 20px;
+        }
+
+        .skills-list {
+            list-style: none;
+        }
+
+        .skills-list li {
+            font-size: 13px;
+            color: #777;
+            padding: 8px 0;
+            border-bottom: 1px solid #151515;
+        }
+
+        .skills-list li:last-child {
+            border-bottom: none;
+        }
+
+        .highlight {
+            color: #bbb;
+        }
+
+        .contact-section {
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 1px solid #222;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .contact-item {
+            margin-bottom: 20px;
+        }
+
+        .contact-label {
+            font-size: 10px;
+            color: #444;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .contact-item a {
+            color: #888;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .contact-item a:hover {
+            color: #fff;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 40px 20px 60px;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html"><img src="images/logo-scrawl.png" alt="emme" class="logo"></a>
+        <a href="index.html" class="back">&larr; back</a>
+    </div>
+
+    <div class="content">
+        <h1>about</h1>
+
+        <div class="section">
+            <div class="section-title">musician</div>
+            <div class="bio">
+                <p>emme is an experimental electronic artist working at the intersection of noise, ambient, and industrial music. performances blur the line between sonic exploration and visceral experience, creating immersive soundscapes that challenge conventional boundaries.</p>
+                <p>notable appearances include <span class="highlight">CTM Festival</span> (Berlin), <span class="highlight">LUFF</span> (Lausanne), <span class="highlight">Venice Biennale</span>, <span class="highlight">Fekete Zaj</span>, and <span class="highlight">Creepy Teepee</span>. the work draws from a deep engagement with texture, silence, and the physicality of sound.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">stage technician & lighting designer</div>
+            <div class="bio">
+                <p>beyond music, emme brings technical expertise to theatrical and live event production. trained in lighting design and stage management, with experience spanning experimental theatre, live performance, and large-scale events.</p>
+            </div>
+            <ul class="skills-list">
+                <li>lighting design & programming</li>
+                <li>stage management</li>
+                <li>production coordination</li>
+                <li>technical direction</li>
+                <li>live event production</li>
+                <li>dmx & lighting control systems</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <div class="section-title">selected credits</div>
+            <ul class="skills-list">
+                <li><span class="highlight">Iceland</span> - Assistant Lighting Designer - La MaMa ETC, NYC</li>
+                <li><span class="highlight">PORT SF</span> - Lighting Designer - New Expressive Works, Portland</li>
+                <li><span class="highlight">Doc Martens Anniversary</span> - Director of Production - Daemon Concept, Berlin</li>
+            </ul>
+        </div>
+
+        <div class="contact-section">
+            <div class="contact-grid">
+                <div>
+                    <div class="contact-item">
+                        <div class="contact-label">music booking</div>
+                        <a href="mailto:Maxwell@emme-em.me">Maxwell@emme-em.me</a>
+                    </div>
+                </div>
+                <div>
+                    <div class="contact-item">
+                        <div class="contact-label">general inquiries</div>
+                        <a href="mailto:emme@emme-em.me">emme@emme-em.me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

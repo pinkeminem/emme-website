@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>emme - blog</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Calibri, 'Trebuchet MS', sans-serif;
+            background: #000;
+            color: #ccc;
+            min-height: 100vh;
+            padding: 40px 40px 60px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 60px;
+        }
+
+        .logo {
+            height: 35px;
+            width: auto;
+        }
+
+        .back {
+            color: #666;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .back:hover {
+            color: #fff;
+        }
+
+        h1 {
+            font-weight: normal;
+            font-size: 14px;
+            margin-bottom: 40px;
+            color: #888;
+            letter-spacing: 1px;
+        }
+
+        /* Main layout */
+        .blog-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 60px;
+            max-width: 1200px;
+        }
+
+        /* Blog posts section */
+        .blog-posts {
+            min-width: 0;
+        }
+
+        .section-title {
+            font-size: 11px;
+            color: #555;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .post-list {
+            list-style: none;
+        }
+
+        .post-item {
+            margin-bottom: 35px;
+            padding-bottom: 35px;
+            border-bottom: 1px solid #151515;
+        }
+
+        .post-item:last-child {
+            border-bottom: none;
+        }
+
+        .post-date {
+            font-size: 10px;
+            color: #444;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .post-title {
+            font-size: 16px;
+            color: #ccc;
+            margin-bottom: 10px;
+            font-weight: normal;
+            line-height: 1.4;
+        }
+
+        .post-title a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .post-title a:hover {
+            color: #fff;
+        }
+
+        .post-excerpt {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .post-category {
+            font-size: 10px;
+            color: #444;
+            text-transform: lowercase;
+        }
+
+        /* Film diary sidebar */
+        .film-sidebar {
+            position: sticky;
+            top: 40px;
+            height: fit-content;
+        }
+
+        .film-box {
+            background: #0a0a0a;
+            border: 1px solid #1a1a1a;
+            padding: 20px;
+        }
+
+        .film-box .section-title {
+            margin-bottom: 15px;
+        }
+
+        .film-intro {
+            font-size: 11px;
+            color: #444;
+            margin-bottom: 20px;
+        }
+
+        .film-intro a {
+            color: #555;
+            text-decoration: none;
+            border-bottom: 1px solid #333;
+        }
+
+        .film-intro a:hover {
+            color: #888;
+        }
+
+        /* Film list - text style */
+        .film-list {
+            list-style: none;
+        }
+
+        .film-entry {
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #151515;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .film-entry:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .film-entry a {
+            color: #888;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .film-entry a:hover {
+            color: #fff;
+        }
+
+        .film-name {
+            color: #999;
+        }
+
+        .film-year {
+            color: #555;
+        }
+
+        .film-director {
+            color: #444;
+            font-style: italic;
+        }
+
+        .film-rating {
+            color: #666;
+            font-size: 10px;
+            margin-left: 6px;
+        }
+
+        .view-all-films {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 10px;
+            color: #444;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .view-all-films:hover {
+            color: #888;
+        }
+
+        .loading, .error {
+            font-size: 11px;
+            color: #333;
+            padding: 20px 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .blog-layout {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+
+            .film-sidebar {
+                position: static;
+                order: -1;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 40px 20px 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html"><img src="images/logo-scrawl.png" alt="emme" class="logo"></a>
+        <a href="index.html" class="back">&larr; back</a>
+    </div>
+
+    <h1>blog</h1>
+
+    <div class="blog-layout">
+        <!-- Blog posts -->
+        <div class="blog-posts">
+            <div class="section-title">posts</div>
+            <ul class="post-list">
+                <li class="post-item">
+                    <div class="post-date">Dec 13, 2018</div>
+                    <h2 class="post-title">
+                        <a href="https://emmmmmmmmme.wordpress.com/2018/12/13/machine-girl-talk-anime-cyberpunk-craziest-live-shows/" target="_blank">Machine Girl Talk Anime, Cyberpunk, and Their Craziest Live Shows</a>
+                    </h2>
+                    <p class="post-excerpt">An interview with Machine Girl about their influences, touring chaos, and the intersection of hardcore, cyberpunk aesthetics, and anime culture.</p>
+                    <span class="post-category">interview</span>
+                </li>
+                <li class="post-item">
+                    <div class="post-date">2014 - 2019</div>
+                    <h2 class="post-title">
+                        <a href="archive.html">Nest HQ Archive</a>
+                    </h2>
+                    <p class="post-excerpt">180+ articles written for Nest HQ covering electronic music, interviews, album reviews, premieres, and artist spotlights.</p>
+                    <span class="post-category">archive</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Film diary sidebar -->
+        <aside class="film-sidebar">
+            <div class="film-box">
+                <div class="section-title">film diary</div>
+                <p class="film-intro">reviewed films from <a href="https://letterboxd.com/pinkeminem/" target="_blank" rel="noopener">letterboxd</a></p>
+
+                <div id="loading" class="loading">loading...</div>
+                <div id="error" class="error" style="display: none;"></div>
+                <ul id="films" class="film-list"></ul>
+
+                <a href="https://letterboxd.com/pinkeminem/" target="_blank" rel="noopener" class="view-all-films">view all reviews</a>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        async function fetchLetterboxdFeed() {
+            const feedUrl = 'https://letterboxd.com/pinkeminem/rss/';
+            const proxyUrl = 'https://api.allorigins.win/raw?url=';
+
+            try {
+                const response = await fetch(proxyUrl + encodeURIComponent(feedUrl));
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch feed');
+                }
+
+                const xmlText = await response.text();
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+
+                const items = xmlDoc.querySelectorAll('item');
+                const filmsContainer = document.getElementById('films');
+                const loadingEl = document.getElementById('loading');
+
+                if (items.length === 0) {
+                    throw new Error('No films found');
+                }
+
+                loadingEl.style.display = 'none';
+
+                const maxFilms = 12;
+                let count = 0;
+
+                items.forEach((item) => {
+                    if (count >= maxFilms) return;
+
+                    const title = item.querySelector('title')?.textContent || '';
+                    const link = item.querySelector('link')?.textContent || '';
+                    const rating = item.querySelector('memberRating')?.textContent || '';
+                    const description = item.querySelector('description')?.textContent || '';
+
+                    // Only include reviewed films (those with ratings)
+                    if (!rating) return;
+
+                    // Parse title for film name and year
+                    const titleMatch = title.match(/^(.+?),\s*(\d{4})/);
+                    const filmName = titleMatch ? titleMatch[1] : title.split(',')[0];
+                    const filmYear = titleMatch ? titleMatch[2] : '';
+
+                    // Try to extract director from description
+                    // Letterboxd descriptions often include "Directed by [Director]" or similar
+                    let director = '';
+                    const dirMatch = description.match(/Directed by ([^<\n]+)/i);
+                    if (dirMatch) {
+                        director = dirMatch[1].trim();
+                    }
+
+                    // Convert rating to stars
+                    const stars = rating ? '★'.repeat(Math.round(parseFloat(rating))) : '';
+
+                    const filmEntry = document.createElement('li');
+                    filmEntry.className = 'film-entry';
+                    filmEntry.innerHTML = `
+                        <a href="${link}" target="_blank" rel="noopener noreferrer">
+                            <span class="film-name">${filmName}</span>
+                            ${filmYear ? `<span class="film-year">(${filmYear})</span>` : ''}
+                            ${director ? `<span class="film-director">dir. ${director}</span>` : ''}
+                        </a>
+                        <span class="film-rating">${stars}</span>
+                    `;
+
+                    filmsContainer.appendChild(filmEntry);
+                    count++;
+                });
+
+                if (count === 0) {
+                    loadingEl.textContent = 'no reviewed films found';
+                    loadingEl.style.display = 'block';
+                }
+
+            } catch (error) {
+                console.error('Error fetching Letterboxd feed:', error);
+                document.getElementById('loading').style.display = 'none';
+                const errorEl = document.getElementById('error');
+                errorEl.textContent = 'unable to load';
+                errorEl.style.display = 'block';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchLetterboxdFeed);
+    </script>
+</body>
+</html>

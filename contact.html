@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>emme - contact</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Calibri, 'Trebuchet MS', sans-serif;
+            background: #000;
+            color: #ccc;
+            min-height: 100vh;
+            padding: 40px 40px 60px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 80px;
+        }
+
+        .logo {
+            height: 35px;
+            width: auto;
+        }
+
+        .back {
+            color: #666;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .back:hover {
+            color: #fff;
+        }
+
+        h1 {
+            font-weight: normal;
+            font-size: 14px;
+            margin-bottom: 60px;
+            color: #888;
+            letter-spacing: 1px;
+        }
+
+        .contact-container {
+            max-width: 500px;
+        }
+
+        .contact-item {
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .contact-label {
+            font-size: 10px;
+            color: #444;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+
+        .contact-email {
+            color: #999;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 600;
+            display: inline-block;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .contact-email:hover {
+            color: #fff;
+        }
+
+        .contact-email::before {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #666, transparent);
+            transition: width 0.4s ease;
+        }
+
+        .contact-email:hover::before {
+            width: 100%;
+        }
+
+        .glitch-line {
+            position: absolute;
+            left: -20px;
+            top: 50%;
+            width: 3px;
+            height: 40px;
+            background: linear-gradient(180deg, transparent, #333, transparent);
+            transform: translateY(-50%);
+            animation: lineGlitch 4s ease-in-out infinite;
+        }
+
+        .contact-item:nth-child(2) .glitch-line {
+            animation-delay: 2s;
+        }
+
+        @keyframes lineGlitch {
+            0%, 100% { opacity: 0.5; height: 40px; }
+            10% { opacity: 1; height: 50px; }
+            15% { opacity: 0; }
+            20% { opacity: 0.7; height: 30px; }
+            50% { opacity: 0.5; height: 40px; }
+            55% { opacity: 0; }
+            60% { opacity: 0.8; height: 60px; }
+            70% { opacity: 0.5; height: 40px; }
+        }
+
+        .description {
+            color: #555;
+            font-size: 12px;
+            margin-top: 8px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 40px 20px 60px;
+            }
+
+            .contact-email {
+                font-size: 15px;
+            }
+
+            .glitch-line {
+                left: -15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html"><img src="images/logo-scrawl.png" alt="emme" class="logo"></a>
+        <a href="index.html" class="back">&larr; back</a>
+    </div>
+
+    <div class="contact-container">
+        <h1>contact</h1>
+
+        <div class="contact-item">
+            <div class="glitch-line"></div>
+            <div class="contact-label">booking</div>
+            <a href="mailto:booking@emme-em.me" class="contact-email">booking@emme-em.me</a>
+            <div class="description">for performance inquiries, festival bookings, and event requests</div>
+        </div>
+
+        <div class="contact-item">
+            <div class="glitch-line"></div>
+            <div class="contact-label">general inquiries</div>
+            <a href="mailto:emme@emme-em.me" class="contact-email">emme@emme-em.me</a>
+            <div class="description">for press, collaborations, and everything else</div>
+        </div>
+    </div>
+</body>
+</html>
