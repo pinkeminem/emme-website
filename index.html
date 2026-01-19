@@ -46,6 +46,19 @@
             object-fit: cover;
         }
 
+        /* Mobile logo fallback */
+        .mobile-logo {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 5;
+            width: 60%;
+            max-width: 250px;
+            opacity: 0.9;
+        }
+
         .hero-overlay {
             position: absolute;
             top: 0;
@@ -212,13 +225,29 @@
                 bottom: 25px;
             }
         }
+
+        /* Mobile portrait - rotate video and show logo */
+        @media (max-width: 768px) and (orientation: portrait) {
+            .hero-video {
+                transform: translate(-50%, -50%) rotate(90deg);
+                min-width: 100vh;
+                min-height: 100vw;
+                width: 100vh;
+                height: 100vw;
+            }
+
+            .mobile-logo {
+                display: block;
+            }
+        }
     </style>
 </head>
 <body>
     <section class="hero">
-        <video class="hero-video" autoplay muted playsinline id="heroVideo">
+        <video class="hero-video" autoplay muted playsinline webkit-playsinline loop id="heroVideo">
             <source src="videos/logo-animation.mp4" type="video/mp4">
         </video>
+        <img src="images/logo-scrawl.png" alt="emme" class="mobile-logo">
         <div class="hero-overlay"></div>
 
         <nav class="nav">
@@ -318,12 +347,22 @@
             }
         });
 
-        // Click to play fallback
-        document.addEventListener('click', () => {
+        // Click/touch to play fallback for mobile
+        function tryPlay() {
             if (video.paused) {
+                video.muted = true; // Ensure muted for autoplay
                 video.play().catch(() => {});
             }
-        }, { once: true });
+        }
+        document.addEventListener('click', tryPlay, { once: true });
+        document.addEventListener('touchstart', tryPlay, { once: true });
+
+        // iOS autoplay fix - try playing on visibility change
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden && video.paused) {
+                video.play().catch(() => {});
+            }
+        });
 
         // Glitch text generator
         const glitchMaps = {
