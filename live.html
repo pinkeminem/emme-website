@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>emme - live</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Calibri, 'Trebuchet MS', sans-serif;
+            background: #000;
+            color: #ccc;
+            min-height: 100vh;
+            padding: 40px 40px 60px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            height: 35px;
+            width: auto;
+        }
+
+        .back {
+            color: #666;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .back:hover {
+            color: #fff;
+        }
+
+        h1 {
+            font-weight: normal;
+            font-size: 14px;
+            margin-bottom: 40px;
+            color: #888;
+            letter-spacing: 1px;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2px;
+        }
+
+        .video-item {
+            position: relative;
+            aspect-ratio: 16/9;
+            overflow: hidden;
+            background: #0a0a0a;
+            cursor: pointer;
+        }
+
+        .video-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%) contrast(1.1);
+            opacity: 0.7;
+            transition: all 0.4s ease;
+        }
+
+        .video-item:hover video {
+            filter: grayscale(50%) contrast(1.05);
+            opacity: 1;
+            transform: scale(1.02);
+        }
+
+        .video-item .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px 15px;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .video-item:hover .overlay {
+            opacity: 1;
+        }
+
+        .video-title {
+            color: #fff;
+            font-size: 12px;
+            margin-bottom: 3px;
+        }
+
+        .video-location {
+            color: #666;
+            font-size: 10px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 40px 20px 60px;
+            }
+
+            .video-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html"><img src="images/logo-scrawl.png" alt="emme" class="logo"></a>
+        <a href="index.html" class="back">&larr; back</a>
+    </div>
+
+    <h1>live</h1>
+
+    <div class="video-grid">
+        <div class="video-item">
+            <video src="videos/biennale.mov" muted loop playsinline preload="metadata"></video>
+            <div class="overlay">
+                <div class="video-title">Venice Biennale</div>
+                <div class="video-location">Venice, IT</div>
+            </div>
+        </div>
+
+        <div class="video-item">
+            <video src="videos/luff.mp4" muted loop playsinline preload="metadata"></video>
+            <div class="overlay">
+                <div class="video-title">LUFF</div>
+                <div class="video-location">Lausanne, CH</div>
+            </div>
+        </div>
+
+        <div class="video-item">
+            <video src="videos/vienna.mov" muted loop playsinline preload="metadata"></video>
+            <div class="overlay">
+                <div class="video-title">Rhiz</div>
+                <div class="video-location">Vienna, AT</div>
+            </div>
+        </div>
+
+        <div class="video-item">
+            <video src="videos/nyc-grove.mov" muted loop playsinline preload="metadata"></video>
+            <div class="overlay">
+                <div class="video-title">The Grove</div>
+                <div class="video-location">New York, NY</div>
+            </div>
+        </div>
+
+        <div class="video-item">
+            <video src="videos/nyc-purg.mov" muted loop playsinline preload="metadata"></video>
+            <div class="overlay">
+                <div class="video-title">Purgatory</div>
+                <div class="video-location">New York, NY</div>
+            </div>
+        </div>
+
+        <div class="video-item">
+            <video src="videos/nyc-rash.mov" muted loop playsinline preload="metadata"></video>
+            <div class="overlay">
+                <div class="video-title">Rash</div>
+                <div class="video-location">New York, NY</div>
+            </div>
+        </div>
+
+        <div class="video-item">
+            <video src="videos/pdx-beach.mov" muted loop playsinline preload="metadata"></video>
+            <div class="overlay">
+                <div class="video-title">A Beach</div>
+                <div class="video-location">Portland, OR</div>
+            </div>
+        </div>
+
+        <div class="video-item">
+            <video src="videos/vienna-2.mov" muted loop playsinline preload="metadata"></video>
+            <div class="overlay">
+                <div class="video-title">Rhiz II</div>
+                <div class="video-location">Vienna, AT</div>
+            </div>
+        </div>
+
+        <div class="video-item">
+            <video src="videos/luff-2.mov" muted loop playsinline preload="metadata"></video>
+            <div class="overlay">
+                <div class="video-title">LUFF II</div>
+                <div class="video-location">Lausanne, CH</div>
+            </div>
+        </div>
+
+        <div class="video-item">
+            <video src="videos/nyc-purg-2.mov" muted loop playsinline preload="metadata"></video>
+            <div class="overlay">
+                <div class="video-title">Purgatory II</div>
+                <div class="video-location">New York, NY</div>
+            </div>
+        </div>
+
+        <div class="video-item">
+            <video src="videos/zurich-umbo.mov" muted loop playsinline preload="metadata"></video>
+            <div class="overlay">
+                <div class="video-title">Umbo</div>
+                <div class="video-location">Zurich, CH</div>
+            </div>
+        </div>
+
+        <div class="video-item">
+            <video src="videos/zurich-umbo-2.mov" muted loop playsinline preload="metadata"></video>
+            <div class="overlay">
+                <div class="video-title">Umbo II</div>
+                <div class="video-location">Zurich, CH</div>
+            </div>
+        </div>
+
+        <div class="video-item">
+            <video src="videos/nyc-hart.mov" muted loop playsinline preload="metadata"></video>
+            <div class="overlay">
+                <div class="video-title">Hart Bar</div>
+                <div class="video-location">New York, NY</div>
+            </div>
+        </div>
+
+        <div class="video-item">
+            <video src="videos/nyc-hart-2.mov" muted loop playsinline preload="metadata"></video>
+            <div class="overlay">
+                <div class="video-title">Hart Bar II</div>
+                <div class="video-location">New York, NY</div>
+            </div>
+        </div>
+
+        <div class="video-item">
+            <video src="videos/nyc-pecos.mov" muted loop playsinline preload="metadata"></video>
+            <div class="overlay">
+                <div class="video-title">Pecos</div>
+                <div class="video-location">New York, NY</div>
+            </div>
+        </div>
+
+        <div class="video-item">
+            <video src="videos/nyc-pecos-2.mov" muted loop playsinline preload="metadata"></video>
+            <div class="overlay">
+                <div class="video-title">Pecos II</div>
+                <div class="video-location">New York, NY</div>
+            </div>
+        </div>
+
+        <div class="video-item">
+            <video src="videos/pdx-beach-2.mov" muted loop playsinline preload="metadata"></video>
+            <div class="overlay">
+                <div class="video-title">A Beach II</div>
+                <div class="video-location">Portland, OR</div>
+            </div>
+        </div>
+
+        <div class="video-item">
+            <video src="videos/pdx-beach-3.mov" muted loop playsinline preload="metadata"></video>
+            <div class="overlay">
+                <div class="video-title">A Beach III</div>
+                <div class="video-location">Portland, OR</div>
+            </div>
+        </div>
+
+        <div class="video-item">
+            <video src="videos/nyc-rash-2.mov" muted loop playsinline preload="metadata"></video>
+            <div class="overlay">
+                <div class="video-title">Rash II</div>
+                <div class="video-location">New York, NY</div>
+            </div>
+        </div>
+
+        <div class="video-item">
+            <video src="videos/vienna-3.mov" muted loop playsinline preload="metadata"></video>
+            <div class="overlay">
+                <div class="video-title">Rhiz III</div>
+                <div class="video-location">Vienna, AT</div>
+            </div>
+        </div>
+
+        <div class="video-item">
+            <video src="videos/luff-3.mov" muted loop playsinline preload="metadata"></video>
+            <div class="overlay">
+                <div class="video-title">LUFF III</div>
+                <div class="video-location">Lausanne, CH</div>
+            </div>
+        </div>
+
+        <div class="video-item">
+            <video src="videos/nyc-grove-2.mov" muted loop playsinline preload="metadata"></video>
+            <div class="overlay">
+                <div class="video-title">The Grove II</div>
+                <div class="video-location">New York, NY</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.video-item').forEach(item => {
+            const video = item.querySelector('video');
+
+            item.addEventListener('mouseenter', () => {
+                video.play().catch(() => {});
+            });
+
+            item.addEventListener('mouseleave', () => {
+                video.pause();
+                video.currentTime = 0;
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>emme</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #000;
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .hero-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                rgba(0, 0, 0, 0.7) 0%,
+                rgba(0, 0, 0, 0.05) 20%,
+                rgba(0, 0, 0, 0.05) 80%,
+                rgba(0, 0, 0, 0.7) 100%
+            );
+        }
+
+        /* Navigation - Top centered */
+        .nav {
+            position: absolute;
+            top: 40px;
+            left: 0;
+            right: 0;
+            z-index: 10;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            flex-wrap: wrap;
+            padding: 0 20px;
+        }
+
+        /* Nav link styles */
+        .nav-btn {
+            position: relative;
+            padding: 6px 8px;
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            text-transform: lowercase;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 400;
+            transition: color 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            color: #fff;
+        }
+
+        .nav-btn span {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Glitchy separator */
+        .nav-sep {
+            color: rgba(255, 255, 255, 0.25);
+            font-size: 11px;
+            padding: 0 4px;
+            animation: sepGlitch 4s ease-in-out infinite;
+            user-select: none;
+        }
+
+        .nav-sep:nth-child(4n) { animation-delay: 0.5s; }
+        .nav-sep:nth-child(4n+1) { animation-delay: 1.2s; }
+        .nav-sep:nth-child(4n+2) { animation-delay: 2.1s; }
+        .nav-sep:nth-child(4n+3) { animation-delay: 3.3s; }
+
+        @keyframes sepGlitch {
+            0%, 100% { opacity: 0.25; transform: translateY(0); }
+            48% { opacity: 0.25; transform: translateY(0); }
+            50% { opacity: 0.8; transform: translateY(-2px); color: #fff; }
+            52% { opacity: 0.1; transform: translateY(1px); }
+            54% { opacity: 0.6; transform: translateY(0); }
+            56% { opacity: 0.25; transform: translateY(0); }
+        }
+
+        /* Social Links - Bottom centered */
+        .social {
+            position: absolute;
+            bottom: 40px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            z-index: 10;
+        }
+
+        .social a {
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: lowercase;
+            transition: all 0.3s ease;
+            font-weight: 300;
+        }
+
+        .social a:hover {
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Subtle animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .nav { animation: fadeIn 1s ease 0.3s both; }
+        .social { animation: fadeInUp 1s ease 0.6s both; }
+
+        /* Mobile adjustments */
+        @media (max-width: 900px) {
+            .nav {
+                top: 30px;
+            }
+
+            .nav-btn {
+                padding: 5px 6px;
+                font-size: 10px;
+            }
+
+            .nav-sep {
+                padding: 0 2px;
+            }
+
+            .social {
+                bottom: 30px;
+                gap: 20px;
+                flex-wrap: wrap;
+                padding: 0 20px;
+            }
+
+            .social a { font-size: 9px; }
+        }
+
+        @media (max-width: 480px) {
+            .nav {
+                top: 20px;
+            }
+
+            .nav-btn {
+                padding: 4px 5px;
+                font-size: 9px;
+                letter-spacing: 1px;
+            }
+
+            .nav-sep {
+                padding: 0 1px;
+                font-size: 9px;
+            }
+
+            .social {
+                gap: 15px;
+                bottom: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <video class="hero-video" autoplay muted playsinline id="heroVideo">
+            <source src="videos/logo-animation.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+
+        <nav class="nav">
+            <a href="music.html" class="nav-btn"><span>music</span></a>
+            <span class="nav-sep">/</span>
+            <a href="lighting.html" class="nav-btn"><span>lighting</span></a>
+            <span class="nav-sep">/</span>
+            <a href="live.html" class="nav-btn"><span>live</span></a>
+            <span class="nav-sep">/</span>
+            <a href="shows.html" class="nav-btn"><span>shows</span></a>
+            <span class="nav-sep">/</span>
+            <a href="shop.html" class="nav-btn"><span>shop</span></a>
+            <span class="nav-sep">/</span>
+            <a href="blog.html" class="nav-btn"><span>blog</span></a>
+            <span class="nav-sep">/</span>
+            <a href="archive.html" class="nav-btn"><span>archive</span></a>
+            <span class="nav-sep">/</span>
+            <a href="about.html" class="nav-btn"><span>about</span></a>
+            <span class="nav-sep">/</span>
+            <a href="contact.html" class="nav-btn"><span>contact</span></a>
+        </nav>
+
+        <div class="social">
+            <a href="https://www.instagram.com/emme.emme.emme.emme/" target="_blank" rel="noopener">instagram</a>
+            <a href="https://3mm3.bandcamp.com/" target="_blank" rel="noopener">bandcamp</a>
+            <a href="https://soundcloud.com/emme" target="_blank" rel="noopener">soundcloud</a>
+            <a href="https://www.youtube.com/watch?v=5zT7QJE9doY" target="_blank" rel="noopener">youtube</a>
+        </div>
+    </section>
+
+    <script>
+        const video = document.getElementById('heroVideo');
+
+        // Alternating loop durations and speeds
+        const loopConfigs = [
+            { duration: 2, speed: 1.0 },
+            { duration: 3, speed: 0.7 },
+            { duration: 4, speed: 1.3 },
+            { duration: 2, speed: 0.5 },
+            { duration: 3, speed: 1.0 },
+            { duration: 4, speed: 0.8 }
+        ];
+
+        const cyclesPerConfig = 20;
+
+        let currentConfigIndex = 0;
+        let loopStartTime = 0;
+        let loopCount = 0;
+        let isLooping = false;
+
+        function getCurrentConfig() {
+            return loopConfigs[currentConfigIndex % loopConfigs.length];
+        }
+
+        function setupLoop() {
+            const config = getCurrentConfig();
+            loopStartTime = Math.max(0, video.duration - config.duration);
+            video.playbackRate = config.speed;
+        }
+
+        video.play().catch(() => {});
+
+        video.addEventListener('loadedmetadata', () => {
+            setupLoop();
+            video.play().catch(() => {});
+        });
+
+        video.addEventListener('canplay', () => {
+            video.play().catch(() => {});
+        });
+
+        video.addEventListener('ended', () => {
+            if (isLooping && loopCount < cyclesPerConfig) {
+                loopCount++;
+                video.currentTime = loopStartTime;
+                video.play().catch(() => {});
+            } else {
+                // Move to next config and restart
+                currentConfigIndex++;
+                isLooping = false;
+                loopCount = 0;
+                video.playbackRate = 1.0;
+                video.currentTime = 0;
+                setupLoop();
+                video.play().catch(() => {});
+            }
+        });
+
+        video.addEventListener('timeupdate', () => {
+            if (!video.duration || loopStartTime === 0) return;
+
+            if (!isLooping && video.currentTime >= loopStartTime) {
+                isLooping = true;
+                loopCount = 0;
+                const config = getCurrentConfig();
+                video.playbackRate = config.speed;
+            }
+        });
+
+        // Click to play fallback
+        document.addEventListener('click', () => {
+            if (video.paused) {
+                video.play().catch(() => {});
+            }
+        }, { once: true });
+
+        // Glitch text generator
+        const glitchMaps = {
+            'A': ['α', 'Λ', 'Δ', 'א', 'ą', 'ά', 'Ą', 'λ'],
+            'B': ['β', 'ß', 'ב', 'Ɓ', 'ъ', 'ь', 'Ḃ', 'Þ'],
+            'C': ['ς', 'ͻ', 'ç', 'ć', 'ɕ', 'ק', 'Ͻ', 'č'],
+            'D': ['δ', 'ð', 'ď', 'đ', 'ד', 'Ɗ', 'ɗ', 'ḋ'],
+            'E': ['ε', 'є', 'ė', 'ē', 'ə', 'ξ', 'Ɛ', 'ę'],
+            'F': ['ƒ', 'φ', 'ḟ', 'ſ', 'ף', 'ϝ', 'Ḟ', 'ʄ'],
+            'G': ['γ', 'ğ', 'ġ', 'ɡ', 'ג', 'Ɠ', 'ǥ', 'ɠ'],
+            'H': ['η', 'ħ', 'ĥ', 'ḥ', 'ה', 'Ħ', 'ℏ', 'ђ'],
+            'I': ['ι', 'ï', 'į', 'í', 'ɨ', 'ί', 'ı', 'Ι'],
+            'J': ['ј', 'ʝ', 'ĵ', 'ϳ', 'ɉ', 'ǰ', 'Ј', 'Ĵ'],
+            'K': ['κ', 'ĸ', 'ķ', 'כ', 'Ƙ', 'ƙ', 'Κ', 'ḳ'],
+            'L': ['ł', 'ℓ', 'ļ', 'ŀ', 'ל', 'Ł', 'Ļ', 'ľ'],
+            'M': ['μ', 'ɱ', 'ṁ', 'ɯ', 'מ', 'Μ', 'Ṁ', 'ḿ'],
+            'N': ['η', 'ñ', 'ń', 'ň', 'נ', 'ղ', 'ŋ', 'Ń'],
+            'O': ['ο', 'σ', 'ő', 'ø', 'ơ', 'Ο', 'Ø', 'ם'],
+            'P': ['ρ', 'þ', 'ƥ', 'פ', 'Ρ', 'Þ', 'Ƥ', 'ṗ'],
+            'Q': ['ϙ', 'ʠ', 'ԛ', 'ק', 'Ϙ', 'Ԛ', 'զ', 'Զ'],
+            'R': ['я', 'ŕ', 'ř', 'ŗ', 'ר', 'Я', 'Ŕ', 'ɾ'],
+            'S': ['ѕ', 'š', 'ş', 'ś', 'ש', 'Ѕ', 'Š', 'ṡ'],
+            'T': ['τ', 'ť', 'ţ', 'ț', 'ת', 'Τ', 'Ť', 'ŧ'],
+            'U': ['υ', 'ū', 'ů', 'ű', 'ü', 'Υ', 'Ū', 'ų'],
+            'V': ['ν', 'ṿ', 'ʋ', 'ѵ', 'ו', 'Ѵ', 'Ṿ', 'ʌ'],
+            'W': ['ω', 'ŵ', 'ẁ', 'ẃ', 'װ', 'Ω', 'Ŵ', 'Ẃ'],
+            'X': ['χ', 'ẋ', 'ẍ', 'ӽ', 'ץ', 'Χ', 'Ẋ', 'ҳ'],
+            'Y': ['υ', 'ÿ', 'ý', 'ŷ', 'י', 'Υ', 'Ÿ', 'Ý'],
+            'Z': ['ζ', 'ž', 'ź', 'ż', 'ז', 'Ζ', 'Ž', 'Ź'],
+            'a': ['α', 'ą', 'ā', 'ά', 'ă', 'ǎ', 'ạ', 'ả'],
+            'b': ['β', 'ъ', 'ь', 'ɓ', 'ḃ', 'ḅ', 'ƅ', 'ƀ'],
+            'c': ['ς', 'ç', 'ć', 'č', 'ċ', 'ĉ', 'ƈ', 'ͻ'],
+            'd': ['δ', 'ð', 'ď', 'đ', 'ḋ', 'ḍ', 'ɖ', 'ɗ'],
+            'e': ['ε', 'є', 'ė', 'ē', 'ě', 'ə', 'ę', 'ẹ'],
+            'f': ['ƒ', 'φ', 'ḟ', 'ſ', 'ʄ', 'ϝ', 'ɸ', 'ғ'],
+            'g': ['γ', 'ğ', 'ġ', 'ģ', 'ǧ', 'ǥ', 'ɡ', 'ɠ'],
+            'h': ['η', 'ħ', 'ĥ', 'ḥ', 'ḩ', 'ℎ', 'ɦ', 'ђ'],
+            'i': ['ι', 'ï', 'į', 'í', 'ì', 'ɨ', 'ı', 'ị'],
+            'j': ['ј', 'ʝ', 'ĵ', 'ǰ', 'ϳ', 'ɉ', 'ʲ', 'յ'],
+            'k': ['κ', 'ķ', 'ĸ', 'ƙ', 'ḳ', 'ǩ', 'ḵ', 'ҟ'],
+            'l': ['ł', 'ℓ', 'ļ', 'ľ', 'ŀ', 'ḷ', 'ĺ', 'ƚ'],
+            'm': ['μ', 'ɱ', 'ṁ', 'ḿ', 'ɯ', 'ṃ', 'ɰ', 'ო'],
+            'n': ['η', 'ñ', 'ń', 'ň', 'ņ', 'ṅ', 'ṇ', 'ŋ'],
+            'o': ['ο', 'σ', 'ő', 'ø', 'ơ', 'ö', 'ọ', 'ỏ'],
+            'p': ['ρ', 'þ', 'ҏ', 'ƥ', 'ṗ', 'ᵽ', 'ṕ', 'ք'],
+            'q': ['ϙ', 'ʠ', 'ԛ', 'ɋ', 'զ', 'գ', 'ԛ', 'ʠ'],
+            'r': ['я', 'ŕ', 'ř', 'ŗ', 'ṙ', 'ṛ', 'ɾ', 'ɍ'],
+            's': ['ѕ', 'š', 'ş', 'ș', 'ś', 'ṣ', 'ṡ', 'ƨ'],
+            't': ['τ', 'ť', 'ţ', 'ț', 'ṭ', 'ṫ', 'ŧ', 'ƭ'],
+            'u': ['υ', 'ū', 'ů', 'ű', 'ü', 'ú', 'ų', 'ụ'],
+            'v': ['ν', 'ṿ', 'ʋ', 'ṽ', 'ʌ', 'ѵ', 'ṿ', 'վ'],
+            'w': ['ω', 'ŵ', 'ẁ', 'ẃ', 'ẇ', 'ẅ', 'ẉ', 'ա'],
+            'x': ['χ', 'ẋ', 'ẍ', 'ӽ', 'ẍ', 'ӿ', 'ҳ', 'խ'],
+            'y': ['υ', 'ÿ', 'ý', 'ŷ', 'ỳ', 'ȳ', 'ɣ', 'ẏ'],
+            'z': ['ζ', 'ž', 'ź', 'ż', 'ẓ', 'ẕ', 'ʐ', 'ƶ']
+        };
+
+        const diacriticsAbove = [
+            '\u0300', '\u0301', '\u0302', '\u0303', '\u0304', '\u0305',
+            '\u0306', '\u0307', '\u0308', '\u0309', '\u030A', '\u030B',
+            '\u030C', '\u030D', '\u030E', '\u030F', '\u0310', '\u0311',
+            'ً', 'ٌ', 'َ', 'ُ', 'ّ', 'ْ'
+        ];
+
+        const diacriticsBelow = [
+            '\u0316', '\u0317', '\u0318', '\u0319', '\u031C', '\u031D',
+            '\u031E', '\u031F', '\u0320', '\u0321', '\u0322', '\u0323',
+            '\u0324', '\u0325', '\u0326', '\u0327', '\u0328', '\u0329',
+            'ِ', 'ٍ'
+        ];
+
+        const overlayMarks = ['\u0335', '\u0336', '\u0337', '\u0338'];
+
+        const diacriticSafe = ['α','β','γ','δ','ε','ζ','η','θ','ι','κ','λ','μ','ν','ξ','ο','π','ρ','ς','σ','τ','υ','φ','χ','ψ','ω','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','ð','þ','ß','ƒ','ł','ŵ','я'];
+
+        function glitchText(text, level = 2) {
+            let result = '';
+            for (let i = 0; i < text.length; i++) {
+                let char = text[i];
+                const map = glitchMaps[char];
+                if (map) {
+                    char = map[Math.floor(Math.random() * map.length)];
+                    if (diacriticSafe.includes(char)) {
+                        const numAbove = Math.floor(level * 1.5) + Math.floor(Math.random() * 2);
+                        const numBelow = Math.floor(level * 1.5) + Math.floor(Math.random() * 2);
+                        for (let j = 0; j < numAbove; j++) {
+                            char += diacriticsAbove[Math.floor(Math.random() * diacriticsAbove.length)];
+                        }
+                        for (let j = 0; j < numBelow; j++) {
+                            char += diacriticsBelow[Math.floor(Math.random() * diacriticsBelow.length)];
+                        }
+                        if (Math.random() < 0.2) {
+                            char += overlayMarks[Math.floor(Math.random() * overlayMarks.length)];
+                        }
+                    }
+                }
+                result += char;
+            }
+            return result;
+        }
+
+        // Apply glitch effect to nav buttons and social links
+        document.querySelectorAll('.nav-btn span, .social a').forEach(el => {
+            const originalText = el.textContent;
+            el.addEventListener('mouseenter', () => {
+                el.textContent = glitchText(originalText, 2);
+            });
+            el.addEventListener('mouseleave', () => {
+                el.textContent = originalText;
+            });
+        });
+    </script>
+</body>
+</html>

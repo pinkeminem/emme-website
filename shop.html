@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>emme - shop</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Calibri, 'Trebuchet MS', sans-serif;
+            background: #000;
+            color: #ccc;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 40px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 60px;
+        }
+
+        .logo {
+            height: 35px;
+            width: auto;
+        }
+
+        .back {
+            color: #666;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .back:hover {
+            color: #fff;
+        }
+
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .redirect-msg {
+            color: #555;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        .shop-link {
+            color: #888;
+            text-decoration: none;
+            font-size: 14px;
+            padding: 15px 40px;
+            border: 1px solid #333;
+            transition: all 0.3s ease;
+        }
+
+        .shop-link:hover {
+            color: #fff;
+            border-color: #666;
+        }
+
+        .placeholder {
+            color: #333;
+            font-size: 11px;
+            margin-top: 60px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html"><img src="images/logo-scrawl.png" alt="emme" class="logo"></a>
+        <a href="index.html" class="back">&larr; back</a>
+    </div>
+
+    <div class="content">
+        <div class="redirect-msg">redirecting to shop...</div>
+        <a href="#" class="shop-link" id="shopLink">enter shop</a>
+
+        <div class="placeholder">[ shopify link coming soon ]</div>
+    </div>
+
+    <script>
+        // Replace this URL with actual Shopify link when available
+        const shopifyUrl = null; // e.g., 'https://emme-shop.myshopify.com'
+
+        if (shopifyUrl) {
+            window.location.href = shopifyUrl;
+        }
+
+        document.getElementById('shopLink').addEventListener('click', (e) => {
+            if (!shopifyUrl) {
+                e.preventDefault();
+                alert('Shop coming soon');
+            }
+        });
+    </script>
+</body>
+</html>

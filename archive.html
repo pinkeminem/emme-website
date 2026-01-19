@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>emme - archive</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Calibri, 'Trebuchet MS', sans-serif;
+            background: #000;
+            color: #ccc;
+            min-height: 100vh;
+            padding: 40px 40px 60px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 60px;
+        }
+
+        .logo {
+            height: 35px;
+            width: auto;
+        }
+
+        .back {
+            color: #666;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .back:hover {
+            color: #fff;
+        }
+
+        h1 {
+            font-weight: normal;
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: #888;
+            letter-spacing: 1px;
+        }
+
+        .archive-intro {
+            color: #444;
+            font-size: 12px;
+            margin-bottom: 50px;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        .archive-container {
+            max-width: 900px;
+        }
+
+        .year-section {
+            margin-bottom: 50px;
+        }
+
+        .year-header {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: normal;
+            letter-spacing: 2px;
+        }
+
+        .article-list {
+            list-style: none;
+        }
+
+        .article-item {
+            display: grid;
+            grid-template-columns: 50px 1fr auto;
+            gap: 15px;
+            align-items: baseline;
+            padding: 8px 0;
+            border-bottom: 1px solid #111;
+        }
+
+        .article-item:last-child {
+            border-bottom: none;
+        }
+
+        .article-date {
+            font-size: 11px;
+            color: #333;
+            text-transform: uppercase;
+        }
+
+        .article-title {
+            font-size: 13px;
+            color: #888;
+            text-decoration: none;
+            transition: color 0.2s;
+            line-height: 1.4;
+        }
+
+        .article-title:hover {
+            color: #fff;
+        }
+
+        .article-category {
+            font-size: 9px;
+            color: #333;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+
+        /* Category colors */
+        .article-category.interview { color: #4a6; }
+        .article-category.artist-spotlight { color: #64a; }
+        .article-category.video { color: #a46; }
+        .article-category.premiere { color: #6a4; }
+        .article-category.story { color: #46a; }
+        .article-category.news { color: #a64; }
+        .article-category.mixes { color: #4a6; }
+        .article-category.editors-picks { color: #a4a; }
+        .article-category.technology { color: #4aa; }
+        .article-category.events { color: #aa4; }
+        .article-category.album-reviews { color: #6aa; }
+        .article-category.interviews { color: #4a6; }
+
+        /* Stats */
+        .stats {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #151515;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            color: #444;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 10px;
+            color: #333;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 700px) {
+            body {
+                padding: 40px 20px 60px;
+            }
+
+            .article-item {
+                grid-template-columns: 45px 1fr;
+                gap: 10px;
+            }
+
+            .article-category {
+                display: none;
+            }
+
+            .article-title {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html"><img src="images/logo-scrawl.png" alt="emme" class="logo"></a>
+        <a href="index.html" class="back">&larr; back</a>
+    </div>
+
+    <h1>nest hq archive</h1>
+    <p class="archive-intro">184 articles written for Nest HQ between 2014-2019, covering electronic music, interviews, album reviews, premieres, and artist spotlights.</p>
+
+    <div class="stats">
+        <div class="stat">
+            <span class="stat-number">184</span>
+            <span class="stat-label">articles</span>
+        </div>
+        <div class="stat">
+            <span class="stat-number">6</span>
+            <span class="stat-label">years</span>
+        </div>
+    </div>
+
+    <div class="archive-container">
+        <div class="year-section">
+            <div class="year-header">2022</div>
+            <ul class="article-list">
+                <li class="article-item">
+                    <span class="article-date">Jul 28</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2022/07/28/mood-killer-shows-the-dark-side-of-camming-on-cam-boy/" target="_blank" class="article-title">Mood Killer Shows The Dark Side of Camming on 'Cam Boy'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+            </ul>
+        </div>
+        <div class="year-section">
+            <div class="year-header">2019</div>
+            <ul class="article-list">
+                <li class="article-item">
+                    <span class="article-date">Jun 27</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/06/27/below-this-post-are-all-180-articles-i-wrote-for-nest-hq/" target="_blank" class="article-title">Below this post is every article I wrote for Nest HQ</a>
+                    <span class="article-category uncategorized">uncategorized</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jun 21</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/06/21/ed-balloon-rainbows/" target="_blank" class="article-title">Premiere: Ed Balloon Shows off Some Subdued Confidence on "Rainbows"</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jun 20</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/06/20/blank-banshee-metamorphosis/" target="_blank" class="article-title">Blank Banshee Drops a Surprise 18-Minute-Long Release, 'Metamorphosis'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jun 20</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/06/20/corrvus-still-year/" target="_blank" class="article-title">Corrvus Explores Misery and Tradition on 'Still Year'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jun 20</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/06/20/cowgirl-clue-interview/" target="_blank" class="article-title">Cowgirl Clue Talks Pop, Footwork, and Vada Vada</a>
+                    <span class="article-category interview">interview</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jun 19</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/06/19/nodey-krishna/" target="_blank" class="article-title">Nodey's "Krishna -{•:-o" Explores the Staggering Feeling of an Empty City</a>
+                    <span class="article-category video">video</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jun 13</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/06/13/prison-religion-eartheater-rabit-collabs/" target="_blank" class="article-title">Prison Religion Drop Two New Tracks with Eartheater and Rabit</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jun 06</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/06/06/amazondotcom-mirror-river-ep/" target="_blank" class="article-title">AMAZONDOTCOM Comes Through With a Solid Debut EP</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jun 04</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/06/04/pale-spring-cygnus/" target="_blank" class="article-title">Pale Spring's Debut LP Is a Soft Mixture of Heartfelt and Gloomy</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jun 03</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/06/03/jai-paul-returns/" target="_blank" class="article-title">Jai Paul Is Back With Two New Songs — Here's Why That Matters</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jun 03</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/06/03/rabit-kold-summer-tape/" target="_blank" class="article-title">Rabit Returns With Another Experimental Chopped N Screwed Tape</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">May 31</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/05/31/nauticult-ctrl-alt-right-del/" target="_blank" class="article-title">Nauticult Burn Bright and Fast on "CTRL+ALT-RIGHT+DEL"</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">May 30</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/05/30/gladio-de-astra-planeti/" target="_blank" class="article-title">Legowelt's Newest Moniker Gladio Premieres a Track via L.I.E.S.</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">May 30</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/05/30/thief-frost-breath/" target="_blank" class="article-title">THIEF Announces a New Album With Their Hardest, Darkest Single Yet, "Frost Breath"</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">May 30</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/05/30/dubmood-votedisk-scene-is-dead/" target="_blank" class="article-title">Dubmood Drops Some Chiptune Bangers Made For RAZOR1911</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">May 29</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/05/29/ryan-porter-oscalypso/" target="_blank" class="article-title">Premiere: Ryan Porter Shows off Some Wired Jazz Fusion on 'Oscalypso'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">May 23</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/05/23/lingua-ignota-butcher-of-the-world/" target="_blank" class="article-title">Lingua Ignota Debuts "Butcher of the World" Off Her Upcoming Album</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">May 23</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/05/23/objekt-dazzle-anew-video/" target="_blank" class="article-title">Objekt Debuts an Insane Video for "Dazzle Anew"</a>
+                    <span class="article-category video">video</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">May 22</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/05/22/jean-dawson-bad-sports-ep/" target="_blank" class="article-title">Jean Dawson Bares It All on His Debut 'Bad Sports' EP</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">May 21</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/05/21/clyde-risik-josh-ep/" target="_blank" class="article-title">CLYDE Partners up with Risik for a Single off his Upcoming 'JOSH EP'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">May 20</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/05/20/kelli-nelson-moscow-nightmare/" target="_blank" class="article-title">Kelli Nelson Shares His Ominous 'Moscow Nightmare'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">May 18</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/05/18/injury-reserve-self-titled-lp/" target="_blank" class="article-title">Injury Reserve's First Studio Album Is the Evolution of a Winning Formula</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">May 16</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/05/16/premiere-pale-spring-forevermore/" target="_blank" class="article-title">Premiere: Pale Spring Digs Deep on Her New Single "Forevermore"</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">May 14</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/05/14/s280f-011668-600-1-ep/" target="_blank" class="article-title">S280F &amp; 011668 Collaborate on the Enigmatic '600 1' EP</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">May 14</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/05/14/suzi-analogue-artist-spotlight/" target="_blank" class="article-title">Artist Spotlight: Suzi Analogue</a>
+                    <span class="article-category artist-spotlight">artist spotlight</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">May 13</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/05/13/aisha-devi-im-not-always-where-my-body-is/" target="_blank" class="article-title">Aisha Devi Announces New Album, Shares "I'm Not Always Where My Body Is"</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">May 13</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/05/13/sfv-acid-firezone/" target="_blank" class="article-title">SFV Acid's 'Firezone' Takes You Into the Hot, Spacious World North of Los Angeles</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">May 07</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/05/07/ableton-10-1-cv-support/" target="_blank" class="article-title">Ableton Announces CV Support, Adding a Bunch of New Plug-Ins</a>
+                    <span class="article-category technology">technology</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">May 07</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/05/07/mstrkrft-city-violence/" target="_blank" class="article-title">MSTRKRFT Drop a Surprise Single off Their New Label, ORO Records</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">May 06</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/05/06/baseck-felisha-ledesma-cruel-world-ii/" target="_blank" class="article-title">Baseck Teams Up With Felisha Ledesma on the Fast and Noisy 'CRUEL WORLD II'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">May 06</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/05/06/cowgirl-clue-icebreaker/" target="_blank" class="article-title">Cowgirl Clue Drops Her Full-Length Debut Album, 'Icebreaker'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">May 02</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/05/02/suzi-analogue-zonez-v-4-love-me-louder/" target="_blank" class="article-title">Suzi Analogue Drops Her Newest Tape 'ZONEZ V.4: Love Me Louder'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Apr 29</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/04/29/beth-sawlts-dusty/" target="_blank" class="article-title">Beth Sawlts Combines Hardcore Dance and Ambient on 'dusty'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Apr 29</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/04/29/james-blake-mulholland/" target="_blank" class="article-title">James Blake Releases a Bonus Track Off 'Assume Form'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Apr 25</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/04/25/rico-nasty-kenny-beats-anger-management/" target="_blank" class="article-title">Rico Nasty Comes Out Swinging With the Kenny Beats-produced 'Anger Management'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Apr 24</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/04/24/daemon-sirenxe/" target="_blank" class="article-title">DAEMON Augments Reality on "Sirenxe"</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Apr 24</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/04/24/s280f-all-dogs-go-to-hell-lp/" target="_blank" class="article-title">S280F's 'ALL DOGS GO TO HELL' Is a 3D Nightmare Combo of Noise and Classical</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Apr 24</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/04/24/peggy-gou-moment-ep/" target="_blank" class="article-title">Peggy Gou Drops Her Highly-Anticipated 'Moment' EP</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Apr 22</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/04/22/lizzo-cuz-i-love-you/" target="_blank" class="article-title">Lizzo Brings the Love on 'Cuz I Love You'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Apr 19</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/04/19/cowgirl-clue-twin-flame/" target="_blank" class="article-title">Cowgirl Clue Drops a Video for Her Sugary Sweet Single "Twin Flame"</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Apr 17</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/04/17/hermanito-explosao/" target="_blank" class="article-title">Hermanito Drops Their Second Fierce EP, 'Explosao'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Apr 16</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/04/16/uun-hell-is-empty-ep/" target="_blank" class="article-title">Uun Keeps It Dark and Noisy on the 'Hell Is Empty' EP for Mord</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Apr 15</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/04/15/wilma-vritra-burd/" target="_blank" class="article-title">'Burd' Is the Newest Jazz-Rap Collab From Wilma Archer and Pyramid Vritra</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Apr 15</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/04/15/op-ed-exploring-deconstructed-club/" target="_blank" class="article-title">Op-Ed: Exploring Deconstructed Club</a>
+                    <span class="article-category story">story</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Apr 12</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/04/12/doom-trip-doom-mix-vol-iii/" target="_blank" class="article-title">Doom Trip Shares Their Newest Label Compilation With Eartheater, Vinyl Williams, Swan Meat, and More</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Apr 11</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/04/11/cemetery-fatima/" target="_blank" class="article-title">Premiere: CEMETERY Shares the Fierce, Ethereal 'Fatima'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Apr 10</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/04/10/entro-senestre-of-bank-records-remixes-i-close-my-eyes-and-watch-it-all-burn/" target="_blank" class="article-title">Entro Senestre of Bank Records Remixes 'I Close My Eyes And Watch It All Burn'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Apr 09</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/04/09/artist-spotlight-standing-on-the-corner/" target="_blank" class="article-title">Artist Spotlight: Standing on the Corner</a>
+                    <span class="article-category artist-spotlight">artist spotlight</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Apr 09</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/04/09/ioanna-gika-debut-thalassa/" target="_blank" class="article-title">Ioanna Gika's 'Thalassa' Is a Strong Combo of Goth Arrangements and Electronic Production</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Apr 04</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/04/04/amnesia-scanner-lexachast/" target="_blank" class="article-title">Amnesia Scanner Drop Music From Their Collaborative Work 'Lexachast'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Apr 03</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/04/03/jpegmafia-drops-a-veteran-leftover-the-who/" target="_blank" class="article-title">JPEGMAFIA Drops a New Track, "The Who"</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Mar 31</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/03/31/show-bodys-dog-whistle-serves-subtle-call-arms/" target="_blank" class="article-title">Show Me The Body's 'Dog Whistle' Serves As a Subtle Call to Arms</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Mar 29</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/03/29/premiere-s280f-brings-torturous-mysterious-deconstructed-club-%e0%b7%b4-dogs-go-hell-%e2%89%a1/" target="_blank" class="article-title">Premiere: S280F Brings Torturous, Mysterious Deconstructed Club on '෴ /ALL DOGS GO TO HELL/≡'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Mar 28</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/03/28/dreamcrusher-drops-two-insane-singles-cishet-fever/" target="_blank" class="article-title">Dreamcrusher Drops Two Insane Singles, "CISHET" and "FEVER"</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Mar 28</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/03/28/hate-changes-clearwater-combo-modern-rap-experimental-production/" target="_blank" class="article-title">They Hate Change's 'Clearwater' Is a Combo of Modern Rap and Experimental Production</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Mar 24</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/03/24/ibibio-sound-machines-doko-mien-matured-album-yet/" target="_blank" class="article-title">Ibibio Sound Machine's 'Doko Mien' Is Their Most Matured Album Yet</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Mar 23</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/03/23/lizzo-drops-two-singles-including-collab-missy-elliott/" target="_blank" class="article-title">Lizzo Drops Two Singles, Including a Collab With Missy Elliott</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Mar 22</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/03/22/talking-art-creativity-jonathan-snipes-brian-miller-deathbomb-arc/" target="_blank" class="article-title">Talking Art, Noise, and Creativity With Jonathan Snipes and Brian Miller of Deathbomb Arc</a>
+                    <span class="article-category interview">interview</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Mar 22</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/03/22/mr-oizo-drops-new-ep-celebrate-20th-anniversary-breakthrough-song-flat-beat/" target="_blank" class="article-title">Mr Oizo Drops a New EP to Celebrate the 20th Anniversary of His Breakthrough Song "Flat Beat"</a>
+                    <span class="article-category video">video</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Mar 21</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/03/21/false-witness-debuts-fast-varied-red-curtain-daybreak-ep/" target="_blank" class="article-title">False Witness Debuts the Fast and Varied 'Red Curtain Daybreak' EP</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Mar 20</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/03/20/premiere-sb-moors-ul-2-spirit-realm-dark-mixture-spiritual-digital/" target="_blank" class="article-title">Premiere: SB The Moor's "UL 2 SPIRIT REALM" Is a Dark Mixture of Spiritual and Digital</a>
+                    <span class="article-category premiere">premiere</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Mar 16</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/03/16/sfv-acid-returns-2019-daywalker-ep/" target="_blank" class="article-title">SFV ACID Returns in 2019 With 'Daywalker' EP</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Mar 14</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/03/14/83rds-patricia-subdued-take-new-yorks-noise-scene/" target="_blank" class="article-title">The 83rd's 'Patricia' Is a Subdued Take on New York's Noise Scene</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Mar 14</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/03/14/weaponise-sound-femme-compilation-exploration-electronic-music/" target="_blank" class="article-title">'Weaponise Your Sound' Is an All-Femme Compilation and Exploration of Electronic Music</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Mar 12</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/03/12/drevm-release-banging-witchy-bodies-off-forthcoming-album/" target="_blank" class="article-title">DREVM Release the Black-Clad "Bodies" off Their Forthcoming Album</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Mar 11</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/03/11/drab-majestys-noel-skum-drops-landmine-new-project-vr-sex/" target="_blank" class="article-title">Drab Majesty's Noel Skum Drops "Landmine" From His New Project, VR SEX</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Mar 09</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/03/09/gangster-doodles-releases-gangster-music-vol-1-kaytranada-madlib-jonwayne/" target="_blank" class="article-title">Gangster Doodles Releases 'Gangster Music Vol. 1' With Kaytranada, Madlib, Jonwayne + More</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Mar 06</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/03/06/tensal-releases-heavy-gloomy-unequal-struggle-ep/" target="_blank" class="article-title">Tensal Releases the Heavy, Gloomy 'Unequal Struggle' EP</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Mar 06</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/03/06/jpegmafia-kenny-beats-puff-daddy-gets-chaotic-video-treatment/" target="_blank" class="article-title">JPEGMAFIA and Kenny Beats' "Puff Daddy" Gets a Chaotic Video Treatment</a>
+                    <span class="article-category video">video</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Mar 05</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/03/05/zelooperz-breaks-usual-style-wild-card/" target="_blank" class="article-title">ZelooperZ Breaks Down His Usual Style on 'Wild Card'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Mar 05</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/03/05/deem-spencer-explores-sluggish-feel-heartbreak-pretty-face/" target="_blank" class="article-title">Deem Spencer Explores the Sluggish Feel of Heartbreak on 'Pretty face'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Mar 01</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/03/01/smoke-dzas-prime-location-vol-1-showcases-rappers-headspace/" target="_blank" class="article-title">Smoke DZA's 'Prime Location Vol. 1' Showcases the Rapper's Headspace</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Mar 01</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/03/01/solange-one-ups-style-get-home/" target="_blank" class="article-title">Solange One-Ups Her Own Style With 'When I Get Home'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Feb 28</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/02/28/shlohmo-shares-four-tracks-off-upcoming-record-rock-music-ep/" target="_blank" class="article-title">Shlohmo Shares Four Tracks off His Upcoming Record With 'Rock Music' EP</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Feb 28</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/02/28/s-u-p-e-r-f-l-t-%e3%82%b9%e3%83%bc%e3%83%91%e3%83%bc%e3%83%95%e3%83%a9%e3%83%83%e3%83%88-drops-kabuki-boogie-supreme-piece-future-funk/" target="_blank" class="article-title">S U P E R F L A T スーパーフラット Drops 'Kabuki Boogie,' A Supreme Piece of Future Funk</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Feb 27</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/02/27/sleaford-mods-release-boldest-experimental-album-yet-eton-alive/" target="_blank" class="article-title">Sleaford Mods Release Their Boldest and Most Experimental Album Yet, 'Eton Alive'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Feb 25</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/02/25/ras-g-shows-off-house-music-influence-dance-cosmos/" target="_blank" class="article-title">Ras G Shows off His House Music Influence on 'Dance of the Cosmos'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Feb 24</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/02/24/deli-girls-dive-deepest-pit-misery-dont-know-happy/" target="_blank" class="article-title">Deli Girls Dive Into the Deepest Pit of Misery on 'I Don't Know How to Be Happy'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Feb 22</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/02/22/health-jpegmafia-team-hate/" target="_blank" class="article-title">HEALTH and JPEGMAFIA Team Up on "HATE YOU"</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Feb 21</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/02/21/madlib-reveals-album-mac-miller-drops-flat-tummy-tea/" target="_blank" class="article-title">Madlib Reveals an Album With Mac Miller, Drops "Flat Tummy Tea"</a>
+                    <span class="article-category news">news</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Feb 20</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/02/20/op-ed-illlegitamacy-meme-music/" target="_blank" class="article-title">Op-Ed: The (Ill)Legitamacy of Meme Music</a>
+                    <span class="article-category featured-box-2">featured box 2</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Feb 19</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/02/19/illegal-civilization-throw-first-culture-clashing-music-festival-red-bull/" target="_blank" class="article-title">Illegal Civilization Throw Their First Culture Clashing Music Festival With Red Bull</a>
+                    <span class="article-category events">events</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Feb 17</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/02/17/czarface-ghostface-killah-meet-minds-collaborative-record/" target="_blank" class="article-title">CZARFACE and Ghostface Killah Meet Minds on Their Collaborative Record</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Feb 16</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/02/16/homeshake-channels-80s-synth-side-helium/" target="_blank" class="article-title">HOMESHAKE Channels His '80s Synth Side on 'Helium'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Feb 15</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/02/15/tim-hecker-announces-anoyo-sequel-last-album/" target="_blank" class="article-title">Tim Hecker Announces 'Anoyo,' A Sequel to His Last Album</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Feb 14</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/02/14/qari-takes-familiar-new-direction-operation-hennessy/" target="_blank" class="article-title">Qari Takes a Familiar New Direction on 'Operation Hennessy'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Feb 14</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/02/14/false-witness-drops-speedy-anthemic-techno-track-red-curtain-daybreak/" target="_blank" class="article-title">False Witness Drops the Speedy Anthemic Techno Track "Red Curtain Daybreak"</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Feb 12</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/02/12/artist-spotlight-smerz/" target="_blank" class="article-title">Artist Spotlight: Smerz</a>
+                    <span class="article-category artist-spotlight">artist spotlight</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Feb 11</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/02/11/99jakes-returns-9-master/" target="_blank" class="article-title">99jakes Returns With "9 is the master"</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Feb 10</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/02/10/show-body-debut-video-camp-orchestra-announce-new-album-tour-dates/" target="_blank" class="article-title">Show Me The Body Debut Video for 'Camp Orchestra,' Announce New Album + Tour Dates</a>
+                    <span class="article-category video">video</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Feb 09</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/02/09/health-firmly-grasps-feeling-dread-vol-4-slaves-fear/" target="_blank" class="article-title">HEALTH Firmly Grasps the Feeling of Dread on 'VOL 4 :: SLAVES OF FEAR'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Feb 08</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/02/08/xiu-xiu-break-barriers-girl-basket-fruit/" target="_blank" class="article-title">Xiu Xiu Break Their Barriers on 'Girl With Basket of Fruit'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Feb 08</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/02/08/buoys-nautical-return-panda-bears-soft-acoustic-roots/" target="_blank" class="article-title">'Buoys' Is a Nautical Return to Panda Bear's Soft Acoustic Roots</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Feb 06</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/02/06/ableton-announces-live-10-1/" target="_blank" class="article-title">Ableton Announces Live 10.1</a>
+                    <span class="article-category video">video</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Feb 05</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/02/05/dj-earl-starts-going-idm-rabbit-hole-onsumnushyt/" target="_blank" class="article-title">DJ Earl Starts Going Down the IDM Rabbit Hole With 'OnSumNuShyt'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Feb 03</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/02/03/scalameriya-drops-title-track-next-album/" target="_blank" class="article-title">Scalameriya Drops the Title Track From His Next Album</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Feb 02</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/02/02/mirukys-psycho-ambitiously-moves-electroacoustic-dance-motifs/" target="_blank" class="article-title">Miruky's 'Psycho' Ambitiously Moves Electroacoustic Through Dance Motifs</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Feb 01</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/02/01/q-da-fool-shows-animated-side-bad-influence-ep/" target="_blank" class="article-title">Q Da Fool Shows His Animated Side on 'Bad Influence' EP</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Feb 01</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/02/01/mitskis-pearl-gets-powerful-video-treatment/" target="_blank" class="article-title">Mitski's "A Pearl" Gets a Powerful Video Treatment</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jan 30</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/01/30/key-kenny-beats-get-claymation-treatment-video-dig/" target="_blank" class="article-title">KEY and Kenny Beats Get a Claymation Treatment in the Video for 'Dig It'</a>
+                    <span class="article-category video">video</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jan 28</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/01/28/dj-speedsicks-nothing-lasts-will-take-bleak-northern-trip/" target="_blank" class="article-title">DJ Speedsick's 'Nothing Lasts' Will Take You on a Bleak Northern Trip</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jan 28</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/01/28/surachai-expands-artistic-boundaries-come-deathless/" target="_blank" class="article-title">Surachai Expands His Artistic Boundaries on 'Come, Deathless'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jan 24</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/01/24/rabit-drops-surprise-chopped-screwed-mixtape-dope-show/" target="_blank" class="article-title">Rabit Drops a Surprise Chopped and Screwed Mixtape, 'The Dope Show'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jan 24</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/01/24/rare-aphex-twin-dj-set-early-90s-surfaces-jersey-record-store/" target="_blank" class="article-title">Rare Aphex Twin DJ Set from Early '90s Surfaces Out of a Jersey Record Store</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jan 23</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/01/23/lealanis-fantastic-planet-solid-piece-indietronica/" target="_blank" class="article-title">Lealani's 'Fantastic Planet' Is a Solid Piece of Indietronica</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jan 23</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/?p=112823" target="_blank" class="article-title">Fashionably Late: Macross 82-99's 'Summer Touch' Is a Hot Piece of Future Funk</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jan 19</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/01/19/shxcxchcxshs-word-boundary-pushing-layered-piece-experimental-techno/" target="_blank" class="article-title">SHXCXCHCXSH's 'WORD' Is a Boundary-Pushing Layered Piece of Experimental Techno</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jan 18</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/01/18/healths-new-single-stripped-version-heaviest-sounds/" target="_blank" class="article-title">HEALTH's "STRANGE DAYS (1999)" Is a Stripped-Down Version of Their Heaviest Sounds</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jan 17</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/01/17/xeno-oaklander-channel-french-electronic-heavenly-angelique/" target="_blank" class="article-title">Xeno &amp; Oaklander Channel French Electronic on the Heavenly "Angelique"</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jan 16</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/01/16/interview-minimix-pbdy/" target="_blank" class="article-title">Interview + MiniMix: PBDY</a>
+                    <span class="article-category interview">interview</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jan 15</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/01/15/artist-spotlight-knxwledge/" target="_blank" class="article-title">Artist Spotlight: Knxwledge</a>
+                    <span class="article-category artist-spotlight">artist spotlight</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jan 14</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/01/14/op-ed-noise-forced-mainstream/" target="_blank" class="article-title">Op-Ed: How Noise Forced Itself Into the Mainstream</a>
+                    <span class="article-category editors-picks">editor's picks</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jan 11</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/01/11/ibibo-sound-machine-drops-infectiously-funky-tell-boko-mien/" target="_blank" class="article-title">Ibibo Sound Machine Drops the Infectiously Funky "Tell Me (Boko Mien)"</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jan 11</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/01/11/comethazine-goes-full-aggro-new-bawksee-2-album/" target="_blank" class="article-title">Comethazine Goes Full Aggro on New "Bawksee 2" Album</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jan 09</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/01/09/lizzo-brings-80s-soul-groove-back-juice/" target="_blank" class="article-title">Lizzo Brings an Iconic '80s Soul Groove Back in "Juice"</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jan 09</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/01/09/premiere-miruky-builds-tense-atmosphere-electracoustic-dance-track-give-freedom/" target="_blank" class="article-title">Premiere: MIRUKY Builds Tense Atmosphere on the Electracoustic Dance Track "GIVE ME THE FREEDOM"</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jan 08</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/01/08/tavishi-breaks-boundaries-crosses-cultures-ambient-voices-head/" target="_blank" class="article-title">Tavishi Breaks Boundaries and Crosses Cultures on the Ambient "Voices in my Head"</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jan 07</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/01/07/raider-klans-amber-london-drops-first-track-year-im-comin/" target="_blank" class="article-title">Raider Klan's Amber London Drops Her First Track in a Year, "I'm Comin Out (its been a while)"</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jan 06</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/01/06/dangelos-unshaken-combination-old-school-grooves-modern-percussion/" target="_blank" class="article-title">D'angelo's "Unshaken" Is a Combination of Old-School Grooves and Modern Percussion</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jan 04</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/01/04/run-jewels-drop-13-minute-megamix-filmed-edited-touring-dj/" target="_blank" class="article-title">Run the Jewels Drop a 13-minute Megamix Filmed and Edited by Their Touring DJ</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jan 03</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/01/03/der-kindestod-delivers-20-minute-mix-halcyon-veil/" target="_blank" class="article-title">Der Kindestod Delivers a 20-Minute Mix for Halcyon Veil</a>
+                    <span class="article-category mixes">mixes</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jan 02</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/01/02/flamingosis-right-rain-hard-hitting-groovy-piece-beachy-hip-hop/" target="_blank" class="article-title">Flamingosis' "Right As Rain" Is a Hard-Hitting, Groovy Piece of Beachy Hip-Hop</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jan 02</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/01/02/nedarb-drops-debut-album-amity-filled-brim-guest-features/" target="_blank" class="article-title">Nedarb Drops His Debut Album 'Amity' Filled to the Brim With Guest Features</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Jan 02</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2019/01/02/noname-drops-song-31-starting-tour/" target="_blank" class="article-title">Noname Drops "Song 31" Before Starting Her Tour</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+            </ul>
+        </div>
+        <div class="year-section">
+            <div class="year-header">2018</div>
+            <ul class="article-list">
+                <li class="article-item">
+                    <span class="article-date">Dec 31</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/12/31/ubu-bois-likeness-burns-tight-subtle-fusion-experimental-dub-techno/" target="_blank" class="article-title">Ubu Boi's "Likeness Burns" Is a Tight, Subtle Fusion of Experimental and Dub Techno</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Dec 30</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/12/30/l-e-s-records-release-new-collection-ambient-experimental-material/" target="_blank" class="article-title">L.I.E.S. Records Release New Collection of Ambient Experimental Material</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Dec 28</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/12/28/mikes-war-pen-strong-diary-entry-new-yorks-wonky-rap-scene/" target="_blank" class="article-title">MIKE's 'War in my Pen' Is a Strong Diary Entry into New York's Wonky Rap Scene</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Dec 27</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/12/27/fashionably-late-ho99o9s-cyber-cop-deft-digital-turn/" target="_blank" class="article-title">Fashionably Late: ho99o9's 'Cyber Cop' Is a Deft Digital Turn</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Dec 24</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/12/24/five-star-hotels-open-wound-grotesque-vocal-expression-bod-horror/" target="_blank" class="article-title">Five Star Hotel's 'Open Wound' Is a Grotesque Vocal Expression of Bod Horror</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Dec 23</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/12/23/repeated-measures-songs-arent-represents-socals-take-uk-garage/" target="_blank" class="article-title">Repeated Measures' 'These Songs Aren't For You' Represents SoCal's Take on UK Garage</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Dec 16</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/12/16/adult-swims-dark-synthwave-compilation-fever-dreams-features-alice-glass-s-u-r-v-v-e/" target="_blank" class="article-title">Adult Swim's Dark Synthwave Compilation 'Fever Dreams' Features Alice Glass, S U R V I V E + More</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Dec 14</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/12/14/princess-nokia-re-releases-2014-mixtape-metallic-butterfly-three-new-tracks/" target="_blank" class="article-title">Princess Nokia Re-Releases Her 2014 Mixtape 'Metallic Butterfly' With Three New Tracks</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Dec 13</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/12/13/machine-girl-talk-anime-cyberpunk-craziest-live-shows/" target="_blank" class="article-title">Machine Girl Talk Anime, Cyberpunk, and Their Craziest Live Shows</a>
+                    <span class="article-category interview">interview</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Dec 12</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/12/12/trax-cltr-volume-ii-luscious-mix-hyper-modern-electronic-music/" target="_blank" class="article-title">'TRAX CLTR Volume II' Is a Luscious Mix of Hyper-Modern Electronic Music</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Dec 10</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/12/10/satchy-shows-off-soulful-bedroom-chops-demo-love-songs/" target="_blank" class="article-title">Satchy Shows off His Soulful Bedroom Chops on 'Demo Love Songs'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Dec 09</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/12/09/faint-shows-us-distorted-carnal-bliss-child-asleep/" target="_blank" class="article-title">The Faint Show Us Distorted Carnal Bliss on "Child Asleep"</a>
+                    <span class="article-category video">video</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Dec 03</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/12/03/earl-sweatshirt-creates-matured-work-yet-rap-songs/" target="_blank" class="article-title">Earl Sweatshirt Creates His Most Matured Work Yet on 'Some Rap Songs'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Nov 29</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/11/29/grimes-goes-fully-digital-appreciate-power/" target="_blank" class="article-title">Grimes Goes Fully Digital on "We Appreciate Power"</a>
+                    <span class="article-category video">video</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Nov 28</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/11/28/dj-earl-drops-fire-excerpts-last-album-w3rk-dat/" target="_blank" class="article-title">DJ Earl Drops Fire Excerpts From His Last Album 'W3RK DAT'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Nov 27</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/11/27/miya-folicks-premonitions-video-charmingly-relatable-retelling-classic/" target="_blank" class="article-title">Miya Folick's "Premonitions" Video Is a Charmingly Relatable Retelling of a Classic</a>
+                    <span class="article-category video">video</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Nov 19</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/11/19/vessels-queen-golden-dogs-innovative-blend-classical-electronic/" target="_blank" class="article-title">Vessel's 'Queen of Golden Dogs' Is an Innovative Blend of Classical and Electronic</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Nov 18</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/11/18/dreamcrushers-grudge2-noise-dance-done-right/" target="_blank" class="article-title">Dreamcrusher's 'Grudge2' Is Noise-Dance Done Right</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Nov 15</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/11/15/steve-duda-talks-serum-ableton-dub-techno-loop-2018/" target="_blank" class="article-title">Steve Duda Talks Serum, Ableton, Dub Techno, and More at Loop 2018</a>
+                    <span class="article-category editors-picks">editor's picks</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Nov 15</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/11/15/panda-bear-shares-bouys-teaser-announces-tour-dates/" target="_blank" class="article-title">Panda Bear Shares 'Buoys' Teaser, Announces Tour Dates</a>
+                    <span class="article-category news">news</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Nov 12</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/11/12/agnarkeas-black-helicopters-shows-gritty-reality-america-seen-virginia/" target="_blank" class="article-title">AGNARKEA's 'Black Helicopters' Shows the Gritty Reality of America as Seen in Virginia</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Nov 10</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/11/10/earl-sweatshirt-drops-angular-single-yet-nowhere2go/" target="_blank" class="article-title">Earl Sweatshirt Drops His Most Angular Single Yet With "Nowhere2Go"</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Nov 08</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/11/08/echavox-s280f-turn-nick-leons-totem-intimidatingly-dense-dance-track/" target="_blank" class="article-title">Echavox and S280F Turn Nick Leon's "Totem" Into an Intimidatingly Dense Dance Track</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Nov 06</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/11/06/kelly-morans-ultraviolet-prime-example-avant-garde-done-right/" target="_blank" class="article-title">Kelly Moran's 'Ultraviolet' Is a Prime Example of Avant-Garde Done Right</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Nov 04</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/11/04/snails-houses-snailchan-adventures-cutesy-optimistic-throwback-80s-rpgs/" target="_blank" class="article-title">Snail's House's 'Snailchan Adventures' Is a Cutesy, Optimistic Throwback to '80s RPGs</a>
+                    <span class="article-category video">video</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Nov 02</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/11/02/street-sects-kicking-mule-tones-biting-noise-favor-emotive-depth/" target="_blank" class="article-title">Street Sects' 'The Kicking Mule' Tones Down Biting Noise in Favor of Emotive Depth</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Oct 31</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/10/31/deerhoof-release-two-covers-shining-soundtrack/" target="_blank" class="article-title">Deerhoof Release Two Covers From 'The Shining' Soundtrack</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Oct 30</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/10/30/faint-return-wired-tense-track-chameleon-nights/" target="_blank" class="article-title">The Faint Return With the Wired, Tense Track "Chameleon Nights"</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Oct 30</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/10/30/daughters-end-studio-hiatus-intense-mature-wont-get-want/" target="_blank" class="article-title">Daughters End Their Studio Hiatus With the Intense, Mature 'You Won't Get What You Want'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Oct 29</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/10/29/meet-minty-boi-presents-duo-keeping-las-diy-underground-party-scene-fresh/" target="_blank" class="article-title">Meet Minty Boi, the Duo Keeping LA's DIY Underground Party Scene Fresh</a>
+                    <span class="article-category interview">interview</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Oct 29</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/10/29/plexi-tristan-arps-gritty-take-dub-techno/" target="_blank" class="article-title">'Plexi' Is Tristan Arp's Gritty Take on Dub Techno</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Oct 28</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/10/28/aviary-julia-holters-forsaken-ode-closing-decade/" target="_blank" class="article-title">'Aviary' Is Julia Holter's Forsaken Ode to the Closing Decade</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Oct 25</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/10/25/sega-bodegas-selfcare-ep-emotional-cinematic-experimental-danceable/" target="_blank" class="article-title">Sega Bodega's 'self*care' EP Is Emotional, Cinematic, Experimental, and Danceable</a>
+                    <span class="article-category video">video</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Oct 24</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/10/24/fufanus-dialogue-series-impressive-timeline-band-determined-redefine-sound/" target="_blank" class="article-title">Fufanu's 'Dialogue' Series Is an Impressive Timeline of a Band Determined to Redefine Their Sound</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Oct 23</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/10/23/euringer-jimmy-urines-developed-electropunk-outburst/" target="_blank" class="article-title">'EURINGER' Is Jimmy Urine's Developed Electropunk Outburst</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Oct 20</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/10/20/mr-twin-sister-tries-bossa-nova-alien-fm/" target="_blank" class="article-title">Mr Twin Sister Tries Out Bossa Nova on "Alien FM"</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Oct 19</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/10/19/babymetal-debuts-starlight-announces-yuimetals-departure/" target="_blank" class="article-title">BABYMETAL Debuts "Starlight," Announces Yuimetal's Departure</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Oct 19</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/10/19/trent-reznor-atticus-ross-make-melancholy-skater-mischief-mid90s/" target="_blank" class="article-title">Trent Reznor and Atticus Ross Make Melancholy Skater Mischief for 'Mid90s'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Oct 18</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/10/18/shackletons-furnace-guts-outlandish-world-techno-sense-humor/" target="_blank" class="article-title">Shackleton's 'Furnace of Guts' Is Outlandish World Techno With a Sense of Humor</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Oct 18</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/10/18/shxcxchcxsh-previews-track-experimental-dance-record-yet/" target="_blank" class="article-title">SHXCXCHCXSH Previews Track from their most Experimental Dance Record Yet</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Oct 17</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/10/17/ionna-gikas-roseate-bold-crossover-light-dark-music/" target="_blank" class="article-title">Ioanna Gika's "Roseate" Is a Bold Crossover of Light and Dark Music</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Oct 17</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/10/17/ambrose-akinmusires-origami-harvest-boundary-pushing-jazz-reflection-modern-age/" target="_blank" class="article-title">Ambrose Akinmusire's 'Origami Harvest' Is Boundary-Pushing Jazz as a Reflection of the Modern Age</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Oct 16</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/10/16/sega-bodegas-kisses-2-phone-vulnerable-track-yet/" target="_blank" class="article-title">Sega Bodega's "kisses 2 my phone" Is His Most Vulnerable Track Yet</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Oct 16</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/10/16/knxwledge-releases-wt-13-8-announces-100th-bandcamp-release-last/" target="_blank" class="article-title">Knxwledge Releases 'WT.13.8,' Announces 100th Bandcamp Release to Be His Last</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Oct 15</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/10/15/machine-girls-newest-record-apocalyptic-cyber-death-meets-classic-90s-dance/" target="_blank" class="article-title">Machine Girl's Newest Record Is Apocalyptic Cyber-Death Meets Classic '90s Dance</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Oct 14</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/10/14/listen-new-kevin-shields-brian-eno-collaboration/" target="_blank" class="article-title">Listen to the New Kevin Shields and Brian Eno Collaboration</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Oct 12</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/10/12/thom-yorke-releases-song-video-volk/" target="_blank" class="article-title">Thom Yorke Releases Song and Video "Volk"</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Oct 09</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/10/09/rabits-life-death-twisted-crossover-ambient-techno/" target="_blank" class="article-title">Rabit's 'Life After Death' Is a Twisted Crossover of Ambient Techno</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Oct 08</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/10/08/sam-wilkes-self-titled-record-approachable-jazz-done-right/" target="_blank" class="article-title">Sam Wilkes' Self-Titled Record Is Approachable Jazz Done Right</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Sep 30</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/09/30/innovative-ambient-alive-well-tim-heckers-konoyo/" target="_blank" class="article-title">Innovative Ambient Is Alive and Well on Tim Hecker's 'Konoyo'</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Sep 26</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/09/26/nonames-room-25-pinnacle-jazz-hop/" target="_blank" class="article-title">Noname's 'Room 25' Is the Pinnacle of Jazz-Hop</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Sep 18</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/09/18/d-double-es-debut-album-jackuum-shows-grimes-past-present-future/" target="_blank" class="article-title">D Double E's Debut Album 'Jackuum' Shows Grime's Past, Present, and Future</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">Sep 13</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2018/09/13/girl-pusher-returns-thrilling-unapologetic-911-ep/" target="_blank" class="article-title">Girl Pusher Returns With the Thrilling, Unapologetic '911' EP</a>
+                    <span class="article-category music-treats">music treats</span>
+                </li>
+            </ul>
+        </div>
+        <div class="year-section">
+            <div class="year-header">2014</div>
+            <ul class="article-list">
+                <li class="article-item">
+                    <span class="article-date">May 29</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2014/05/29/damon-albarn-everyday-robots-album-review/" target="_blank" class="article-title">Damon Albarn - Everyday Robots Album Review</a>
+                    <span class="article-category album-reviews">album reviews</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">May 26</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2014/05/26/pizza-underground-show-review/" target="_blank" class="article-title">Pizza Underground Show Review</a>
+                    <span class="article-category uncategorized">uncategorized</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">May 26</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2014/05/26/pizza-underground-partial-interview/" target="_blank" class="article-title">Pizza Underground (partial) Interview</a>
+                    <span class="article-category uncategorized">uncategorized</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">May 09</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2014/05/09/interview-with-lsd-and-the-search-for-god/" target="_blank" class="article-title">Interview With LSD and the search for God</a>
+                    <span class="article-category interviews">interviews</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">May 09</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2014/05/09/grandmaster-flash-and-the-furious-five-the-message/" target="_blank" class="article-title">Grandmaster Flash and the Furious Five - The Message</a>
+                    <span class="article-category uncategorized">uncategorized</span>
+                </li>
+                <li class="article-item">
+                    <span class="article-date">May 09</span>
+                    <a href="https://emmmmmmmmme.wordpress.com/2014/05/09/cloud-nothings-here-and-nowhere-else-2/" target="_blank" class="article-title">Cloud Nothings - Here and Nowhere Else</a>
+                    <span class="article-category album-reviews">album reviews</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

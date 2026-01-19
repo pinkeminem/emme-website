@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>emme - upcoming shows</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #000;
+            color: #888;
+            min-height: 100vh;
+            padding: 40px 40px 60px;
+            overflow-x: hidden;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 50px;
+        }
+
+        .logo {
+            height: 35px;
+            width: auto;
+        }
+
+        .back {
+            color: #666;
+            text-decoration: none;
+            font-size: 12px;
+            font-family: Calibri, sans-serif;
+        }
+
+        .back:hover {
+            color: #fff;
+        }
+
+        h1 {
+            font-weight: normal;
+            font-size: 14px;
+            margin-bottom: 50px;
+            color: #555;
+            letter-spacing: 1px;
+            font-family: Calibri, sans-serif;
+        }
+
+        .spreadsheet-container {
+            position: relative;
+            max-width: 900px;
+        }
+
+        /* Glitch splotches */
+        .splotch {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(30px);
+            opacity: 0.15;
+            pointer-events: none;
+            animation: splotchPulse 4s ease-in-out infinite;
+        }
+
+        .splotch-1 {
+            width: 200px;
+            height: 200px;
+            background: #333;
+            top: -50px;
+            left: 20%;
+            animation-delay: 0s;
+        }
+
+        .splotch-2 {
+            width: 150px;
+            height: 150px;
+            background: #222;
+            top: 100px;
+            right: 10%;
+            animation-delay: 1s;
+        }
+
+        .splotch-3 {
+            width: 180px;
+            height: 180px;
+            background: #2a2a2a;
+            bottom: 50px;
+            left: 5%;
+            animation-delay: 2s;
+        }
+
+        .splotch-4 {
+            width: 120px;
+            height: 120px;
+            background: #1a1a1a;
+            top: 200px;
+            left: 50%;
+            animation-delay: 0.5s;
+        }
+
+        @keyframes splotchPulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.15;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.25;
+            }
+        }
+
+        /* Spreadsheet table */
+        .spreadsheet {
+            width: 100%;
+            border-collapse: collapse;
+            position: relative;
+        }
+
+        .spreadsheet th,
+        .spreadsheet td {
+            padding: 12px 15px;
+            text-align: left;
+            font-size: 12px;
+            position: relative;
+        }
+
+        .spreadsheet th {
+            color: #444;
+            font-weight: normal;
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: 1px;
+        }
+
+        /* Glitchy borders */
+        .spreadsheet td {
+            border: 1px solid transparent;
+            background:
+                linear-gradient(#000, #000) padding-box,
+                linear-gradient(90deg,
+                    transparent 0%,
+                    #333 10%,
+                    #333 20%,
+                    transparent 30%,
+                    transparent 40%,
+                    #222 50%,
+                    transparent 60%,
+                    #333 70%,
+                    transparent 80%,
+                    #222 90%,
+                    transparent 100%
+                ) border-box;
+            animation: borderGlitch 3s ease-in-out infinite;
+        }
+
+        .spreadsheet tr:nth-child(odd) td {
+            animation-delay: 0.5s;
+        }
+
+        .spreadsheet tr:nth-child(even) td {
+            animation-delay: 1.5s;
+        }
+
+        @keyframes borderGlitch {
+            0%, 100% {
+                background:
+                    linear-gradient(#000, #000) padding-box,
+                    linear-gradient(90deg,
+                        transparent 0%,
+                        #333 10%,
+                        transparent 25%,
+                        #222 40%,
+                        transparent 55%,
+                        #333 70%,
+                        transparent 85%,
+                        #222 95%,
+                        transparent 100%
+                    ) border-box;
+            }
+            25% {
+                background:
+                    linear-gradient(#000, #000) padding-box,
+                    linear-gradient(90deg,
+                        #222 0%,
+                        transparent 15%,
+                        #333 30%,
+                        transparent 45%,
+                        #222 60%,
+                        transparent 75%,
+                        #333 90%,
+                        transparent 100%
+                    ) border-box;
+            }
+            50% {
+                background:
+                    linear-gradient(#000, #000) padding-box,
+                    linear-gradient(90deg,
+                        transparent 5%,
+                        #222 20%,
+                        transparent 35%,
+                        #333 50%,
+                        transparent 65%,
+                        #222 80%,
+                        transparent 95%
+                    ) border-box;
+            }
+            75% {
+                background:
+                    linear-gradient(#000, #000) padding-box,
+                    linear-gradient(90deg,
+                        #333 5%,
+                        transparent 20%,
+                        #222 35%,
+                        transparent 50%,
+                        #333 65%,
+                        transparent 80%,
+                        #222 95%
+                    ) border-box;
+            }
+        }
+
+        /* Vertical border glitch */
+        .spreadsheet td::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: linear-gradient(180deg,
+                transparent 0%,
+                #333 20%,
+                transparent 40%,
+                #222 60%,
+                transparent 80%,
+                #333 100%
+            );
+            animation: verticalGlitch 2.5s ease-in-out infinite;
+        }
+
+        @keyframes verticalGlitch {
+            0%, 100% {
+                background: linear-gradient(180deg,
+                    transparent 0%,
+                    #333 20%,
+                    transparent 40%,
+                    #222 60%,
+                    transparent 80%
+                );
+            }
+            50% {
+                background: linear-gradient(180deg,
+                    #222 10%,
+                    transparent 30%,
+                    #333 50%,
+                    transparent 70%,
+                    #222 90%
+                );
+            }
+        }
+
+        /* Corner decay effects */
+        .spreadsheet td::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #1a1a1a 0%, transparent 70%);
+            opacity: 0.8;
+            animation: cornerDecay 5s ease-in-out infinite;
+        }
+
+        .spreadsheet tr:nth-child(1) td:first-child::after {
+            top: -5px;
+            left: -5px;
+        }
+
+        .spreadsheet tr:nth-child(2) td:last-child::after {
+            bottom: -5px;
+            right: -5px;
+            animation-delay: 1s;
+        }
+
+        .spreadsheet tr:nth-child(3) td:first-child::after {
+            top: 50%;
+            left: -10px;
+            animation-delay: 2s;
+        }
+
+        @keyframes cornerDecay {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(1.5);
+                opacity: 0.8;
+            }
+        }
+
+        .empty-message {
+            color: #333;
+            font-size: 11px;
+            padding: 40px 15px;
+            font-style: italic;
+        }
+
+        /* Scan line effect */
+        .spreadsheet-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.1) 2px,
+                rgba(0, 0, 0, 0.1) 4px
+            );
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 40px 20px 60px;
+            }
+
+            .spreadsheet th,
+            .spreadsheet td {
+                padding: 10px 8px;
+                font-size: 10px;
+            }
+
+            .spreadsheet th:nth-child(3),
+            .spreadsheet td:nth-child(3) {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html"><img src="images/logo-scrawl.png" alt="emme" class="logo"></a>
+        <a href="index.html" class="back">&larr; back</a>
+    </div>
+
+    <h1>upcoming shows</h1>
+
+    <div class="spreadsheet-container">
+        <div class="splotch splotch-1"></div>
+        <div class="splotch splotch-2"></div>
+        <div class="splotch splotch-3"></div>
+        <div class="splotch splotch-4"></div>
+
+        <table class="spreadsheet">
+            <thead>
+                <tr>
+                    <th>date</th>
+                    <th>venue</th>
+                    <th>city</th>
+                    <th>info</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="4" class="empty-message">no upcoming shows at this time...</td>
+                </tr>
+                <!-- Example rows for when shows are added:
+                <tr>
+                    <td>2024.03.15</td>
+                    <td>Berghain</td>
+                    <td>Berlin, DE</td>
+                    <td><a href="#">tickets</a></td>
+                </tr>
+                -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Add random glitch effect to splotches
+        document.querySelectorAll('.splotch').forEach(splotch => {
+            setInterval(() => {
+                const randomX = (Math.random() - 0.5) * 20;
+                const randomY = (Math.random() - 0.5) * 20;
+                splotch.style.transform = `translate(${randomX}px, ${randomY}px)`;
+            }, 2000 + Math.random() * 2000);
+        });
+    </script>
+</body>
+</html>

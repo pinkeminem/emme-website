@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>emme - lighting</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Calibri, 'Trebuchet MS', sans-serif;
+            background: #000;
+            color: #ccc;
+            min-height: 100vh;
+            padding: 40px 40px 60px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 60px;
+        }
+
+        .logo {
+            height: 35px;
+            width: auto;
+        }
+
+        .back {
+            color: #666;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .back:hover {
+            color: #fff;
+        }
+
+        h1 {
+            font-weight: normal;
+            font-size: 14px;
+            margin-bottom: 60px;
+            color: #888;
+            letter-spacing: 1px;
+        }
+
+        .show-list {
+            list-style: none;
+        }
+
+        .show-item {
+            margin-bottom: 30px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #181818;
+        }
+
+        .show-item:last-child {
+            border-bottom: none;
+        }
+
+        .show-title {
+            color: #ddd;
+            font-size: 15px;
+            margin-bottom: 6px;
+        }
+
+        .show-venue {
+            color: #666;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .show-location {
+            color: #444;
+            font-size: 11px;
+        }
+
+        .show-year {
+            color: #333;
+            font-size: 10px;
+            margin-top: 8px;
+        }
+
+        .contact {
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 1px solid #222;
+        }
+
+        .contact-title {
+            font-size: 11px;
+            color: #555;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .contact a {
+            color: #888;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .contact a:hover {
+            color: #fff;
+        }
+
+        .show-role {
+            color: #555;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .show-links {
+            margin-top: 10px;
+        }
+
+        .show-links a {
+            color: #666;
+            text-decoration: none;
+            font-size: 11px;
+            margin-right: 15px;
+            transition: color 0.3s ease;
+        }
+
+        .show-links a:hover {
+            color: #fff;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 60px;
+            margin-bottom: 60px;
+        }
+
+        .photo-item {
+            aspect-ratio: 4/3;
+            overflow: hidden;
+            background: #0a0a0a;
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%) contrast(1.1);
+            opacity: 0.8;
+            transition: all 0.4s ease;
+        }
+
+        .photo-item:hover img {
+            filter: grayscale(50%) contrast(1.05);
+            opacity: 1;
+            transform: scale(1.02);
+        }
+
+        @media (max-width: 600px) {
+            .photo-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html"><img src="images/logo-scrawl.png" alt="emme" class="logo"></a>
+        <a href="index.html" class="back">&larr; back</a>
+    </div>
+
+    <h1>lighting design</h1>
+
+    <ul class="show-list">
+        <li class="show-item">
+            <div class="show-role">Assistant Lighting Designer</div>
+            <div class="show-title">Iceland</div>
+            <div class="show-venue">La MaMa Experimental Theatre Club</div>
+            <div class="show-location">New York, NY</div>
+            <div class="show-links">
+                <a href="https://www.lamama.org/shows/iceland-2023" target="_blank" rel="noopener">la mama</a>
+                <a href="https://dctheaterarts.org/2023/03/28/myth-and-nature-guide-a-destined-human-romance-in-iceland-at-nycs-la-mama/" target="_blank" rel="noopener">dc theater arts</a>
+            </div>
+        </li>
+        <li class="show-item">
+            <div class="show-role">Lighting Designer</div>
+            <div class="show-title">PORT SF</div>
+            <div class="show-venue">New Expressive Works</div>
+            <div class="show-location">Portland, OR</div>
+            <div class="show-links">
+                <a href="https://factsf.org/port" target="_blank" rel="noopener">fact/sf</a>
+            </div>
+        </li>
+        <li class="show-item">
+            <div class="show-role">Director of Production</div>
+            <div class="show-title">Doc Martens Anniversary Party</div>
+            <div class="show-venue">Daemon Concept</div>
+            <div class="show-location">Berlin, DE</div>
+        </li>
+    </ul>
+
+    <div class="photo-grid">
+        <div class="photo-item">
+            <img src="images/lighting/biennale.jpg" alt="Lighting work">
+        </div>
+        <div class="photo-item">
+            <img src="images/lighting/emme-15.jpg" alt="Lighting work">
+        </div>
+        <div class="photo-item">
+            <img src="images/lighting/emme-17.jpg" alt="Lighting work">
+        </div>
+    </div>
+
+    <div class="contact">
+        <div class="contact-title">inquiries</div>
+        <a href="mailto:emme@emme-em.me">emme@emme-em.me</a>
+    </div>
+</body>
+</html>
