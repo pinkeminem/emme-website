@@ -306,16 +306,26 @@
             video.playbackRate = config.speed;
         }
 
-        video.play().catch(() => {});
+        // Aggressive autoplay for mobile
+        function forcePlay() {
+            video.muted = true;
+            video.play().catch(() => {});
+        }
+
+        forcePlay();
 
         video.addEventListener('loadedmetadata', () => {
             setupLoop();
-            video.play().catch(() => {});
+            forcePlay();
         });
 
-        video.addEventListener('canplay', () => {
-            video.play().catch(() => {});
-        });
+        video.addEventListener('canplay', forcePlay);
+        video.addEventListener('loadeddata', forcePlay);
+
+        // Keep trying to play
+        setTimeout(forcePlay, 100);
+        setTimeout(forcePlay, 500);
+        setTimeout(forcePlay, 1000);
 
         video.addEventListener('ended', () => {
             if (isLooping && loopCount < cyclesPerConfig) {
@@ -346,21 +356,24 @@
         });
 
         // Click/touch to play fallback for mobile
-        function tryPlay() {
-            if (video.paused) {
-                video.muted = true; // Ensure muted for autoplay
-                video.play().catch(() => {});
-            }
-        }
-        document.addEventListener('click', tryPlay, { once: true });
-        document.addEventListener('touchstart', tryPlay, { once: true });
+        document.addEventListener('click', forcePlay, { once: true });
+        document.addEventListener('touchstart', forcePlay, { once: true });
+        document.addEventListener('touchend', forcePlay, { once: true });
+        document.addEventListener('scroll', forcePlay, { once: true });
 
         // iOS autoplay fix - try playing on visibility change
         document.addEventListener('visibilitychange', () => {
-            if (!document.hidden && video.paused) {
-                video.play().catch(() => {});
-            }
+            if (!document.hidden) forcePlay();
         });
+
+        // Intersection observer for when video becomes visible
+        if ('IntersectionObserver' in window) {
+            new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) forcePlay();
+                });
+            }).observe(video);
+        }
 
         // Glitch text generator
         const glitchMaps = {
