@@ -76,12 +76,12 @@
             width: 100%;
             aspect-ratio: 1;
             object-fit: cover;
-            filter: grayscale(100%);
+            filter: grayscale(0%);
             transition: filter 0.3s, transform 0.3s;
         }
 
         .release:hover img {
-            filter: grayscale(0%);
+            filter: grayscale(100%);
             transform: scale(1.02);
         }
 
@@ -97,40 +97,24 @@
         }
 
         /* SoundCloud section */
-        .soundcloud-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
+        .sc-list {
+            list-style: none;
+            columns: 2;
+            column-gap: 40px;
+            font-size: 11px;
         }
 
-        .sc-track {
-            text-decoration: none;
-            display: block;
+        .sc-list li {
+            margin-bottom: 6px;
         }
 
-        .sc-track img {
-            width: 100%;
-            aspect-ratio: 1;
-            object-fit: cover;
-            filter: grayscale(100%);
-            transition: filter 0.3s, transform 0.3s;
-        }
-
-        .sc-track:hover img {
-            filter: grayscale(0%);
-            transform: scale(1.02);
-        }
-
-        .sc-track-title {
+        .sc-list a {
             color: #666;
-            font-size: 9px;
-            margin-top: 6px;
-            text-transform: lowercase;
-            line-height: 1.3;
+            text-decoration: none;
+            transition: color 0.2s;
         }
 
-        .sc-track:hover .sc-track-title {
+        .sc-list a:hover {
             color: #fff;
         }
 
@@ -151,6 +135,11 @@
             width: 120px;
             height: 120px;
             object-fit: cover;
+            filter: grayscale(0%);
+            transition: filter 0.3s;
+        }
+
+        .wip-header:hover .wip-cover {
             filter: grayscale(100%);
         }
 
@@ -281,68 +270,23 @@
 
     <div class="section">
         <div class="section-title">soundcloud</div>
-        <div class="soundcloud-grid">
-            <a href="https://soundcloud.com/3m_m3/safety" target="_blank" class="sc-track">
-                <img src="images/soundcloud/mbaas.jpg" alt="safety">
-                <div class="sc-track-title">safety</div>
-            </a>
-            <a href="https://soundcloud.com/3m_m3/safety-alternate-version" target="_blank" class="sc-track">
-                <img src="images/soundcloud/mbaas.jpg" alt="safety (alternate)">
-                <div class="sc-track-title">safety (alternate)</div>
-            </a>
-            <a href="https://soundcloud.com/3m_m3/how-my-blood-boils" target="_blank" class="sc-track">
-                <img src="images/soundcloud/mbaas.jpg" alt="how my blood boils">
-                <div class="sc-track-title">how my blood boils</div>
-            </a>
-            <a href="https://soundcloud.com/3m_m3/coracao-1-n-2" target="_blank" class="sc-track">
-                <img src="images/soundcloud/mbaas.jpg" alt="coração pt. 1 & 2">
-                <div class="sc-track-title">coração pt. 1 & 2</div>
-            </a>
-            <a href="https://soundcloud.com/3m_m3/coracao-pt-3" target="_blank" class="sc-track">
-                <img src="images/soundcloud/mbaas.jpg" alt="coração pt. 3">
-                <div class="sc-track-title">coração pt. 3</div>
-            </a>
-            <a href="https://soundcloud.com/3m_m3/bite-me" target="_blank" class="sc-track">
-                <img src="images/soundcloud/bite-me.jpg" alt="bite me">
-                <div class="sc-track-title">bite me</div>
-            </a>
-            <a href="https://soundcloud.com/3m_m3/pathetic" target="_blank" class="sc-track">
-                <img src="images/soundcloud/mbaas.jpg" alt="pathetic">
-                <div class="sc-track-title">pathetic</div>
-            </a>
-            <a href="https://soundcloud.com/3m_m3/smoggy" target="_blank" class="sc-track">
-                <img src="images/soundcloud/mbaas.jpg" alt="smoggy">
-                <div class="sc-track-title">smoggy</div>
-            </a>
-            <a href="https://soundcloud.com/3m_m3/counting-worms" target="_blank" class="sc-track">
-                <img src="images/soundcloud/mbaas.jpg" alt="counting worms">
-                <div class="sc-track-title">counting worms</div>
-            </a>
-            <a href="https://soundcloud.com/3m_m3/for-nat" target="_blank" class="sc-track">
-                <img src="images/soundcloud/mbaas.jpg" alt="for nat">
-                <div class="sc-track-title">for nat</div>
-            </a>
-            <a href="https://soundcloud.com/3m_m3/doe-in-the-park-not-enough" target="_blank" class="sc-track">
-                <img src="images/soundcloud/mbaas.jpg" alt="doe in the park">
-                <div class="sc-track-title">doe in the park // not enough</div>
-            </a>
-            <a href="https://soundcloud.com/3m_m3/spit-on-me" target="_blank" class="sc-track">
-                <img src="images/soundcloud/mbaas.jpg" alt="spit on me">
-                <div class="sc-track-title">spit on me</div>
-            </a>
-            <a href="https://soundcloud.com/3m_m3/a-song-to-replace-shame" target="_blank" class="sc-track">
-                <img src="images/soundcloud/mbaas.jpg" alt="a song to replace shame">
-                <div class="sc-track-title">a song to replace shame</div>
-            </a>
-            <a href="https://soundcloud.com/3m_m3/badman-vip-vip-vip" target="_blank" class="sc-track">
-                <img src="images/soundcloud/mbaas.jpg" alt="badman vip">
-                <div class="sc-track-title">badman vip</div>
-            </a>
-            <a href="https://soundcloud.com/3m_m3/black-kray-x-malibu" target="_blank" class="sc-track">
-                <img src="images/soundcloud/mbaas.jpg" alt="black kray x malibu">
-                <div class="sc-track-title">black kray x malibu</div>
-            </a>
-        </div>
+        <ul class="sc-list">
+            <li><a href="https://soundcloud.com/3m_m3/black-kray-x-malibu" target="_blank">black kray x malibu</a></li>
+            <li><a href="https://soundcloud.com/3m_m3/badman-vip-vip-vip" target="_blank">badman vip</a></li>
+            <li><a href="https://soundcloud.com/3m_m3/a-song-to-replace-shame" target="_blank">a song to replace shame</a></li>
+            <li><a href="https://soundcloud.com/3m_m3/spit-on-me" target="_blank">spit on me</a></li>
+            <li><a href="https://soundcloud.com/3m_m3/doe-in-the-park-not-enough" target="_blank">doe in the park // not enough</a></li>
+            <li><a href="https://soundcloud.com/3m_m3/for-nat" target="_blank">for nat</a></li>
+            <li><a href="https://soundcloud.com/3m_m3/counting-worms" target="_blank">counting worms</a></li>
+            <li><a href="https://soundcloud.com/3m_m3/smoggy" target="_blank">smoggy</a></li>
+            <li><a href="https://soundcloud.com/3m_m3/pathetic" target="_blank">pathetic</a></li>
+            <li><a href="https://soundcloud.com/3m_m3/bite-me" target="_blank">bite me</a></li>
+            <li><a href="https://soundcloud.com/3m_m3/coracao-pt-3" target="_blank">coração pt. 3</a></li>
+            <li><a href="https://soundcloud.com/3m_m3/coracao-1-n-2" target="_blank">coração pt. 1 & 2</a></li>
+            <li><a href="https://soundcloud.com/3m_m3/how-my-blood-boils" target="_blank">how my blood boils</a></li>
+            <li><a href="https://soundcloud.com/3m_m3/safety-alternate-version" target="_blank">safety (alternate)</a></li>
+            <li><a href="https://soundcloud.com/3m_m3/safety" target="_blank">safety</a></li>
+        </ul>
     </div>
 
     <div class="wip-section">
@@ -356,16 +300,16 @@
             </div>
         </a>
         <ol class="wip-tracklist">
-            <li>my body as a shield (performance/album sketch)</li>
-            <li>theater of the oppressed (instrumental demo)</li>
-            <li>white wood (instrumental demo)</li>
-            <li>to hurt (sketch)</li>
-            <li>abt to break (instrumental demo)</li>
-            <li>untitled demo 1</li>
-            <li>untitled demo 2</li>
-            <li>untitled demo 3</li>
-            <li>untitled demo 4</li>
-            <li>untitled demo 5</li>
+            <li><a href="https://soundcloud.com/3m_m3/sets/mbaas-demos/s-Lj3hsFM6O93" target="_blank">my body as a shield (performance/album sketch)</a></li>
+            <li><a href="https://soundcloud.com/3m_m3/sets/mbaas-demos/s-Lj3hsFM6O93" target="_blank">theater of the oppressed (instrumental demo)</a></li>
+            <li><a href="https://soundcloud.com/3m_m3/sets/mbaas-demos/s-Lj3hsFM6O93" target="_blank">white wood (instrumental demo)</a></li>
+            <li><a href="https://soundcloud.com/3m_m3/sets/mbaas-demos/s-Lj3hsFM6O93" target="_blank">to hurt (sketch)</a></li>
+            <li><a href="https://soundcloud.com/3m_m3/sets/mbaas-demos/s-Lj3hsFM6O93" target="_blank">abt to break (instrumental demo)</a></li>
+            <li><a href="https://soundcloud.com/3m_m3/sets/mbaas-demos/s-Lj3hsFM6O93" target="_blank">untitled demo 1</a></li>
+            <li><a href="https://soundcloud.com/3m_m3/sets/mbaas-demos/s-Lj3hsFM6O93" target="_blank">untitled demo 2</a></li>
+            <li><a href="https://soundcloud.com/3m_m3/sets/mbaas-demos/s-Lj3hsFM6O93" target="_blank">untitled demo 3</a></li>
+            <li><a href="https://soundcloud.com/3m_m3/sets/mbaas-demos/s-Lj3hsFM6O93" target="_blank">untitled demo 4</a></li>
+            <li><a href="https://soundcloud.com/3m_m3/sets/mbaas-demos/s-Lj3hsFM6O93" target="_blank">untitled demo 5</a></li>
         </ol>
     </div>
 
@@ -434,18 +378,18 @@
             }
             return result;
         }
-        // Only apply glitch to text-only links (not ones with images)
-        document.querySelectorAll('.listen-links a, .contact a, .back').forEach(el => {
+        // Only apply glitch to text-only links (reduced level)
+        document.querySelectorAll('.listen-links a, .contact a, .back, .sc-list a, .wip-tracklist a').forEach(el => {
             const originalText = el.textContent;
-            el.addEventListener('mouseenter', () => { el.textContent = glitchText(originalText, 2); });
+            el.addEventListener('mouseenter', () => { el.textContent = glitchText(originalText, 0.5); });
             el.addEventListener('mouseleave', () => { el.textContent = originalText; });
         });
-        // Apply glitch to release titles only
-        document.querySelectorAll('.release-title, .sc-track-title, .wip-title').forEach(el => {
+        // Apply glitch to release titles only (reduced level)
+        document.querySelectorAll('.release-title, .wip-title').forEach(el => {
             const originalText = el.textContent;
             const parent = el.closest('a');
             if (parent) {
-                parent.addEventListener('mouseenter', () => { el.textContent = glitchText(originalText, 2); });
+                parent.addEventListener('mouseenter', () => { el.textContent = glitchText(originalText, 0.5); });
                 parent.addEventListener('mouseleave', () => { el.textContent = originalText; });
             }
         });
