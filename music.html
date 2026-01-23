@@ -61,29 +61,39 @@
             letter-spacing: 2px;
         }
 
-        .links {
-            list-style: none;
+        .discography {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 25px;
         }
 
-        .links li {
-            margin-bottom: 8px;
-        }
-
-        .links a {
-            color: #999;
+        .release {
             text-decoration: none;
-            font-size: 13px;
-            transition: color 0.2s;
+            display: block;
         }
 
-        .links a:hover {
-            color: #fff;
+        .release img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: filter 0.3s, transform 0.3s;
         }
 
-        .links .venue {
-            color: #555;
+        .release:hover img {
+            filter: grayscale(0%);
+            transform: scale(1.02);
+        }
+
+        .release-title {
+            color: #888;
             font-size: 11px;
-            margin-left: 10px;
+            margin-top: 8px;
+            text-transform: lowercase;
+        }
+
+        .release:hover .release-title {
+            color: #fff;
         }
 
         .divider {
@@ -144,42 +154,33 @@
     <h1>music</h1>
 
     <div class="section">
-        <div class="section-title">festivals</div>
-        <ul class="links">
-            <li>
-                <a href="https://www.ctm-festival.de/" target="_blank">CTM Festival</a>
-                <span class="venue">Berlin, DE</span>
-            </li>
-            <li>
-                <a href="https://luff.ch/" target="_blank">LUFF</a>
-                <span class="venue">Lausanne, CH</span>
-            </li>
-            <li>
-                <a href="https://www.labiennale.org/en/music" target="_blank">Venice Biennale</a>
-                <span class="venue">Venice, IT</span>
-            </li>
-            <li>
-                <a href="https://www.feketezaj.hu/en/" target="_blank">Fekete Zaj</a>
-                <span class="venue">Matra, HU</span>
-            </li>
-            <li>
-                <a href="https://creepyteepee.org/" target="_blank">Creepy Teepee</a>
-                <span class="venue">Kutna Hora, CZ</span>
-            </li>
-        </ul>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="section">
-        <div class="section-title">releases</div>
-        <ul class="links">
-            <li><a href="https://3mm3.bandcamp.com/" target="_blank">Heaven Help Me</a></li>
-            <li><a href="https://3mm3.bandcamp.com/" target="_blank">Heaven Help Me (Instrumental)</a></li>
-            <li><a href="https://3mm3.bandcamp.com/" target="_blank">Help Me</a></li>
-            <li><a href="https://3mm3.bandcamp.com/" target="_blank">Heaven</a></li>
-            <li><a href="https://3mm3.bandcamp.com/" target="_blank">I Close My Eyes</a></li>
-        </ul>
+        <div class="section-title">discography</div>
+        <div class="discography">
+            <a href="https://3mm3.bandcamp.com/album/heaven-help-me" target="_blank" class="release">
+                <img src="images/albums/heaven-help-me.jpg" alt="Heaven Help Me">
+                <div class="release-title">heaven help me</div>
+            </a>
+            <a href="https://3mm3.bandcamp.com/album/heaven-help-me-instrumentals" target="_blank" class="release">
+                <img src="images/albums/heaven-help-me-instrumentals.jpg" alt="Heaven Help Me (Instrumentals)">
+                <div class="release-title">heaven help me (instrumentals)</div>
+            </a>
+            <a href="https://3mm3.bandcamp.com/album/tuning-opening" target="_blank" class="release">
+                <img src="images/albums/tuning-opening.jpg" alt="Tuning / Opening">
+                <div class="release-title">tuning / opening</div>
+            </a>
+            <a href="https://3mm3.bandcamp.com/album/help-me" target="_blank" class="release">
+                <img src="images/albums/help-me.jpg" alt="Help Me">
+                <div class="release-title">help me</div>
+            </a>
+            <a href="https://3mm3.bandcamp.com/album/heaven" target="_blank" class="release">
+                <img src="images/albums/heaven.jpg" alt="Heaven">
+                <div class="release-title">heaven</div>
+            </a>
+            <a href="https://3mm3.bandcamp.com/album/i-close-my-eyes" target="_blank" class="release">
+                <img src="images/albums/i-close-my-eyes.jpg" alt="I Close My Eyes">
+                <div class="release-title">i close my eyes</div>
+            </a>
+        </div>
     </div>
 
     <div class="divider"></div>
