@@ -434,10 +434,20 @@
             }
             return result;
         }
-        document.querySelectorAll('a').forEach(el => {
+        // Only apply glitch to text-only links (not ones with images)
+        document.querySelectorAll('.listen-links a, .contact a, .back').forEach(el => {
             const originalText = el.textContent;
             el.addEventListener('mouseenter', () => { el.textContent = glitchText(originalText, 2); });
             el.addEventListener('mouseleave', () => { el.textContent = originalText; });
+        });
+        // Apply glitch to release titles only
+        document.querySelectorAll('.release-title, .sc-track-title, .wip-title').forEach(el => {
+            const originalText = el.textContent;
+            const parent = el.closest('a');
+            if (parent) {
+                parent.addEventListener('mouseenter', () => { el.textContent = glitchText(originalText, 2); });
+                parent.addEventListener('mouseleave', () => { el.textContent = originalText; });
+            }
         });
     </script>
 </body>
