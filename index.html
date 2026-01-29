@@ -228,16 +228,20 @@
             }
         }
 
-        /* Mobile Linktree Style - hidden by default */
-        .mobile-links {
+        /* Mobile elements - hidden by default */
+        .mobile-links, .mobile-contact {
             display: none;
         }
 
         /* Mobile view */
         @media (max-width: 768px) {
+            .hero-video {
+                top: 35%;
+            }
+
             .mobile-logo {
                 display: block;
-                top: 10%;
+                top: 8%;
             }
 
             .nav, .social {
@@ -247,57 +251,90 @@
             .mobile-links {
                 display: flex;
                 position: absolute;
-                top: 25%;
+                top: 38%;
                 left: 50%;
                 transform: translateX(-50%);
                 flex-direction: column;
                 align-items: center;
-                gap: 10px;
+                gap: 15px;
                 z-index: 100;
-                width: 85%;
-                max-width: 300px;
-                padding: 20px 0;
+                width: 70%;
+                max-width: 250px;
             }
 
             .mobile-link {
-                display: flex;
-                align-items: center;
+                display: block;
                 width: 100%;
-                padding: 14px 16px;
-                background: rgba(20, 20, 20, 0.9);
-                border: 1px solid rgba(255, 255, 255, 0.25);
+                padding: 12px 0;
+                background: transparent;
+                border: none;
                 text-decoration: none;
-                color: #fff;
-                font-size: 13px;
-                letter-spacing: 1px;
+                color: rgba(255, 255, 255, 0.7);
+                font-size: 14px;
+                letter-spacing: 2px;
                 text-transform: lowercase;
+                text-align: center;
+                position: relative;
+            }
+
+            .mobile-link::before {
+                content: '//';
+                position: absolute;
+                left: 0;
+                color: rgba(255, 255, 255, 0.2);
+                animation: glitchSlash 3s infinite;
+            }
+
+            .mobile-link::after {
+                content: '//';
+                position: absolute;
+                right: 0;
+                color: rgba(255, 255, 255, 0.2);
+                animation: glitchSlash 3s infinite 0.5s;
+            }
+
+            @keyframes glitchSlash {
+                0%, 90%, 100% { opacity: 0.2; transform: translateY(0); }
+                92% { opacity: 0.8; transform: translateY(-2px); color: #fff; }
+                94% { opacity: 0.1; transform: translateY(1px); }
+                96% { opacity: 0.5; }
             }
 
             .mobile-link:active {
-                background: rgba(255, 255, 255, 0.15);
+                color: #fff;
             }
 
             .mobile-link-icon {
-                width: 32px;
-                height: 32px;
-                margin-right: 14px;
-                object-fit: cover;
-            }
-
-            .mobile-link-text {
-                flex: 1;
+                display: none;
             }
 
             .mobile-link-arrow {
-                color: rgba(255, 255, 255, 0.4);
-                font-size: 12px;
+                display: none;
             }
 
             .mobile-divider {
-                width: 50px;
-                height: 1px;
-                background: rgba(255, 255, 255, 0.2);
-                margin: 8px 0;
+                display: none;
+            }
+
+            .mobile-contact {
+                display: block;
+                position: absolute;
+                bottom: 8%;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 100;
+                text-align: center;
+            }
+
+            .mobile-contact a {
+                color: rgba(255, 255, 255, 0.4);
+                text-decoration: none;
+                font-size: 10px;
+                letter-spacing: 1px;
+            }
+
+            .mobile-contact a:active {
+                color: #fff;
             }
         }
     </style>
@@ -331,44 +368,17 @@
             <a href="https://www.youtube.com/@emmemme" target="_blank" rel="noopener">youtube</a>
         </div>
 
-        <!-- Mobile Linktree -->
+        <!-- Mobile Links -->
         <div class="mobile-links">
-            <a href="https://3mm3.bandcamp.com/" target="_blank" class="mobile-link">
-                <img src="images/albums/heaven-help-me.jpg" alt="" class="mobile-link-icon">
-                <span class="mobile-link-text">bandcamp</span>
-                <span class="mobile-link-arrow">→</span>
-            </a>
-            <a href="https://soundcloud.com/3m_m3" target="_blank" class="mobile-link">
-                <img src="images/soundcloud/mbaas.jpg" alt="" class="mobile-link-icon">
-                <span class="mobile-link-text">soundcloud</span>
-                <span class="mobile-link-arrow">→</span>
-            </a>
-            <a href="https://www.youtube.com/@emmemme" target="_blank" class="mobile-link">
-                <img src="images/albums/tuning-opening.jpg" alt="" class="mobile-link-icon">
-                <span class="mobile-link-text">youtube</span>
-                <span class="mobile-link-arrow">→</span>
-            </a>
-            <a href="https://www.instagram.com/emme.emme.emme.emme/" target="_blank" class="mobile-link">
-                <img src="images/albums/heaven.jpg" alt="" class="mobile-link-icon">
-                <span class="mobile-link-text">instagram</span>
-                <span class="mobile-link-arrow">→</span>
-            </a>
-            <div class="mobile-divider"></div>
-            <a href="music.html" class="mobile-link">
-                <img src="images/albums/i-close-my-eyes.jpg" alt="" class="mobile-link-icon">
-                <span class="mobile-link-text">music</span>
-                <span class="mobile-link-arrow">→</span>
-            </a>
-            <a href="shows.html" class="mobile-link">
-                <img src="images/albums/help-me.jpg" alt="" class="mobile-link-icon">
-                <span class="mobile-link-text">shows</span>
-                <span class="mobile-link-arrow">→</span>
-            </a>
-            <a href="contact.html" class="mobile-link">
-                <img src="images/albums/heaven-help-me-instrumentals.jpg" alt="" class="mobile-link-icon">
-                <span class="mobile-link-text">contact</span>
-                <span class="mobile-link-arrow">→</span>
-            </a>
+            <a href="https://3mm3.bandcamp.com/" target="_blank" class="mobile-link">bandcamp</a>
+            <a href="https://soundcloud.com/3m_m3" target="_blank" class="mobile-link">soundcloud</a>
+            <a href="https://www.youtube.com/@emmemme" target="_blank" class="mobile-link">youtube</a>
+            <a href="https://www.instagram.com/emme.emme.emme.emme/" target="_blank" class="mobile-link">instagram</a>
+        </div>
+
+        <!-- Mobile Contact -->
+        <div class="mobile-contact">
+            <a href="mailto:booking@emme-em.me">booking@emme-em.me</a>
         </div>
     </section>
 
