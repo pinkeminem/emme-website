@@ -41,6 +41,24 @@
             color: #fff;
         }
 
+        .gallery-link {
+            color: #555;
+            text-decoration: none;
+            font-size: 11px;
+            letter-spacing: 1px;
+            margin-left: 20px;
+        }
+
+        .gallery-link:hover {
+            color: #fff;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
         h1 {
             font-weight: normal;
             font-size: 14px;
@@ -274,7 +292,10 @@
 <body>
     <div class="header">
         <a href="index.html"><img src="images/logo-scrawl.png" alt="emme" class="logo"></a>
-        <a href="index.html" class="back">&larr; back</a>
+        <div class="header-right">
+            <a href="gallery.html" class="gallery-link">gallery</a>
+            <a href="index.html" class="back">&larr; back</a>
+        </div>
     </div>
 
     <h1>live</h1>

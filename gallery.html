@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>emme - gallery</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Calibri, 'Trebuchet MS', sans-serif;
+            background: #000;
+            color: #ccc;
+            min-height: 100vh;
+            padding: 40px 40px 60px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            height: 35px;
+            width: auto;
+        }
+
+        .back {
+            color: #666;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .back:hover {
+            color: #fff;
+        }
+
+        h1 {
+            font-weight: normal;
+            font-size: 14px;
+            margin-bottom: 40px;
+            color: #888;
+            letter-spacing: 1px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .gallery-item {
+            position: relative;
+            aspect-ratio: 1;
+            overflow: hidden;
+            background: #0a0a0a;
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%) contrast(1.1);
+            opacity: 0.8;
+            transition: all 0.4s ease;
+        }
+
+        .gallery-item:hover img {
+            filter: grayscale(0%) contrast(1);
+            opacity: 1;
+            transform: scale(1.03);
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #666;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .lightbox-close:hover {
+            color: #fff;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 40px 20px 60px;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html"><img src="images/logo-scrawl.png" alt="emme" class="logo"></a>
+        <a href="live.html" class="back">&larr; back</a>
+    </div>
+
+    <h1>gallery</h1>
+
+    <div class="gallery-grid">
+        <div class="gallery-item"><img src="images/gallery/emme 2025 tour flyer text.png" alt="2025 tour flyer" loading="lazy"></div>
+        <div class="gallery-item"><img src="images/gallery/emme 4 final shows.png" alt="final shows" loading="lazy"></div>
+        <div class="gallery-item"><img src="images/gallery/emme emo.png" alt="emo" loading="lazy"></div>
+        <div class="gallery-item"><img src="images/gallery/emme flowers floating.png" alt="flowers floating" loading="lazy"></div>
+        <div class="gallery-item"><img src="images/gallery/emme hamilton.png" alt="hamilton" loading="lazy"></div>
+        <div class="gallery-item"><img src="images/gallery/emme hell.png" alt="hell" loading="lazy"></div>
+        <div class="gallery-item"><img src="images/gallery/emme magali.png" alt="magali" loading="lazy"></div>
+        <div class="gallery-item"><img src="images/gallery/emme poppers.png" alt="poppers" loading="lazy"></div>
+        <div class="gallery-item"><img src="images/gallery/emme puzzle.png" alt="puzzle" loading="lazy"></div>
+        <div class="gallery-item"><img src="images/gallery/emme terrible.png" alt="terrible" loading="lazy"></div>
+        <div class="gallery-item"><img src="images/gallery/emme wild things.png" alt="wild things" loading="lazy"></div>
+        <div class="gallery-item"><img src="images/gallery/emme cassete a side cover i close my eyes heaven.png" alt="cassette a side" loading="lazy"></div>
+        <div class="gallery-item"><img src="images/gallery/emme cassete b side cover help me .png" alt="cassette b side" loading="lazy"></div>
+        <div class="gallery-item"><img src="images/gallery/EMME STICKER LOGO.png" alt="sticker logo" loading="lazy"></div>
+    </div>
+
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <img src="" alt="">
+    </div>
+
+    <script>
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = lightbox.querySelector('img');
+
+        document.querySelectorAll('.gallery-item img').forEach(img => {
+            img.addEventListener('click', () => {
+                lightboxImg.src = img.src;
+                lightbox.classList.add('active');
+            });
+        });
+
+        lightbox.addEventListener('click', () => {
+            lightbox.classList.remove('active');
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') lightbox.classList.remove('active');
+        });
+    </script>
+</body>
+</html>
