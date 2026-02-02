@@ -4,9 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>emme</title>
+    <link rel="preload" href="videos/logo-animation.mp4" as="video" type="video/mp4">
+    <link rel="preload" href="images/logo-scrawl.png" as="image">
+    <style>
+        /* Critical inline font - system fonts for instant render */
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+    </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     <style>
         * {
             margin: 0;
@@ -241,7 +247,7 @@
 
             .mobile-logo {
                 display: block;
-                top: 8%;
+                top: 18%;
             }
 
             .nav, .social {
@@ -251,75 +257,90 @@
             .mobile-links {
                 display: flex;
                 position: absolute;
-                top: 38%;
+                top: 32%;
                 left: 50%;
                 transform: translateX(-50%);
                 flex-direction: column;
                 align-items: center;
-                gap: 15px;
+                gap: 6px;
                 z-index: 100;
-                width: 70%;
-                max-width: 250px;
+                width: 60%;
+                max-width: 200px;
             }
 
             .mobile-link {
                 display: block;
                 width: 100%;
-                padding: 12px 0;
+                padding: 6px 12px;
                 background: transparent;
-                border: none;
+                border: 1px solid transparent;
                 text-decoration: none;
                 color: rgba(255, 255, 255, 0.7);
-                font-size: 14px;
-                letter-spacing: 2px;
+                font-size: 11px;
+                letter-spacing: 1.5px;
                 text-transform: lowercase;
                 text-align: center;
                 position: relative;
+                background:
+                    linear-gradient(#000, #000) padding-box,
+                    linear-gradient(90deg,
+                        transparent 0%,
+                        rgba(255,255,255,0.4) 15%,
+                        transparent 30%,
+                        rgba(255,255,255,0.2) 50%,
+                        transparent 70%,
+                        rgba(255,255,255,0.3) 85%,
+                        transparent 100%
+                    ) border-box;
+                animation: borderGlitch 3s ease-in-out infinite;
             }
 
-            .mobile-link::before {
-                content: '//';
-                position: absolute;
-                left: 0;
-                color: rgba(255, 255, 255, 0.2);
-                animation: glitchSlash 3s infinite;
+            .mobile-link:nth-child(odd) { animation-delay: 0.3s; }
+            .mobile-link:nth-child(even) { animation-delay: 1.1s; }
+            .mobile-link:nth-child(3n) { animation-delay: 0.7s; }
+
+            @keyframes borderGlitch {
+                0%, 100% {
+                    background:
+                        linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)) padding-box,
+                        linear-gradient(90deg,
+                            transparent 0%,
+                            rgba(255,255,255,0.3) 15%,
+                            transparent 35%,
+                            rgba(255,255,255,0.2) 55%,
+                            transparent 75%,
+                            rgba(255,255,255,0.25) 90%,
+                            transparent 100%
+                        ) border-box;
+                }
+                50% {
+                    background:
+                        linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)) padding-box,
+                        linear-gradient(90deg,
+                            rgba(255,255,255,0.2) 5%,
+                            transparent 25%,
+                            rgba(255,255,255,0.35) 45%,
+                            transparent 65%,
+                            rgba(255,255,255,0.2) 85%,
+                            transparent 100%
+                        ) border-box;
+                }
             }
 
+            .mobile-link::before,
             .mobile-link::after {
-                content: '//';
-                position: absolute;
-                right: 0;
-                color: rgba(255, 255, 255, 0.2);
-                animation: glitchSlash 3s infinite 0.5s;
-            }
-
-            @keyframes glitchSlash {
-                0%, 90%, 100% { opacity: 0.2; transform: translateY(0); }
-                92% { opacity: 0.8; transform: translateY(-2px); color: #fff; }
-                94% { opacity: 0.1; transform: translateY(1px); }
-                96% { opacity: 0.5; }
+                display: none;
             }
 
             .mobile-link:active {
                 color: #fff;
-            }
-
-            .mobile-link-icon {
-                display: none;
-            }
-
-            .mobile-link-arrow {
-                display: none;
-            }
-
-            .mobile-divider {
-                display: none;
+                border-color: rgba(255,255,255,0.5);
             }
 
             .mobile-contact {
                 display: block;
                 position: absolute;
-                bottom: 8%;
+                bottom: 6%;
                 left: 50%;
                 transform: translateX(-50%);
                 z-index: 100;
@@ -341,10 +362,10 @@
 </head>
 <body>
     <section class="hero">
-        <video class="hero-video" autoplay muted playsinline webkit-playsinline loop id="heroVideo">
+        <video class="hero-video" autoplay muted playsinline webkit-playsinline loop preload="auto" id="heroVideo">
             <source src="videos/logo-animation.mp4" type="video/mp4">
         </video>
-        <img src="images/logo-scrawl.png" alt="emme" class="mobile-logo">
+        <img src="images/logo-scrawl.png" alt="emme" class="mobile-logo" loading="eager">
         <div class="hero-overlay"></div>
 
         <nav class="nav">
@@ -386,101 +407,18 @@
     <script>
         const video = document.getElementById('heroVideo');
 
-        // Alternating loop durations and speeds
-        const loopConfigs = [
-            { duration: 2, speed: 1.0 },
-            { duration: 3, speed: 0.7 },
-            { duration: 4, speed: 1.3 },
-            { duration: 2, speed: 0.5 },
-            { duration: 3, speed: 1.0 },
-            { duration: 4, speed: 0.8 }
-        ];
-
-        const cyclesPerConfig = 20;
-
-        let currentConfigIndex = 0;
-        let loopStartTime = 0;
-        let loopCount = 0;
-        let isLooping = false;
-
-        function getCurrentConfig() {
-            return loopConfigs[currentConfigIndex % loopConfigs.length];
-        }
-
-        function setupLoop() {
-            const config = getCurrentConfig();
-            loopStartTime = Math.max(0, video.duration - config.duration);
-            video.playbackRate = config.speed;
-        }
-
-        // Aggressive autoplay for mobile
+        // Simple autoplay for mobile
         function forcePlay() {
             video.muted = true;
             video.play().catch(() => {});
         }
 
         forcePlay();
+        video.addEventListener('canplay', forcePlay, { once: true });
 
-        video.addEventListener('loadedmetadata', () => {
-            setupLoop();
-            forcePlay();
-        });
-
-        video.addEventListener('canplay', forcePlay);
-        video.addEventListener('loadeddata', forcePlay);
-
-        // Keep trying to play
-        setTimeout(forcePlay, 100);
-        setTimeout(forcePlay, 500);
-        setTimeout(forcePlay, 1000);
-
-        video.addEventListener('ended', () => {
-            if (isLooping && loopCount < cyclesPerConfig) {
-                loopCount++;
-                video.currentTime = loopStartTime;
-                video.play().catch(() => {});
-            } else {
-                // Move to next config and restart
-                currentConfigIndex++;
-                isLooping = false;
-                loopCount = 0;
-                video.playbackRate = 1.0;
-                video.currentTime = 0;
-                setupLoop();
-                video.play().catch(() => {});
-            }
-        });
-
-        video.addEventListener('timeupdate', () => {
-            if (!video.duration || loopStartTime === 0) return;
-
-            if (!isLooping && video.currentTime >= loopStartTime) {
-                isLooping = true;
-                loopCount = 0;
-                const config = getCurrentConfig();
-                video.playbackRate = config.speed;
-            }
-        });
-
-        // Click/touch to play fallback for mobile
+        // Fallbacks
         document.addEventListener('click', forcePlay, { once: true });
         document.addEventListener('touchstart', forcePlay, { once: true });
-        document.addEventListener('touchend', forcePlay, { once: true });
-        document.addEventListener('scroll', forcePlay, { once: true });
-
-        // iOS autoplay fix - try playing on visibility change
-        document.addEventListener('visibilitychange', () => {
-            if (!document.hidden) forcePlay();
-        });
-
-        // Intersection observer for when video becomes visible
-        if ('IntersectionObserver' in window) {
-            new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) forcePlay();
-                });
-            }).observe(video);
-        }
 
         // Glitch text generator
         const glitchMaps = {
