@@ -49,6 +49,143 @@
             letter-spacing: 1px;
         }
 
+        /* Upcoming Shows Section */
+        .shows-section {
+            margin-bottom: 60px;
+        }
+
+        .spreadsheet-container {
+            position: relative;
+            max-width: 900px;
+        }
+
+        .splotch {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(30px);
+            opacity: 0.15;
+            pointer-events: none;
+            animation: splotchPulse 4s ease-in-out infinite;
+        }
+
+        .splotch-1 {
+            width: 200px;
+            height: 200px;
+            background: #333;
+            top: -50px;
+            left: 20%;
+            animation-delay: 0s;
+        }
+
+        .splotch-2 {
+            width: 150px;
+            height: 150px;
+            background: #222;
+            top: 100px;
+            right: 10%;
+            animation-delay: 1s;
+        }
+
+        @keyframes splotchPulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.15;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.25;
+            }
+        }
+
+        .spreadsheet {
+            width: 100%;
+            border-collapse: collapse;
+            position: relative;
+            font-family: 'Courier New', monospace;
+        }
+
+        .spreadsheet th,
+        .spreadsheet td {
+            padding: 12px 15px;
+            text-align: left;
+            font-size: 12px;
+            position: relative;
+        }
+
+        .spreadsheet th {
+            color: #444;
+            font-weight: normal;
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: 1px;
+        }
+
+        .spreadsheet td {
+            border: 1px solid transparent;
+            background:
+                linear-gradient(#000, #000) padding-box,
+                linear-gradient(90deg,
+                    transparent 0%,
+                    #333 10%,
+                    #333 20%,
+                    transparent 30%,
+                    transparent 40%,
+                    #222 50%,
+                    transparent 60%,
+                    #333 70%,
+                    transparent 80%,
+                    #222 90%,
+                    transparent 100%
+                ) border-box;
+            animation: borderGlitch 3s ease-in-out infinite;
+        }
+
+        @keyframes borderGlitch {
+            0%, 100% {
+                background:
+                    linear-gradient(#000, #000) padding-box,
+                    linear-gradient(90deg,
+                        transparent 0%,
+                        #333 10%,
+                        transparent 25%,
+                        #222 40%,
+                        transparent 55%,
+                        #333 70%,
+                        transparent 85%,
+                        #222 95%,
+                        transparent 100%
+                    ) border-box;
+            }
+            50% {
+                background:
+                    linear-gradient(#000, #000) padding-box,
+                    linear-gradient(90deg,
+                        transparent 5%,
+                        #222 20%,
+                        transparent 35%,
+                        #333 50%,
+                        transparent 65%,
+                        #222 80%,
+                        transparent 95%
+                    ) border-box;
+            }
+        }
+
+        .empty-message {
+            color: #333;
+            font-size: 11px;
+            padding: 40px 15px;
+            font-style: italic;
+        }
+
+        /* Divider */
+        .divider {
+            border: none;
+            border-top: 1px solid #222;
+            margin: 60px 0;
+        }
+
+        /* Video Grid */
         .video-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -114,6 +251,19 @@
             }
         }
 
+        @media (max-width: 600px) {
+            .spreadsheet th,
+            .spreadsheet td {
+                padding: 10px 8px;
+                font-size: 10px;
+            }
+
+            .spreadsheet th:nth-child(3),
+            .spreadsheet td:nth-child(3) {
+                display: none;
+            }
+        }
+
         @media (max-width: 480px) {
             .video-grid {
                 grid-template-columns: 1fr;
@@ -129,6 +279,41 @@
 
     <h1>live</h1>
 
+    <!-- Upcoming Shows -->
+    <div class="shows-section">
+        <div class="spreadsheet-container">
+            <div class="splotch splotch-1"></div>
+            <div class="splotch splotch-2"></div>
+
+            <table class="spreadsheet">
+                <thead>
+                    <tr>
+                        <th>date</th>
+                        <th>venue</th>
+                        <th>city</th>
+                        <th>info</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="4" class="empty-message">no upcoming shows at this time...</td>
+                    </tr>
+                    <!-- Example rows for when shows are added:
+                    <tr>
+                        <td>2024.03.15</td>
+                        <td>Berghain</td>
+                        <td>Berlin, DE</td>
+                        <td><a href="#">tickets</a></td>
+                    </tr>
+                    -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Videos -->
     <div class="video-grid">
         <div class="video-item">
             <video src="videos/biennale.mov" muted loop playsinline preload="metadata"></video>
@@ -319,6 +504,15 @@
                 video.pause();
                 video.currentTime = 0;
             });
+        });
+
+        // Splotch glitch effect
+        document.querySelectorAll('.splotch').forEach(splotch => {
+            setInterval(() => {
+                const randomX = (Math.random() - 0.5) * 20;
+                const randomY = (Math.random() - 0.5) * 20;
+                splotch.style.transform = `translate(${randomX}px, ${randomY}px)`;
+            }, 2000 + Math.random() * 2000);
         });
     </script>
 </body>
