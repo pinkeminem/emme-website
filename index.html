@@ -6,7 +6,9 @@
     <title>emme</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="preload" href="videos/logo-animation-web.mp4" as="video" type="video/mp4">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap" rel="stylesheet"></noscript>
     <style>
         * {
             margin: 0;
@@ -353,10 +355,10 @@
 </head>
 <body>
     <section class="hero">
-        <video class="hero-video" autoplay muted playsinline webkit-playsinline loop id="heroVideo">
-            <source src="videos/logo-animation.mp4" type="video/mp4">
+        <video class="hero-video" autoplay muted playsinline webkit-playsinline loop poster="images/video-poster.jpg" preload="metadata" id="heroVideo">
+            <source src="videos/logo-animation-web.mp4" type="video/mp4">
         </video>
-        <img src="images/logo-scrawl.png" alt="emme" class="mobile-logo" loading="eager">
+        <img src="images/logo-scrawl.png" alt="emme" class="mobile-logo">
         <div class="hero-overlay"></div>
 
         <nav class="nav">
