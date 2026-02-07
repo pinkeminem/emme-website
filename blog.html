@@ -123,6 +123,143 @@
             text-transform: lowercase;
         }
 
+        /* Feed sections */
+        .feed-section {
+            margin-top: 50px;
+            padding-top: 40px;
+            border-top: 1px solid #151515;
+        }
+
+        .feed-box {
+            background: #0a0a0a;
+            border: 1px solid #1a1a1a;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .feed-box .section-title {
+            margin-bottom: 15px;
+        }
+
+        .feed-intro {
+            font-size: 11px;
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        .feed-intro a {
+            color: #555;
+            text-decoration: none;
+            border-bottom: 1px solid #333;
+        }
+
+        .feed-intro a:hover {
+            color: #888;
+        }
+
+        .feed-list {
+            list-style: none;
+        }
+
+        .feed-entry {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #151515;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .feed-entry:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .feed-entry a {
+            color: #888;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .feed-entry a:hover {
+            color: #fff;
+        }
+
+        .feed-track-name {
+            color: #999;
+        }
+
+        .feed-track-artist {
+            color: #555;
+        }
+
+        .tumblr-post {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #151515;
+        }
+
+        .tumblr-post:last-child {
+            border-bottom: none;
+        }
+
+        .tumblr-post a {
+            color: #888;
+            text-decoration: none;
+            font-size: 13px;
+            line-height: 1.5;
+            transition: color 0.2s;
+        }
+
+        .tumblr-post a:hover {
+            color: #fff;
+        }
+
+        .tumblr-date {
+            font-size: 10px;
+            color: #444;
+            margin-top: 4px;
+        }
+
+        .view-all-link {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 10px;
+            color: #444;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .view-all-link:hover {
+            color: #888;
+        }
+
+        .playlist-list {
+            list-style: none;
+        }
+
+        .playlist-item {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #151515;
+        }
+
+        .playlist-item:last-child {
+            border-bottom: none;
+        }
+
+        .playlist-item a {
+            color: #888;
+            text-decoration: none;
+            font-size: 12px;
+            transition: color 0.2s;
+        }
+
+        .playlist-item a:hover {
+            color: #fff;
+        }
+
         /* Film diary sidebar */
         .film-sidebar {
             position: sticky;
@@ -274,6 +411,41 @@
                     <span class="post-category">archive</span>
                 </li>
             </ul>
+
+            <!-- YouTube Playlists -->
+            <div class="feed-section">
+                <div class="section-title">youtube playlists</div>
+                <div class="feed-box">
+                    <p class="feed-intro">video playlists from <a href="https://www.youtube.com/@emmemme/playlists" target="_blank" rel="noopener">youtube</a></p>
+                    <div id="yt-loading" class="loading">loading playlists...</div>
+                    <ul id="yt-playlists" class="playlist-list"></ul>
+                    <a href="https://www.youtube.com/@emmemme/playlists" target="_blank" rel="noopener" class="view-all-link">view all on youtube</a>
+                </div>
+            </div>
+
+            <!-- Last.fm Recent Tracks -->
+            <div class="feed-section">
+                <div class="section-title">recently listened</div>
+                <div class="feed-box">
+                    <p class="feed-intro">scrobbled from <a href="https://www.last.fm/user/pink_eminem" target="_blank" rel="noopener">last.fm</a></p>
+                    <div id="lastfm-loading" class="loading">loading...</div>
+                    <div id="lastfm-error" class="error" style="display: none;"></div>
+                    <ul id="lastfm-tracks" class="feed-list"></ul>
+                    <a href="https://www.last.fm/user/pink_eminem" target="_blank" rel="noopener" class="view-all-link">view full profile</a>
+                </div>
+            </div>
+
+            <!-- Tumblr -->
+            <div class="feed-section">
+                <div class="section-title">tumblr</div>
+                <div class="feed-box">
+                    <p class="feed-intro">posts from <a href="https://www.tumblr.com/blog/emme-emme" target="_blank" rel="noopener">tumblr</a></p>
+                    <div id="tumblr-loading" class="loading">loading...</div>
+                    <div id="tumblr-error" class="error" style="display: none;"></div>
+                    <div id="tumblr-posts"></div>
+                    <a href="https://www.tumblr.com/blog/emme-emme" target="_blank" rel="noopener" class="view-all-link">view all on tumblr</a>
+                </div>
+            </div>
         </div>
 
         <!-- Film diary sidebar -->
@@ -376,7 +548,167 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', fetchLetterboxdFeed);
+        // YouTube playlists via RSS
+        async function fetchYouTubePlaylists() {
+            const proxyUrl = 'https://api.allorigins.win/raw?url=';
+            const channelRss = 'https://www.youtube.com/feeds/videos.xml?channel_id=UCxPf1Id6OcSIS40HTf2D_yA';
+
+            try {
+                const response = await fetch(proxyUrl + encodeURIComponent(channelRss));
+                if (!response.ok) throw new Error('Failed to fetch');
+
+                const xmlText = await response.text();
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+                const entries = xmlDoc.querySelectorAll('entry');
+                const container = document.getElementById('yt-playlists');
+                const loadingEl = document.getElementById('yt-loading');
+
+                loadingEl.style.display = 'none';
+
+                // Show recent videos as playlist entries
+                const max = 8;
+                let count = 0;
+                entries.forEach(entry => {
+                    if (count >= max) return;
+                    const title = entry.querySelector('title')?.textContent || '';
+                    const link = entry.querySelector('link')?.getAttribute('href') || '';
+                    if (!title) return;
+
+                    const li = document.createElement('li');
+                    li.className = 'playlist-item';
+                    li.innerHTML = `<a href="${link}" target="_blank" rel="noopener">${title}</a>`;
+                    container.appendChild(li);
+                    count++;
+                });
+
+                if (count === 0) {
+                    loadingEl.textContent = 'no videos found';
+                    loadingEl.style.display = 'block';
+                }
+            } catch (e) {
+                const loadingEl = document.getElementById('yt-loading');
+                loadingEl.textContent = 'unable to load';
+            }
+        }
+
+        // Last.fm recent tracks via RSS
+        async function fetchLastFm() {
+            const proxyUrl = 'https://api.allorigins.win/raw?url=';
+            const feedUrl = 'https://www.last.fm/user/pink_eminem/rss';
+
+            try {
+                const response = await fetch(proxyUrl + encodeURIComponent(feedUrl));
+                if (!response.ok) throw new Error('Failed to fetch');
+
+                const xmlText = await response.text();
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+                const items = xmlDoc.querySelectorAll('item');
+                const container = document.getElementById('lastfm-tracks');
+                const loadingEl = document.getElementById('lastfm-loading');
+
+                if (items.length === 0) throw new Error('No tracks');
+
+                loadingEl.style.display = 'none';
+
+                const max = 15;
+                let count = 0;
+                items.forEach(item => {
+                    if (count >= max) return;
+                    const title = item.querySelector('title')?.textContent || '';
+                    const link = item.querySelector('link')?.textContent || '';
+
+                    // Last.fm RSS titles are "Artist – Track"
+                    const parts = title.split(' – ');
+                    const artist = parts[0] || '';
+                    const track = parts[1] || title;
+
+                    const li = document.createElement('li');
+                    li.className = 'feed-entry';
+                    li.innerHTML = `<a href="${link}" target="_blank" rel="noopener"><span class="feed-track-name">${track}</span> <span class="feed-track-artist">— ${artist}</span></a>`;
+                    container.appendChild(li);
+                    count++;
+                });
+
+                if (count === 0) {
+                    loadingEl.textContent = 'no recent tracks';
+                    loadingEl.style.display = 'block';
+                }
+            } catch (e) {
+                document.getElementById('lastfm-loading').style.display = 'none';
+                const errEl = document.getElementById('lastfm-error');
+                errEl.textContent = 'unable to load';
+                errEl.style.display = 'block';
+            }
+        }
+
+        // Tumblr via RSS
+        async function fetchTumblr() {
+            const proxyUrl = 'https://api.allorigins.win/raw?url=';
+            const feedUrl = 'https://emme-emme.tumblr.com/rss';
+
+            try {
+                const response = await fetch(proxyUrl + encodeURIComponent(feedUrl));
+                if (!response.ok) throw new Error('Failed to fetch');
+
+                const xmlText = await response.text();
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+                const items = xmlDoc.querySelectorAll('item');
+                const container = document.getElementById('tumblr-posts');
+                const loadingEl = document.getElementById('tumblr-loading');
+
+                if (items.length === 0) throw new Error('No posts');
+
+                loadingEl.style.display = 'none';
+
+                const max = 8;
+                let count = 0;
+                items.forEach(item => {
+                    if (count >= max) return;
+                    const title = item.querySelector('title')?.textContent || '';
+                    const link = item.querySelector('link')?.textContent || '';
+                    const pubDate = item.querySelector('pubDate')?.textContent || '';
+                    const description = item.querySelector('description')?.textContent || '';
+
+                    // Use title if available, otherwise extract text from description
+                    let displayTitle = title;
+                    if (!displayTitle || displayTitle === 'Photo' || displayTitle === 'Link') {
+                        const tmp = document.createElement('div');
+                        tmp.innerHTML = description;
+                        displayTitle = (tmp.textContent || '').substring(0, 80).trim();
+                        if (displayTitle.length >= 80) displayTitle += '...';
+                    }
+                    if (!displayTitle) displayTitle = 'untitled post';
+
+                    const dateStr = pubDate ? new Date(pubDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+
+                    const post = document.createElement('div');
+                    post.className = 'tumblr-post';
+                    post.innerHTML = `<a href="${link}" target="_blank" rel="noopener">${displayTitle}</a>${dateStr ? `<div class="tumblr-date">${dateStr}</div>` : ''}`;
+                    container.appendChild(post);
+                    count++;
+                });
+
+                if (count === 0) {
+                    loadingEl.textContent = 'no posts found';
+                    loadingEl.style.display = 'block';
+                }
+            } catch (e) {
+                document.getElementById('tumblr-loading').style.display = 'none';
+                const errEl = document.getElementById('tumblr-error');
+                errEl.textContent = 'unable to load';
+                errEl.style.display = 'block';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchLetterboxdFeed();
+            fetchYouTubePlaylists();
+            fetchLastFm();
+            fetchTumblr();
+        });
     </script>
 </body>
 </html>
