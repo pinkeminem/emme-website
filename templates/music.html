@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block title %}emme - music{% endblock %}
+{% block head %}
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Calibri, 'Trebuchet MS', sans-serif; background: #000; color: #ccc; min-height: 100vh; padding: 40px 40px 60px; }
+        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 60px; }
+        .logo { height: 35px; width: auto; }
+        .back { color: #666; text-decoration: none; font-size: 12px; }
+        .back:hover { color: #fff; }
+        h1 { font-weight: normal; font-size: 14px; margin-bottom: 60px; color: #888; letter-spacing: 1px; }
+        .section { margin-bottom: 50px; }
+        .section-title { font-size: 11px; color: #555; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; }
+        .discography { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 25px; }
+        .release { text-decoration: none; display: block; }
+        .release img { width: 100%; aspect-ratio: 1; object-fit: cover; filter: grayscale(0%); transition: filter 0.3s, transform 0.3s; }
+        .release:hover img { filter: grayscale(100%); transform: scale(1.02); }
+        .release-title { color: #888; font-size: 11px; margin-top: 8px; text-transform: lowercase; }
+        .release:hover .release-title { color: #fff; }
+        .sc-list { list-style: none; columns: 2; column-gap: 40px; font-size: 11px; }
+        .sc-list li { margin-bottom: 6px; }
+        .sc-list a { color: #666; text-decoration: none; transition: color 0.2s; }
+        .sc-list a:hover { color: #fff; }
+        .wip-section { margin-top: 50px; padding: 25px; border: 1px solid #222; }
+        .wip-header { display: flex; gap: 20px; }
+        .wip-cover { width: 120px; height: 120px; object-fit: cover; filter: grayscale(0%); transition: filter 0.3s; }
+        .wip-header:hover .wip-cover { filter: grayscale(100%); }
+        .wip-info { flex: 1; }
+        .wip-title { font-size: 13px; color: #888; margin-bottom: 5px; }
+        .wip-label { font-size: 9px; color: #555; text-transform: uppercase; letter-spacing: 1px; }
+        .divider { width: 100%; height: 1px; background: #222; margin: 40px 0; }
+        .listen-links { margin-top: 60px; }
+        .listen-links a { display: inline-block; color: #666; text-decoration: none; font-size: 12px; margin-right: 25px; margin-bottom: 10px; }
+        .listen-links a:hover { color: #fff; }
+        .contact { margin-top: 80px; padding-top: 40px; border-top: 1px solid #222; }
+        .contact-title { font-size: 11px; color: #555; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; }
+        .contact a { color: #888; text-decoration: none; font-size: 13px; }
+        .contact a:hover { color: #fff; }
+    </style>
+{% endblock %}
+{% block body %}
+    <div class="header">
+        <a href="{{ url_for('public.index') }}"><img src="{{ url_for('static', filename='images/logo-scrawl.png') }}" alt="emme" class="logo"></a>
+        <a href="{{ url_for('public.index') }}" class="back">&larr; back</a>
+    </div>
+    <h1>music</h1>
+    <div class="section">
+        <div class="section-title">discography</div>
+        <div class="discography">
+            {% for r in releases %}
+            <a href="{{ r.bandcamp_url }}" target="_blank" class="release">
+                <img src="{{ url_for('static', filename=r.cover_image) }}" alt="{{ r.title }}">
+                <div class="release-title">{{ r.title }}</div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="section">
+        <div class="section-title">soundcloud</div>
+        <ul class="sc-list">
+            {% for t in tracks %}
+            <li><a href="{{ t.url }}" target="_blank">{{ t.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% if wip and wip.url %}
+    <div class="wip-section">
+        <a href="{{ wip.url }}" target="_blank" style="text-decoration: none;">
+            <div class="wip-header">
+                <img src="{{ url_for('static', filename=wip.cover) }}" alt="{{ wip.title }}" class="wip-cover">
+                <div class="wip-info">
+                    <div class="wip-label">work in progress</div>
+                    <div class="wip-title">{{ wip.title }}</div>
+                </div>
+            </div>
+        </a>
+    </div>
+    {% endif %}
+    <div class="divider"></div>
+    <div class="listen-links">
+        {% for link in listen_links %}
+        <a href="{{ link.url }}" target="_blank">{{ link.label }}</a>
+        {% endfor %}
+    </div>
+    <div class="contact">
+        <div class="contact-title">booking</div>
+        <a href="mailto:booking@emme-em.me">booking@emme-em.me</a>
+    </div>
+    <script>
+        const glitchMaps={'A':['α','Λ','Δ','א','ą','ά'],'B':['β','ß','ב','Ɓ','ъ','ь'],'C':['ς','ͻ','ç','ć','ɕ','ק'],'D':['δ','ð','ď','đ','ד','ɗ'],'E':['ε','є','ė','ē','ə','ξ'],'F':['ƒ','φ','ḟ','ſ','ף','ϝ'],'G':['γ','ğ','ġ','ɡ','ג','ǥ'],'H':['η','ħ','ĥ','ḥ','ה','ђ'],'I':['ι','ï','į','í','ɨ','ί'],'J':['ј','ʝ','ĵ','ϳ','ɉ','ǰ'],'K':['κ','ĸ','ķ','כ','Ƙ','ƙ'],'L':['ł','ℓ','ļ','ŀ','ל','Ł'],'M':['μ','ɱ','ṁ','ɯ','מ','Μ'],'N':['η','ñ','ń','ň','נ','ŋ'],'O':['ο','σ','ő','ø','ơ','Ο'],'P':['ρ','þ','ƥ','פ','Ρ','Þ'],'Q':['ϙ','ʠ','ԛ','ק','Ϙ','զ'],'R':['я','ŕ','ř','ŗ','ר','Я'],'S':['ѕ','š','ş','ś','ש','Š'],'T':['τ','ť','ţ','ț','ת','Τ'],'U':['υ','ū','ů','ű','ü','Υ'],'V':['ν','ṿ','ʋ','ѵ','ו','Ѵ'],'W':['ω','ŵ','ẁ','ẃ','װ','Ω'],'X':['χ','ẋ','ẍ','ӽ','ץ','Χ'],'Y':['υ','ÿ','ý','ŷ','י','Υ'],'Z':['ζ','ž','ź','ż','ז','Ζ'],'a':['α','ą','ā','ά','ă','ǎ'],'b':['β','ъ','ь','ɓ','ḃ','ḅ'],'c':['ς','ç','ć','č','ċ','ĉ'],'d':['δ','ð','ď','đ','ḋ','ḍ'],'e':['ε','є','ė','ē','ě','ə'],'f':['ƒ','φ','ḟ','ſ','ʄ','ϝ'],'g':['γ','ğ','ġ','ģ','ǧ','ǥ'],'h':['η','ħ','ĥ','ḥ','ḩ','ℎ'],'i':['ι','ï','į','í','ì','ɨ'],'j':['ј','ʝ','ĵ','ǰ','ϳ','ɉ'],'k':['κ','ķ','ĸ','ƙ','ḳ','ǩ'],'l':['ł','ℓ','ļ','ľ','ŀ','ḷ'],'m':['μ','ɱ','ṁ','ḿ','ɯ','ṃ'],'n':['η','ñ','ń','ň','ņ','ṅ'],'o':['ο','σ','ő','ø','ơ','ö'],'p':['ρ','þ','ҏ','ƥ','ṗ','ᵽ'],'q':['ϙ','ʠ','ԛ','ɋ','զ','գ'],'r':['я','ŕ','ř','ŗ','ṙ','ṛ'],'s':['ѕ','š','ş','ș','ś','ṣ'],'t':['τ','ť','ţ','ț','ṭ','ṫ'],'u':['υ','ū','ů','ű','ü','ú'],'v':['ν','ṿ','ʋ','ṽ','ʌ','ѵ'],'w':['ω','ŵ','ẁ','ẃ','ẇ','ẅ'],'x':['χ','ẋ','ẍ','ӽ','ӿ','ҳ'],'y':['υ','ÿ','ý','ŷ','ỳ','ȳ'],'z':['ζ','ž','ź','ż','ẓ','ẕ']};
+        const diacriticsAbove=['\u0300','\u0301','\u0302','\u0303','\u0304','\u0305','\u0306','\u0307','\u0308','\u0309','\u030A','\u030B','\u030C','\u030D','\u030E','\u030F','ً','ٌ','َ','ُ','ّ','ْ'];
+        const diacriticsBelow=['\u0316','\u0317','\u0318','\u0319','\u031C','\u031D','\u031E','\u031F','\u0320','\u0321','\u0322','\u0323','\u0324','\u0325','\u0326','\u0327','\u0328','\u0329','ِ','ٍ'];
+        const overlayMarks=['\u0335','\u0336','\u0337','\u0338'];
+        const diacriticSafe=['α','β','γ','δ','ε','ζ','η','θ','ι','κ','λ','μ','ν','ξ','ο','π','ρ','ς','σ','τ','υ','φ','χ','ψ','ω','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','ð','þ','ß','ƒ','ł','ŵ','я'];
+        function glitchText(text,level=2){let result='';for(let i=0;i<text.length;i++){let char=text[i];const map=glitchMaps[char];if(map){char=map[Math.floor(Math.random()*map.length)];if(diacriticSafe.includes(char)){const numAbove=Math.floor(level*1.5)+Math.floor(Math.random()*2);const numBelow=Math.floor(level*1.5)+Math.floor(Math.random()*2);for(let j=0;j<numAbove;j++)char+=diacriticsAbove[Math.floor(Math.random()*diacriticsAbove.length)];for(let j=0;j<numBelow;j++)char+=diacriticsBelow[Math.floor(Math.random()*diacriticsBelow.length)];if(Math.random()<0.2)char+=overlayMarks[Math.floor(Math.random()*overlayMarks.length)];}}result+=char;}return result;}
+        document.querySelectorAll('.listen-links a, .contact a, .back, .sc-list a').forEach(el=>{const originalText=el.textContent;el.addEventListener('mouseenter',()=>{el.textContent=glitchText(originalText,0.5);});el.addEventListener('mouseleave',()=>{el.textContent=originalText;});});
+        document.querySelectorAll('.release-title, .wip-title').forEach(el=>{const originalText=el.textContent;const parent=el.closest('a');if(parent){parent.addEventListener('mouseenter',()=>{el.textContent=glitchText(originalText,0.5);});parent.addEventListener('mouseleave',()=>{el.textContent=originalText;});}});
+    </script>
+{% endblock %}

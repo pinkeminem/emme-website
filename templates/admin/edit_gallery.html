@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>emme - edit gallery</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Calibri, 'Trebuchet MS', sans-serif; background: #111; color: #ccc; min-height: 100vh; padding: 40px; }
+        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; }
+        .back { color: #666; text-decoration: none; font-size: 12px; }
+        .back:hover { color: #fff; }
+        h1 { font-weight: normal; font-size: 14px; color: #888; letter-spacing: 1px; }
+        .upload-zone { border: 2px dashed #333; padding: 30px; text-align: center; margin-bottom: 30px; cursor: pointer; transition: border-color 0.3s; }
+        .upload-zone:hover { border-color: #666; }
+        .upload-zone.dragover { border-color: #4a6; }
+        .upload-zone input { display: none; }
+        .upload-text { color: #555; font-size: 12px; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+        .gallery-card { background: #1a1a1a; border: 1px solid #222; position: relative; cursor: grab; }
+        .gallery-card.dragging { opacity: 0.5; }
+        .gallery-card img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+        .gallery-card-info { padding: 8px; }
+        .gallery-card-info input { width: 100%; background: #0a0a0a; border: 1px solid #222; color: #ccc; padding: 5px; font-size: 11px; font-family: inherit; }
+        .gallery-card-actions { display: flex; gap: 5px; margin-top: 5px; }
+        .card-btn { background: none; border: 1px solid #333; color: #666; padding: 3px 8px; font-size: 10px; cursor: pointer; font-family: inherit; }
+        .card-btn:hover { color: #fff; border-color: #666; }
+        .card-btn.delete:hover { color: #a46; border-color: #a46; }
+        .status { font-size: 11px; color: #4a6; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>edit: gallery</h1>
+        <a href="{{ url_for('admin.dashboard') }}" class="back">&larr; dashboard</a>
+    </div>
+
+    <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+        <input type="file" id="fileInput" accept="image/*" multiple>
+        <div class="upload-text">click or drag images here to upload</div>
+    </div>
+    <div class="status" id="status"></div>
+
+    <div class="gallery-grid" id="galleryGrid">
+        {% for img in images %}
+        <div class="gallery-card" data-id="{{ img.id }}" draggable="true">
+            <img src="{{ url_for('static', filename=img.filename) }}" alt="{{ img.alt_text }}">
+            <div class="gallery-card-info">
+                <input type="text" value="{{ img.alt_text }}" placeholder="alt text" onchange="updateAlt({{ img.id }}, this.value)">
+                <div class="gallery-card-actions">
+                    <button class="card-btn delete" onclick="deleteImage({{ img.id }}, this.closest('.gallery-card'))">delete</button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        const uploadZone = document.getElementById('uploadZone');
+        const fileInput = document.getElementById('fileInput');
+        const status = document.getElementById('status');
+
+        uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+        uploadZone.addEventListener('dragleave', () => { uploadZone.classList.remove('dragover'); });
+        uploadZone.addEventListener('drop', (e) => { e.preventDefault(); uploadZone.classList.remove('dragover'); handleFiles(e.dataTransfer.files); });
+        fileInput.addEventListener('change', () => { handleFiles(fileInput.files); });
+
+        async function handleFiles(files) {
+            for (const file of files) {
+                status.textContent = `Uploading ${file.name}...`;
+                const formData = new FormData();
+                formData.append('file', file);
+                try {
+                    const res = await fetch('/api/upload', { method: 'POST', body: formData });
+                    const data = await res.json();
+                    if (data.status === 'ok') {
+                        const addRes = await fetch('/api/gallery/add', {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify({filename: data.path, alt_text: file.name.split('.')[0]})
+                        });
+                        if (addRes.ok) {
+                            status.textContent = `Uploaded ${file.name}`;
+                            setTimeout(() => location.reload(), 500);
+                        }
+                    } else {
+                        status.textContent = data.message;
+                    }
+                } catch(e) { status.textContent = 'Upload failed'; }
+            }
+        }
+
+        async function updateAlt(id, alt_text) {
+            await fetch('/api/gallery/update', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({id, alt_text})
+            });
+        }
+
+        async function deleteImage(id, element) {
+            if (!confirm('Delete this image?')) return;
+            const res = await fetch('/api/gallery/delete', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({id})
+            });
+            if (res.ok) element.remove();
+        }
+
+        // Drag and drop reordering
+        let dragCard = null;
+        document.querySelectorAll('.gallery-card').forEach(card => {
+            card.addEventListener('dragstart', (e) => { dragCard = card; card.classList.add('dragging'); });
+            card.addEventListener('dragend', () => { card.classList.remove('dragging'); });
+            card.addEventListener('dragover', (e) => { e.preventDefault(); });
+            card.addEventListener('drop', (e) => {
+                e.preventDefault();
+                if (dragCard && dragCard !== card) {
+                    const grid = document.getElementById('galleryGrid');
+                    const cards = [...grid.children];
+                    const fromIdx = cards.indexOf(dragCard);
+                    const toIdx = cards.indexOf(card);
+                    if (fromIdx < toIdx) card.after(dragCard);
+                    else card.before(dragCard);
+                    saveOrder();
+                }
+            });
+        });
+
+        async function saveOrder() {
+            const cards = document.querySelectorAll('.gallery-card');
+            const order = Array.from(cards).map(c => parseInt(c.dataset.id));
+            await fetch('/api/gallery/reorder', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({order})
+            });
+        }
+    </script>
+</body>
+</html>

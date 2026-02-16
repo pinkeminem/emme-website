@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>emme - edit archive</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Calibri, 'Trebuchet MS', sans-serif; background: #111; color: #ccc; min-height: 100vh; padding: 40px; }
+        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; }
+        .back { color: #666; text-decoration: none; font-size: 12px; }
+        .back:hover { color: #fff; }
+        h1 { font-weight: normal; font-size: 14px; color: #888; letter-spacing: 1px; }
+        .info { font-size: 12px; color: #555; margin-bottom: 20px; }
+        .add-btn { background: transparent; border: 1px dashed #333; color: #555; padding: 8px 15px; font-size: 11px; cursor: pointer; transition: all 0.3s; font-family: inherit; margin-bottom: 20px; }
+        .add-btn:hover { color: #fff; border-color: #666; }
+        .article-row { display: grid; grid-template-columns: 60px 50px 1fr 150px 80px 30px; gap: 8px; align-items: center; padding: 6px 0; border-bottom: 1px solid #1a1a1a; }
+        .article-row input { background: #0a0a0a; border: 1px solid #222; color: #ccc; padding: 6px; font-size: 11px; font-family: inherit; outline: none; width: 100%; }
+        .article-row input:focus { border-color: #444; }
+        .remove-btn { background: none; border: none; color: #444; cursor: pointer; font-size: 14px; }
+        .remove-btn:hover { color: #a46; }
+        .save-btn { background: transparent; border: 1px solid #333; color: #888; padding: 6px 15px; font-size: 10px; cursor: pointer; font-family: inherit; }
+        .save-btn:hover { color: #fff; border-color: #666; }
+        .header-row { display: grid; grid-template-columns: 60px 50px 1fr 150px 80px 30px; gap: 8px; padding: 6px 0; font-size: 10px; color: #444; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #333; margin-bottom: 5px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>edit: archive ({{ articles | length }} articles)</h1>
+        <a href="{{ url_for('admin.dashboard') }}" class="back">&larr; dashboard</a>
+    </div>
+
+    <button class="add-btn" onclick="addArticle()">+ add article</button>
+
+    <div class="header-row">
+        <span>year</span><span>date</span><span>title</span><span>url</span><span>category</span><span></span>
+    </div>
+
+    <div id="articles-list">
+        {% for a in articles %}
+        <div class="article-row" data-id="{{ a.id }}">
+            <input type="text" value="{{ a.year }}" data-field="year">
+            <input type="text" value="{{ a.month_day }}" data-field="month_day">
+            <input type="text" value="{{ a.title }}" data-field="title">
+            <input type="text" value="{{ a.url }}" data-field="url">
+            <input type="text" value="{{ a.category }}" data-field="category">
+            <button class="remove-btn" onclick="deleteArticle({{ a.id }}, this.closest('.article-row'))">&times;</button>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        // Auto-save on blur
+        document.querySelectorAll('.article-row input').forEach(input => {
+            input.addEventListener('change', () => {
+                const row = input.closest('.article-row');
+                const id = parseInt(row.dataset.id);
+                const data = {id};
+                row.querySelectorAll('[data-field]').forEach(el => {
+                    data[el.dataset.field] = el.dataset.field === 'year' ? parseInt(el.value) || 2024 : el.value;
+                });
+                fetch('/api/archive/update', {
+                    method: 'POST', headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+            });
+        });
+
+        async function addArticle() {
+            const res = await fetch('/api/archive/add', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({year: new Date().getFullYear(), month_day: '', title: 'New Article', url: '', category: ''})
+            });
+            if (res.ok) location.reload();
+        }
+
+        async function deleteArticle(id, el) {
+            if (!confirm('Delete this article?')) return;
+            await fetch('/api/archive/delete', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({id})
+            });
+            el.remove();
+        }
+    </script>
+</body>
+</html>

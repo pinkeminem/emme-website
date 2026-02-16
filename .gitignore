@@ -1,3 +1,8 @@
 ssh key
 ssh key.pub
 .DS_Store
+.env
+emme.db
+__pycache__/
+static/uploads/
+drive/

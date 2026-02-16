@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}emme - archive{% endblock %}
+{% block head %}
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Calibri, 'Trebuchet MS', sans-serif; background: #000; color: #ccc; min-height: 100vh; padding: 40px 40px 60px; }
+        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 60px; }
+        .logo { height: 35px; width: auto; }
+        .back { color: #666; text-decoration: none; font-size: 12px; }
+        .back:hover { color: #fff; }
+        h1 { font-weight: normal; font-size: 14px; margin-bottom: 10px; color: #888; letter-spacing: 1px; }
+        .archive-intro { color: #444; font-size: 12px; margin-bottom: 50px; max-width: 600px; line-height: 1.6; }
+        .archive-container { max-width: 900px; }
+        .year-section { margin-bottom: 50px; }
+        .year-header { font-size: 24px; color: #333; margin-bottom: 20px; font-weight: normal; letter-spacing: 2px; }
+        .article-list { list-style: none; }
+        .article-item { display: grid; grid-template-columns: 50px 1fr auto; gap: 15px; align-items: baseline; padding: 8px 0; border-bottom: 1px solid #111; }
+        .article-item:last-child { border-bottom: none; }
+        .article-date { font-size: 11px; color: #333; text-transform: uppercase; }
+        .article-title { font-size: 13px; color: #888; text-decoration: none; transition: color 0.2s; line-height: 1.4; }
+        .article-title:hover { color: #fff; }
+        .article-category { font-size: 9px; color: #333; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; }
+        .article-category.interview { color: #4a6; }
+        .article-category.artist-spotlight { color: #64a; }
+        .article-category.video { color: #a46; }
+        .article-category.premiere { color: #6a4; }
+        .article-category.story { color: #46a; }
+        .article-category.news { color: #a64; }
+        .article-category.mixes { color: #4a6; }
+        .article-category.editors-picks { color: #a4a; }
+        .article-category.technology { color: #4aa; }
+        .article-category.events { color: #aa4; }
+        .article-category.album-reviews { color: #6aa; }
+        .article-category.interviews { color: #4a6; }
+        .stats { display: flex; gap: 30px; margin-bottom: 40px; padding-bottom: 30px; border-bottom: 1px solid #151515; }
+        .stat { text-align: center; }
+        .stat-number { font-size: 28px; color: #444; display: block; margin-bottom: 5px; }
+        .stat-label { font-size: 10px; color: #333; text-transform: uppercase; letter-spacing: 1px; }
+        @media (max-width: 700px) {
+            body { padding: 40px 20px 60px; }
+            .article-item { grid-template-columns: 45px 1fr; gap: 10px; }
+            .article-category { display: none; }
+            .article-title { font-size: 12px; }
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <div class="header">
+        <a href="{{ url_for('public.index') }}"><img src="{{ url_for('static', filename='images/logo-scrawl.png') }}" alt="emme" class="logo"></a>
+        <a href="{{ url_for('public.index') }}" class="back">&larr; back</a>
+    </div>
+    <h1>nest hq archive</h1>
+    <p class="archive-intro">{{ articles | length }} articles written for Nest HQ between 2014-2019, covering electronic music, interviews, album reviews, premieres, and artist spotlights.</p>
+    <div class="stats">
+        <div class="stat">
+            <span class="stat-number">{{ articles | length }}</span>
+            <span class="stat-label">articles</span>
+        </div>
+        <div class="stat">
+            <span class="stat-number">{{ years | length }}</span>
+            <span class="stat-label">years</span>
+        </div>
+    </div>
+    <div class="archive-container">
+        {% for year in years | sort(reverse=true) %}
+        <div class="year-section">
+            <div class="year-header">{{ year }}</div>
+            <ul class="article-list">
+                {% for article in years[year] %}
+                <li class="article-item">
+                    <span class="article-date">{{ article.month_day }}</span>
+                    <a href="{{ article.url }}" target="_blank" class="article-title">{{ article.title }}</a>
+                    <span class="article-category {{ article.category | replace(' ', '-') }}">{{ article.category }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

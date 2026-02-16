@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>emme - edit {{ page }}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Calibri, 'Trebuchet MS', sans-serif; background: #111; color: #ccc; min-height: 100vh; padding: 40px; }
+        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; }
+        .back { color: #666; text-decoration: none; font-size: 12px; }
+        .back:hover { color: #fff; }
+        h1 { font-weight: normal; font-size: 14px; color: #888; letter-spacing: 1px; }
+        .section { margin-bottom: 40px; padding: 25px; background: #1a1a1a; border: 1px solid #222; }
+        .section-title { font-size: 11px; color: #555; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 10px; color: #444; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+        .form-group input, .form-group textarea { width: 100%; background: #0a0a0a; border: 1px solid #222; color: #ccc; padding: 10px; font-size: 13px; font-family: inherit; outline: none; }
+        .form-group input:focus, .form-group textarea:focus { border-color: #444; }
+        .form-group textarea { resize: vertical; min-height: 100px; }
+        .save-btn { background: transparent; border: 1px solid #333; color: #888; padding: 8px 25px; font-size: 11px; letter-spacing: 1px; cursor: pointer; transition: all 0.3s; font-family: inherit; }
+        .save-btn:hover { color: #fff; border-color: #666; }
+        .save-btn.saved { border-color: #4a6; color: #4a6; }
+        .list-item { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; padding: 8px; background: #151515; }
+        .list-item input { flex: 1; }
+        .remove-btn { background: none; border: none; color: #666; cursor: pointer; font-size: 16px; padding: 0 5px; }
+        .remove-btn:hover { color: #a46; }
+        .add-btn { background: transparent; border: 1px dashed #333; color: #555; padding: 8px 15px; font-size: 11px; cursor: pointer; transition: all 0.3s; font-family: inherit; width: 100%; margin-top: 8px; }
+        .add-btn:hover { color: #fff; border-color: #666; }
+        .status-msg { font-size: 11px; margin-top: 8px; color: #4a6; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>edit: {{ page }}</h1>
+        <a href="{{ url_for('admin.dashboard') }}" class="back">&larr; dashboard</a>
+    </div>
+
+    {% if page == 'about' %}
+    <div class="section">
+        <div class="section-title">bio</div>
+        <div class="form-group">
+            <textarea id="bio-html" rows="8">{{ content.bio.html if content.bio else '' }}</textarea>
+        </div>
+        <button class="save-btn" onclick="saveContent('about', 'bio', {html: document.getElementById('bio-html').value}, this)">save bio</button>
+    </div>
+    <div class="section">
+        <div class="section-title">stage bio</div>
+        <div class="form-group">
+            <textarea id="stage-bio-html" rows="4">{{ content.stage_bio.html if content.stage_bio else '' }}</textarea>
+        </div>
+        <button class="save-btn" onclick="saveContent('about', 'stage_bio', {html: document.getElementById('stage-bio-html').value}, this)">save</button>
+    </div>
+    <div class="section">
+        <div class="section-title">skills</div>
+        <div id="skills-list">
+            {% for skill in content.skills %}
+            <div class="list-item">
+                <input type="text" value="{{ skill }}">
+                <button class="remove-btn" onclick="this.parentElement.remove()">&times;</button>
+            </div>
+            {% endfor %}
+        </div>
+        <button class="add-btn" onclick="addSkill()">+ add skill</button>
+        <br><br>
+        <button class="save-btn" onclick="saveSkills(this)">save skills</button>
+    </div>
+    <div class="section">
+        <div class="section-title">selected credits</div>
+        <div id="credits-list">
+            {% for c in content.credits %}
+            <div class="list-item" style="flex-wrap: wrap;">
+                <input type="text" placeholder="title" value="{{ c.title }}" data-field="title" style="flex: 1;">
+                <input type="text" placeholder="role" value="{{ c.role }}" data-field="role" style="flex: 1;">
+                <input type="text" placeholder="venue" value="{{ c.venue }}" data-field="venue" style="flex: 1;">
+                <button class="remove-btn" onclick="this.parentElement.remove()">&times;</button>
+            </div>
+            {% endfor %}
+        </div>
+        <button class="add-btn" onclick="addCredit()">+ add credit</button>
+        <br><br>
+        <button class="save-btn" onclick="saveCredits(this)">save credits</button>
+    </div>
+
+    {% elif page == 'index' %}
+    <div class="section">
+        <div class="section-title">navigation links</div>
+        <div id="nav-links-list">
+            {% for link in content.nav_links %}
+            <div class="list-item">
+                <input type="text" placeholder="label" value="{{ link.label }}" data-field="label">
+                <input type="text" placeholder="href" value="{{ link.href }}" data-field="href">
+                <button class="remove-btn" onclick="this.parentElement.remove()">&times;</button>
+            </div>
+            {% endfor %}
+        </div>
+        <button class="add-btn" onclick="addLinkItem('nav-links-list', ['label', 'href'])">+ add link</button>
+        <br><br>
+        <button class="save-btn" onclick="saveLinkList('index', 'nav_links', 'nav-links-list', ['label', 'href'], this)">save</button>
+    </div>
+    <div class="section">
+        <div class="section-title">social links</div>
+        <div id="social-links-list">
+            {% for link in content.social_links %}
+            <div class="list-item">
+                <input type="text" placeholder="label" value="{{ link.label }}" data-field="label">
+                <input type="text" placeholder="url" value="{{ link.url }}" data-field="url">
+                <button class="remove-btn" onclick="this.parentElement.remove()">&times;</button>
+            </div>
+            {% endfor %}
+        </div>
+        <button class="add-btn" onclick="addLinkItem('social-links-list', ['label', 'url'])">+ add link</button>
+        <br><br>
+        <button class="save-btn" onclick="saveLinkList('index', 'social_links', 'social-links-list', ['label', 'url'], this)">save</button>
+    </div>
+
+    {% elif page == 'shop' %}
+    <div class="section">
+        <div class="section-title">shopify url</div>
+        <div class="form-group">
+            <input type="text" id="shopify-url" value="{{ content.shopify_url or '' }}" placeholder="https://emme-shop.myshopify.com">
+        </div>
+        <button class="save-btn" onclick="saveContent('shop', 'shopify_url', document.getElementById('shopify-url').value || null, this)">save</button>
+    </div>
+
+    {% elif page == 'contact' %}
+    <div class="section">
+        <div class="section-title">booking email</div>
+        <div class="form-group">
+            <input type="email" id="booking-email" value="{{ content.booking_email or 'booking@emme-em.me' }}">
+        </div>
+        <button class="save-btn" onclick="saveContent('contact', 'booking_email', document.getElementById('booking-email').value, this)">save</button>
+    </div>
+
+    {% elif page == 'blog' %}
+    <div class="section">
+        <div class="section-title">blog posts</div>
+        <div id="posts-list">
+            {% for post in content.posts %}
+            <div class="list-item" style="flex-wrap: wrap; flex-direction: column; align-items: stretch;" data-id="{{ post.id }}">
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" placeholder="title" value="{{ post.title }}" data-field="title" style="flex: 2;">
+                    <input type="text" placeholder="date" value="{{ post.date_display }}" data-field="date_display" style="flex: 1;">
+                    <button class="remove-btn" onclick="deleteItem('blog-posts', {{ post.id }}, this.closest('.list-item'))">&times;</button>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 5px;">
+                    <input type="text" placeholder="url" value="{{ post.url }}" data-field="url" style="flex: 2;">
+                    <input type="text" placeholder="category" value="{{ post.category }}" data-field="category" style="flex: 1;">
+                </div>
+                <textarea placeholder="excerpt" data-field="excerpt" style="margin-top: 5px;" rows="2">{{ post.excerpt }}</textarea>
+                <button class="save-btn" style="margin-top: 5px;" onclick="updateItem('blog-posts', this.closest('.list-item'))">save</button>
+            </div>
+            {% endfor %}
+        </div>
+        <button class="add-btn" onclick="addBlogPost()">+ add post</button>
+    </div>
+    {% endif %}
+
+    <script>
+        async function saveContent(page, section, content, btn) {
+            btn.textContent = 'saving...';
+            try {
+                const res = await fetch('/api/save-content', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({page, section, content})
+                });
+                if (res.ok) {
+                    btn.textContent = 'saved!';
+                    btn.classList.add('saved');
+                    setTimeout(() => { btn.textContent = 'save'; btn.classList.remove('saved'); }, 2000);
+                }
+            } catch(e) { btn.textContent = 'error'; }
+        }
+
+        function addSkill() {
+            const list = document.getElementById('skills-list');
+            const item = document.createElement('div');
+            item.className = 'list-item';
+            item.innerHTML = '<input type="text" placeholder="skill"><button class="remove-btn" onclick="this.parentElement.remove()">&times;</button>';
+            list.appendChild(item);
+        }
+
+        function saveSkills(btn) {
+            const items = document.querySelectorAll('#skills-list .list-item input');
+            const skills = Array.from(items).map(i => i.value).filter(v => v);
+            saveContent('about', 'skills', skills, btn);
+        }
+
+        function addCredit() {
+            const list = document.getElementById('credits-list');
+            const item = document.createElement('div');
+            item.className = 'list-item';
+            item.style.flexWrap = 'wrap';
+            item.innerHTML = '<input type="text" placeholder="title" data-field="title" style="flex:1;"><input type="text" placeholder="role" data-field="role" style="flex:1;"><input type="text" placeholder="venue" data-field="venue" style="flex:1;"><button class="remove-btn" onclick="this.parentElement.remove()">&times;</button>';
+            list.appendChild(item);
+        }
+
+        function saveCredits(btn) {
+            const items = document.querySelectorAll('#credits-list .list-item');
+            const credits = Array.from(items).map(item => ({
+                title: item.querySelector('[data-field="title"]').value,
+                role: item.querySelector('[data-field="role"]').value,
+                venue: item.querySelector('[data-field="venue"]').value,
+            })).filter(c => c.title);
+            saveContent('about', 'credits', credits, btn);
+        }
+
+        function addLinkItem(listId, fields) {
+            const list = document.getElementById(listId);
+            const item = document.createElement('div');
+            item.className = 'list-item';
+            item.innerHTML = fields.map(f => `<input type="text" placeholder="${f}" data-field="${f}">`).join('') + '<button class="remove-btn" onclick="this.parentElement.remove()">&times;</button>';
+            list.appendChild(item);
+        }
+
+        function saveLinkList(page, section, listId, fields, btn) {
+            const items = document.querySelectorAll(`#${listId} .list-item`);
+            const data = Array.from(items).map(item => {
+                const obj = {};
+                fields.forEach(f => { obj[f] = item.querySelector(`[data-field="${f}"]`).value; });
+                return obj;
+            }).filter(obj => Object.values(obj).some(v => v));
+            saveContent(page, section, data, btn);
+        }
+
+        async function deleteItem(endpoint, id, element) {
+            if (!confirm('Delete this item?')) return;
+            const res = await fetch(`/api/${endpoint}/delete`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({id})
+            });
+            if (res.ok) element.remove();
+        }
+
+        async function updateItem(endpoint, element) {
+            const id = parseInt(element.dataset.id);
+            const data = {id};
+            element.querySelectorAll('[data-field]').forEach(el => {
+                data[el.dataset.field] = el.tagName === 'TEXTAREA' ? el.value : el.value;
+            });
+            const btn = element.querySelector('.save-btn');
+            btn.textContent = 'saving...';
+            const res = await fetch(`/api/${endpoint}/update`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+            if (res.ok) {
+                btn.textContent = 'saved!';
+                btn.classList.add('saved');
+                setTimeout(() => { btn.textContent = 'save'; btn.classList.remove('saved'); }, 2000);
+            }
+        }
+
+        async function addBlogPost() {
+            const res = await fetch('/api/blog-posts/add', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({title: 'New Post', url: '', excerpt: '', category: '', date_display: ''})
+            });
+            if (res.ok) location.reload();
+        }
+    </script>
+</body>
+</html>

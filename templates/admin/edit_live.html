@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>emme - edit live</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Calibri, 'Trebuchet MS', sans-serif; background: #111; color: #ccc; min-height: 100vh; padding: 40px; }
+        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; }
+        .back { color: #666; text-decoration: none; font-size: 12px; }
+        .back:hover { color: #fff; }
+        h1 { font-weight: normal; font-size: 14px; color: #888; letter-spacing: 1px; }
+        .section { margin-bottom: 40px; padding: 25px; background: #1a1a1a; border: 1px solid #222; }
+        .section-title { font-size: 11px; color: #555; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; }
+        .list-item { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; padding: 10px; background: #151515; flex-wrap: wrap; }
+        .list-item input { background: #0a0a0a; border: 1px solid #222; color: #ccc; padding: 8px; font-size: 12px; font-family: inherit; outline: none; flex: 1; min-width: 100px; }
+        .list-item input:focus { border-color: #444; }
+        .remove-btn { background: none; border: none; color: #666; cursor: pointer; font-size: 16px; padding: 0 5px; }
+        .remove-btn:hover { color: #a46; }
+        .save-btn { background: transparent; border: 1px solid #333; color: #888; padding: 8px 25px; font-size: 11px; letter-spacing: 1px; cursor: pointer; transition: all 0.3s; font-family: inherit; }
+        .save-btn:hover { color: #fff; border-color: #666; }
+        .save-btn.saved { border-color: #4a6; color: #4a6; }
+        .add-btn { background: transparent; border: 1px dashed #333; color: #555; padding: 8px 15px; font-size: 11px; cursor: pointer; transition: all 0.3s; font-family: inherit; width: 100%; margin-top: 8px; }
+        .add-btn:hover { color: #fff; border-color: #666; }
+        .upload-zone { border: 2px dashed #333; padding: 20px; text-align: center; margin-bottom: 15px; cursor: pointer; transition: border-color 0.3s; }
+        .upload-zone:hover { border-color: #666; }
+        .upload-zone input { display: none; }
+        .upload-text { color: #555; font-size: 12px; }
+        .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+        .video-card { background: #151515; border: 1px solid #222; position: relative; }
+        .video-card video { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
+        .video-card-info { padding: 8px; }
+        .video-card-info input { width: 100%; background: #0a0a0a; border: 1px solid #222; color: #ccc; padding: 5px; font-size: 11px; font-family: inherit; margin-bottom: 4px; }
+        .card-btn { background: none; border: 1px solid #333; color: #666; padding: 3px 8px; font-size: 10px; cursor: pointer; font-family: inherit; }
+        .card-btn:hover { color: #fff; border-color: #666; }
+        .card-btn.delete:hover { color: #a46; border-color: #a46; }
+        .status { font-size: 11px; color: #4a6; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>edit: live</h1>
+        <a href="{{ url_for('admin.dashboard') }}" class="back">&larr; dashboard</a>
+    </div>
+
+    <div class="section">
+        <div class="section-title">upcoming shows</div>
+        <div id="shows-list">
+            {% for show in shows %}
+            <div class="list-item" data-id="{{ show.id }}">
+                <input type="text" placeholder="date" value="{{ show.show_date }}" data-field="show_date">
+                <input type="text" placeholder="venue" value="{{ show.venue }}" data-field="venue">
+                <input type="text" placeholder="city" value="{{ show.city }}" data-field="city">
+                <input type="text" placeholder="info url" value="{{ show.info_url }}" data-field="info_url">
+                <button class="save-btn" onclick="updateShow(this.closest('.list-item'))">save</button>
+                <button class="remove-btn" onclick="deleteShow({{ show.id }}, this.closest('.list-item'))">&times;</button>
+            </div>
+            {% endfor %}
+        </div>
+        <button class="add-btn" onclick="addShow()">+ add show</button>
+    </div>
+
+    <div class="section">
+        <div class="section-title">videos</div>
+        <div class="upload-zone" onclick="document.getElementById('videoInput').click()">
+            <input type="file" id="videoInput" accept="video/*" multiple>
+            <div class="upload-text">click to upload videos</div>
+        </div>
+        <div class="status" id="status"></div>
+        <div class="video-grid" id="videoGrid">
+            {% for video in videos %}
+            <div class="video-card" data-id="{{ video.id }}">
+                <video src="{{ url_for('static', filename=video.filename) }}" muted preload="metadata"></video>
+                <div class="video-card-info">
+                    <input type="text" placeholder="title" value="{{ video.title }}">
+                    <input type="text" placeholder="location" value="{{ video.location }}">
+                    <button class="card-btn delete" onclick="deleteVideo({{ video.id }}, this.closest('.video-card'))">delete</button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        async function addShow() {
+            const res = await fetch('/api/shows/add', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({show_date: '', venue: '', city: '', info_url: ''})
+            });
+            if (res.ok) location.reload();
+        }
+
+        async function updateShow(element) {
+            const id = parseInt(element.dataset.id);
+            const data = {id};
+            element.querySelectorAll('[data-field]').forEach(el => { data[el.dataset.field] = el.value; });
+            const btn = element.querySelector('.save-btn');
+            btn.textContent = 'saving...';
+            const res = await fetch('/api/shows/update', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+            if (res.ok) {
+                btn.textContent = 'saved!';
+                btn.classList.add('saved');
+                setTimeout(() => { btn.textContent = 'save'; btn.classList.remove('saved'); }, 2000);
+            }
+        }
+
+        async function deleteShow(id, element) {
+            if (!confirm('Delete this show?')) return;
+            const res = await fetch('/api/shows/delete', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({id})
+            });
+            if (res.ok) element.remove();
+        }
+
+        document.getElementById('videoInput').addEventListener('change', async function() {
+            const status = document.getElementById('status');
+            for (const file of this.files) {
+                status.textContent = `Uploading ${file.name}...`;
+                const formData = new FormData();
+                formData.append('file', file);
+                try {
+                    const res = await fetch('/api/upload', { method: 'POST', body: formData });
+                    const data = await res.json();
+                    if (data.status === 'ok') {
+                        await fetch('/api/videos/add', {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify({filename: data.path, title: file.name.split('.')[0], location: ''})
+                        });
+                        status.textContent = `Uploaded ${file.name}`;
+                        setTimeout(() => location.reload(), 500);
+                    } else { status.textContent = data.message; }
+                } catch(e) { status.textContent = 'Upload failed'; }
+            }
+        });
+
+        async function deleteVideo(id, element) {
+            if (!confirm('Delete this video?')) return;
+            const res = await fetch('/api/videos/delete', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({id})
+            });
+            if (res.ok) element.remove();
+        }
+    </script>
+</body>
+</html>
