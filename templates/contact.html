@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% block title %}emme - contact{% endblock %}
+{% block head %}
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Calibri, 'Trebuchet MS', sans-serif; background: #000; color: #ccc; min-height: 100vh; padding: 40px 40px 60px; }
+        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 80px; }
+        .logo { height: 35px; width: auto; }
+        .back { color: #666; text-decoration: none; font-size: 12px; }
+        .back:hover { color: #fff; }
+        h1 { font-weight: normal; font-size: 14px; margin-bottom: 60px; color: #888; letter-spacing: 1px; }
+        .contact-container { max-width: 500px; }
+        .contact-item { margin-bottom: 50px; position: relative; }
+        .contact-label { font-size: 10px; color: #444; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; }
+        .contact-email { color: #999; text-decoration: none; font-size: 18px; font-weight: 600; display: inline-block; position: relative; transition: color 0.3s ease; }
+        .contact-email:hover { color: #fff; }
+        .contact-email::before { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px; background: linear-gradient(90deg, transparent, #666, transparent); transition: width 0.4s ease; }
+        .contact-email:hover::before { width: 100%; }
+        .glitch-line { position: absolute; left: -20px; top: 50%; width: 3px; height: 40px; background: linear-gradient(180deg, transparent, #333, transparent); transform: translateY(-50%); animation: lineGlitch 4s ease-in-out infinite; }
+        .contact-item:nth-child(2) .glitch-line { animation-delay: 2s; }
+        @keyframes lineGlitch {
+            0%, 100% { opacity: 0.5; height: 40px; } 10% { opacity: 1; height: 50px; }
+            15% { opacity: 0; } 20% { opacity: 0.7; height: 30px; } 50% { opacity: 0.5; height: 40px; }
+            55% { opacity: 0; } 60% { opacity: 0.8; height: 60px; } 70% { opacity: 0.5; height: 40px; }
+        }
+        .description { color: #555; font-size: 12px; margin-top: 8px; line-height: 1.6; }
+
+        /* Contact Form */
+        .contact-form { margin-top: 60px; padding-top: 40px; border-top: 1px solid #222; }
+        .form-group { margin-bottom: 25px; }
+        .form-group label { display: block; font-size: 10px; color: #444; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
+        .form-group input, .form-group textarea {
+            width: 100%; background: #0a0a0a; border: 1px solid #222; color: #ccc;
+            padding: 12px; font-size: 13px; font-family: inherit; outline: none; transition: border-color 0.3s;
+        }
+        .form-group input:focus, .form-group textarea:focus { border-color: #444; }
+        .form-group textarea { resize: vertical; min-height: 120px; }
+        .form-submit {
+            background: transparent; border: 1px solid #333; color: #888; padding: 12px 40px;
+            font-size: 12px; letter-spacing: 2px; text-transform: lowercase; cursor: pointer;
+            transition: all 0.3s ease; font-family: inherit;
+        }
+        .form-submit:hover { color: #fff; border-color: #666; }
+        .form-submit:disabled { opacity: 0.3; cursor: not-allowed; }
+        .form-message { margin-top: 15px; font-size: 12px; }
+        .form-message.success { color: #4a6; }
+        .form-message.error { color: #a46; }
+        .hp { position: absolute; left: -9999px; }
+
+        .admin-link { margin-top: 80px; text-align: center; }
+        .admin-link a { color: #1a1a1a; text-decoration: none; font-size: 10px; transition: color 0.3s; }
+        .admin-link a:hover { color: #444; }
+
+        @media (max-width: 600px) {
+            body { padding: 40px 20px 60px; }
+            .contact-email { font-size: 15px; }
+            .glitch-line { left: -15px; }
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="header">
+        <a href="{{ url_for('public.index') }}"><img src="{{ url_for('static', filename='images/logo-scrawl.png') }}" alt="emme" class="logo"></a>
+        <a href="{{ url_for('public.index') }}" class="back">&larr; back</a>
+    </div>
+
+    <div class="contact-container">
+        <h1>contact</h1>
+
+        <div class="contact-item">
+            <div class="glitch-line"></div>
+            <div class="contact-label">booking</div>
+            <a href="mailto:booking@emme-em.me" class="contact-email">booking@emme-em.me</a>
+        </div>
+
+        <div class="contact-form">
+            <form id="contactForm">
+                <div class="form-group">
+                    <label for="name">name *</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">email *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="subject">subject</label>
+                    <input type="text" id="subject" name="subject">
+                </div>
+                <div class="form-group">
+                    <label for="message">message *</label>
+                    <textarea id="message" name="message" required></textarea>
+                </div>
+                <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off">
+                <button type="submit" class="form-submit">send</button>
+                <div id="formMessage" class="form-message"></div>
+            </form>
+        </div>
+    </div>
+
+    <div class="admin-link">
+        <a href="{{ url_for('admin.login') }}">.</a>
+    </div>
+
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('.form-submit');
+            const msg = document.getElementById('formMessage');
+            btn.disabled = true;
+            btn.textContent = 'sending...';
+            msg.textContent = '';
+            msg.className = 'form-message';
+
+            try {
+                const formData = new FormData(e.target);
+                const data = Object.fromEntries(formData);
+                const res = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+                const result = await res.json();
+                if (res.ok) {
+                    msg.textContent = result.message || 'Message sent!';
+                    msg.className = 'form-message success';
+                    e.target.reset();
+                } else {
+                    msg.textContent = result.message || 'Something went wrong.';
+                    msg.className = 'form-message error';
+                }
+            } catch (err) {
+                msg.textContent = 'Network error. Please try again.';
+                msg.className = 'form-message error';
+            }
+            btn.disabled = false;
+            btn.textContent = 'send';
+        });
+    </script>
+{% endblock %}

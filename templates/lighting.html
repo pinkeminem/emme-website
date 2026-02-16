@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}emme - lighting{% endblock %}
+{% block head %}
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Calibri, 'Trebuchet MS', sans-serif; background: #000; color: #ccc; min-height: 100vh; padding: 40px 40px 60px; }
+        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 60px; }
+        .logo { height: 35px; width: auto; }
+        .back { color: #666; text-decoration: none; font-size: 12px; }
+        .back:hover { color: #fff; }
+        h1 { font-weight: normal; font-size: 14px; margin-bottom: 60px; color: #888; letter-spacing: 1px; }
+        .show-list { list-style: none; }
+        .show-item { margin-bottom: 30px; padding-bottom: 30px; border-bottom: 1px solid #181818; }
+        .show-item:last-child { border-bottom: none; }
+        .show-role { color: #555; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+        .show-title { color: #ddd; font-size: 15px; margin-bottom: 6px; }
+        .show-venue { color: #666; font-size: 12px; margin-bottom: 4px; }
+        .show-location { color: #444; font-size: 11px; }
+        .show-links { margin-top: 10px; }
+        .show-links a { color: #666; text-decoration: none; font-size: 11px; margin-right: 15px; transition: color 0.3s ease; }
+        .show-links a:hover { color: #fff; }
+        .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; margin-top: 60px; margin-bottom: 60px; }
+        .photo-item { aspect-ratio: 4/3; overflow: hidden; background: #0a0a0a; }
+        .photo-item img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) contrast(1.1); opacity: 0.8; transition: all 0.4s ease; }
+        .photo-item:hover img { filter: grayscale(50%) contrast(1.05); opacity: 1; transform: scale(1.02); }
+        .contact { margin-top: 80px; padding-top: 40px; border-top: 1px solid #222; }
+        .contact-title { font-size: 11px; color: #555; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; }
+        .contact a { color: #888; text-decoration: none; font-size: 13px; }
+        .contact a:hover { color: #fff; }
+        @media (max-width: 600px) { .photo-grid { grid-template-columns: 1fr; } }
+    </style>
+{% endblock %}
+{% block body %}
+    <div class="header">
+        <a href="{{ url_for('public.index') }}"><img src="{{ url_for('static', filename='images/logo-scrawl.png') }}" alt="emme" class="logo"></a>
+        <a href="{{ url_for('public.index') }}" class="back">&larr; back</a>
+    </div>
+    <h1>lighting design</h1>
+    <ul class="show-list">
+        {% for show in shows %}
+        <li class="show-item">
+            <div class="show-role">{{ show.role }}</div>
+            <div class="show-title">{{ show.title }}</div>
+            <div class="show-venue">{{ show.venue }}</div>
+            <div class="show-location">{{ show.location }}</div>
+            {% if show.links %}
+            <div class="show-links">
+                {% for link in show.links %}
+                <a href="{{ link.url }}" target="_blank" rel="noopener">{{ link.label }}</a>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+    <div class="photo-grid">
+        {% for photo in photos %}
+        <div class="photo-item">
+            <img src="{{ url_for('static', filename=photo.filename) }}" alt="{{ photo.alt_text }}">
+        </div>
+        {% endfor %}
+    </div>
+    <div class="contact">
+        <div class="contact-title">booking</div>
+        <a href="mailto:booking@emme-em.me">booking@emme-em.me</a>
+    </div>
+{% endblock %}

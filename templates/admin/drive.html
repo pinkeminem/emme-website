@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>emme - drive</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Calibri, 'Trebuchet MS', sans-serif; background: #111; color: #ccc; min-height: 100vh; padding: 40px; }
+        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; }
+        .header-left { display: flex; align-items: center; gap: 20px; }
+        h1 { font-weight: normal; font-size: 14px; color: #888; letter-spacing: 1px; }
+        .back { color: #444; text-decoration: none; font-size: 11px; }
+        .back:hover { color: #fff; }
+
+        .breadcrumbs { display: flex; align-items: center; gap: 8px; margin-bottom: 25px; font-size: 12px; color: #555; flex-wrap: wrap; }
+        .breadcrumbs a { color: #888; text-decoration: none; }
+        .breadcrumbs a:hover { color: #fff; }
+        .breadcrumbs .sep { color: #333; }
+
+        .toolbar { display: flex; gap: 10px; margin-bottom: 20px; }
+        .btn { background: #1a1a1a; border: 1px solid #333; color: #ccc; padding: 8px 16px; font-size: 12px; cursor: pointer; font-family: inherit; transition: all 0.2s; }
+        .btn:hover { border-color: #555; color: #fff; }
+        .btn-danger { border-color: #533; color: #a66; }
+        .btn-danger:hover { border-color: #a44; color: #faa; }
+
+        .drop-zone { border: 2px dashed #333; padding: 40px; text-align: center; margin-bottom: 25px; transition: all 0.3s; color: #555; font-size: 13px; cursor: pointer; }
+        .drop-zone.active { border-color: #666; background: #1a1a1a; color: #aaa; }
+        .drop-zone input { display: none; }
+
+        .file-list { width: 100%; }
+        .file-row { display: grid; grid-template-columns: 30px 1fr 100px 140px 100px; align-items: center; padding: 10px 12px; border-bottom: 1px solid #1a1a1a; font-size: 13px; transition: background 0.15s; }
+        .file-row:hover { background: #1a1a1a; }
+        .file-row.header-row { color: #555; font-size: 11px; border-bottom: 1px solid #222; text-transform: uppercase; letter-spacing: 1px; }
+        .file-row.header-row:hover { background: transparent; }
+        .file-icon { font-size: 16px; text-align: center; }
+        .file-name a { color: #ccc; text-decoration: none; }
+        .file-name a:hover { color: #fff; }
+        .file-size { color: #555; text-align: right; }
+        .file-modified { color: #444; font-size: 11px; text-align: right; }
+        .file-actions { display: flex; gap: 8px; justify-content: flex-end; }
+        .file-actions a, .file-actions button { background: none; border: none; color: #555; cursor: pointer; font-size: 11px; text-decoration: none; font-family: inherit; padding: 3px 6px; }
+        .file-actions a:hover, .file-actions button:hover { color: #fff; }
+        .file-actions button.del:hover { color: #f66; }
+
+        .empty { color: #444; font-size: 13px; padding: 40px; text-align: center; }
+
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; align-items: center; justify-content: center; }
+        .modal-overlay.show { display: flex; }
+        .modal { background: #1a1a1a; border: 1px solid #333; padding: 30px; min-width: 320px; }
+        .modal h3 { font-weight: normal; font-size: 14px; color: #888; margin-bottom: 20px; }
+        .modal input[type="text"] { width: 100%; background: #111; border: 1px solid #333; color: #ccc; padding: 10px; font-size: 13px; font-family: inherit; margin-bottom: 15px; }
+        .modal input[type="text"]:focus { outline: none; border-color: #555; }
+        .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+
+        .upload-progress { margin-bottom: 15px; display: none; }
+        .upload-progress .bar { height: 3px; background: #333; }
+        .upload-progress .bar-fill { height: 100%; background: #6a6; width: 0%; transition: width 0.3s; }
+        .upload-status { font-size: 11px; color: #6a6; margin-bottom: 15px; display: none; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <h1>drive</h1>
+        </div>
+        <div>
+            <a href="{{ url_for('admin.dashboard') }}" class="back">dashboard</a>
+        </div>
+    </div>
+
+    <div class="breadcrumbs">
+        <a href="{{ url_for('admin.drive') }}">drive</a>
+        {% for crumb in breadcrumbs %}
+        <span class="sep">/</span>
+        <a href="{{ url_for('admin.drive', subpath=crumb.path) }}">{{ crumb.name }}</a>
+        {% endfor %}
+    </div>
+
+    <div class="toolbar">
+        <button class="btn" onclick="showNewFolder()">new folder</button>
+        <button class="btn" onclick="document.getElementById('fileInput').click()">upload files</button>
+    </div>
+
+    <div class="drop-zone" id="dropZone">
+        drag &amp; drop files here or click to upload
+        <input type="file" id="fileInput" multiple>
+    </div>
+
+    <div class="upload-progress" id="uploadProgress">
+        <div class="bar"><div class="bar-fill" id="uploadBar"></div></div>
+    </div>
+    <div class="upload-status" id="uploadStatus"></div>
+
+    {% if entries %}
+    <div class="file-list">
+        <div class="file-row header-row">
+            <div></div>
+            <div>name</div>
+            <div style="text-align:right">size</div>
+            <div style="text-align:right">modified</div>
+            <div></div>
+        </div>
+        {% for entry in entries %}
+        <div class="file-row">
+            <div class="file-icon">
+                {% if entry.is_dir %}
+                    &#128193;
+                {% else %}
+                    &#128196;
+                {% endif %}
+            </div>
+            <div class="file-name">
+                {% if entry.is_dir %}
+                <a href="{{ url_for('admin.drive', subpath=entry.path) }}">{{ entry.name }}</a>
+                {% else %}
+                <a href="{{ url_for('admin.drive_download', subpath=entry.path) }}">{{ entry.name }}</a>
+                {% endif %}
+            </div>
+            <div class="file-size">{{ entry.size }}</div>
+            <div class="file-modified">{{ entry.modified | timestamp }}</div>
+            <div class="file-actions">
+                {% if not entry.is_dir %}
+                <a href="{{ url_for('admin.drive_download', subpath=entry.path) }}">download</a>
+                {% endif %}
+                <button class="del" onclick="deleteEntry('{{ entry.path | e }}', '{{ entry.name | e }}')">delete</button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty">this folder is empty</div>
+    {% endif %}
+
+    <!-- New Folder Modal -->
+    <div class="modal-overlay" id="folderModal">
+        <div class="modal">
+            <h3>new folder</h3>
+            <input type="text" id="folderName" placeholder="folder name" autofocus>
+            <div class="modal-actions">
+                <button class="btn" onclick="closeFolderModal()">cancel</button>
+                <button class="btn" onclick="createFolder()">create</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    const currentPath = {{ subpath | tojson }};
+
+    // Drop zone
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+
+    ['dragenter', 'dragover'].forEach(e => {
+        dropZone.addEventListener(e, ev => { ev.preventDefault(); dropZone.classList.add('active'); });
+    });
+    ['dragleave', 'drop'].forEach(e => {
+        dropZone.addEventListener(e, ev => { ev.preventDefault(); dropZone.classList.remove('active'); });
+    });
+
+    dropZone.addEventListener('drop', ev => {
+        const files = ev.dataTransfer.files;
+        if (files.length) uploadFiles(files);
+    });
+
+    dropZone.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', () => {
+        if (fileInput.files.length) uploadFiles(fileInput.files);
+    });
+
+    function uploadFiles(files) {
+        const form = new FormData();
+        form.append('path', currentPath);
+        for (let f of files) form.append('files', f);
+
+        const progress = document.getElementById('uploadProgress');
+        const bar = document.getElementById('uploadBar');
+        const status = document.getElementById('uploadStatus');
+        progress.style.display = 'block';
+        bar.style.width = '0%';
+        status.style.display = 'none';
+
+        const xhr = new XMLHttpRequest();
+        xhr.upload.onprogress = e => {
+            if (e.lengthComputable) bar.style.width = (e.loaded / e.total * 100) + '%';
+        };
+        xhr.onload = () => {
+            bar.style.width = '100%';
+            status.style.display = 'block';
+            const res = JSON.parse(xhr.responseText);
+            if (res.status === 'ok') {
+                status.textContent = `uploaded ${res.files.length} file(s)`;
+                setTimeout(() => location.reload(), 800);
+            } else {
+                status.style.color = '#f66';
+                status.textContent = res.message || 'upload failed';
+            }
+        };
+        xhr.onerror = () => {
+            status.style.display = 'block';
+            status.style.color = '#f66';
+            status.textContent = 'upload failed';
+        };
+        xhr.open('POST', '{{ url_for("admin.drive_upload") }}');
+        xhr.send(form);
+    }
+
+    // New folder modal
+    function showNewFolder() {
+        document.getElementById('folderModal').classList.add('show');
+        document.getElementById('folderName').value = '';
+        document.getElementById('folderName').focus();
+    }
+    function closeFolderModal() {
+        document.getElementById('folderModal').classList.remove('show');
+    }
+    document.getElementById('folderName').addEventListener('keydown', e => {
+        if (e.key === 'Enter') createFolder();
+        if (e.key === 'Escape') closeFolderModal();
+    });
+
+    function createFolder() {
+        const name = document.getElementById('folderName').value.trim();
+        if (!name) return;
+        fetch('{{ url_for("admin.drive_mkdir") }}', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ path: currentPath, name: name })
+        }).then(r => r.json()).then(res => {
+            if (res.status === 'ok') location.reload();
+            else alert(res.message);
+        });
+    }
+
+    function deleteEntry(path, name) {
+        if (!confirm('Delete "' + name + '"?')) return;
+        fetch('{{ url_for("admin.drive_delete") }}', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ path: path })
+        }).then(r => r.json()).then(res => {
+            if (res.status === 'ok') location.reload();
+            else alert(res.message);
+        });
+    }
+    </script>
+</body>
+</html>

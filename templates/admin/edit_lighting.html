@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>emme - edit lighting</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Calibri, 'Trebuchet MS', sans-serif; background: #111; color: #ccc; min-height: 100vh; padding: 40px; }
+        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; }
+        .back { color: #666; text-decoration: none; font-size: 12px; }
+        .back:hover { color: #fff; }
+        h1 { font-weight: normal; font-size: 14px; color: #888; letter-spacing: 1px; }
+        .section { margin-bottom: 40px; padding: 25px; background: #1a1a1a; border: 1px solid #222; }
+        .section-title { font-size: 11px; color: #555; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; }
+        .show-card { padding: 15px; background: #151515; margin-bottom: 10px; border: 1px solid #222; }
+        .show-card-row { display: flex; gap: 10px; margin-bottom: 8px; }
+        .show-card-row input { background: #0a0a0a; border: 1px solid #222; color: #ccc; padding: 8px; font-size: 12px; font-family: inherit; outline: none; flex: 1; }
+        .show-card-row input:focus { border-color: #444; }
+        .links-editor { margin-top: 8px; padding: 10px; background: #0f0f0f; }
+        .links-editor .link-row { display: flex; gap: 8px; margin-bottom: 5px; }
+        .links-editor .link-row input { background: #0a0a0a; border: 1px solid #222; color: #ccc; padding: 6px; font-size: 11px; font-family: inherit; flex: 1; }
+        .save-btn { background: transparent; border: 1px solid #333; color: #888; padding: 6px 20px; font-size: 11px; cursor: pointer; transition: all 0.3s; font-family: inherit; }
+        .save-btn:hover { color: #fff; border-color: #666; }
+        .save-btn.saved { border-color: #4a6; color: #4a6; }
+        .remove-btn { background: none; border: none; color: #666; cursor: pointer; font-size: 16px; padding: 0 5px; }
+        .remove-btn:hover { color: #a46; }
+        .add-btn { background: transparent; border: 1px dashed #333; color: #555; padding: 8px 15px; font-size: 11px; cursor: pointer; transition: all 0.3s; font-family: inherit; width: 100%; margin-top: 8px; }
+        .add-btn:hover { color: #fff; border-color: #666; }
+        .small-btn { background: none; border: 1px dashed #333; color: #555; padding: 4px 10px; font-size: 10px; cursor: pointer; font-family: inherit; }
+        .small-btn:hover { color: #fff; border-color: #666; }
+        .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+        .photo-card { background: #151515; border: 1px solid #222; position: relative; }
+        .photo-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
+        .photo-card-info { padding: 6px; }
+        .photo-card-info input { width: 100%; background: #0a0a0a; border: 1px solid #222; color: #ccc; padding: 4px; font-size: 10px; font-family: inherit; }
+        .card-btn { background: none; border: 1px solid #333; color: #666; padding: 2px 6px; font-size: 10px; cursor: pointer; font-family: inherit; margin-top: 4px; }
+        .card-btn.delete:hover { color: #a46; border-color: #a46; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>edit: lighting</h1>
+        <a href="{{ url_for('admin.dashboard') }}" class="back">&larr; dashboard</a>
+    </div>
+
+    <div class="section">
+        <div class="section-title">lighting shows</div>
+        <div id="shows-list">
+            {% for show in shows %}
+            <div class="show-card" data-id="{{ show.id }}">
+                <div class="show-card-row">
+                    <input type="text" placeholder="role" value="{{ show.role }}" data-field="role">
+                    <input type="text" placeholder="title" value="{{ show.title }}" data-field="title">
+                </div>
+                <div class="show-card-row">
+                    <input type="text" placeholder="venue" value="{{ show.venue }}" data-field="venue">
+                    <input type="text" placeholder="location" value="{{ show.location }}" data-field="location">
+                </div>
+                <div class="links-editor" data-links='{{ show.links | tojson }}'>
+                    <div class="section-title" style="margin-bottom: 8px;">links</div>
+                    {% for link in show.links %}
+                    <div class="link-row">
+                        <input type="text" placeholder="label" value="{{ link.label }}" data-lfield="label">
+                        <input type="text" placeholder="url" value="{{ link.url }}" data-lfield="url">
+                        <button class="remove-btn" onclick="this.parentElement.remove()" style="font-size: 14px;">&times;</button>
+                    </div>
+                    {% endfor %}
+                    <button class="small-btn" onclick="addLinkRow(this.parentElement)">+ link</button>
+                </div>
+                <div style="display: flex; gap: 8px; margin-top: 10px;">
+                    <button class="save-btn" onclick="saveShow(this.closest('.show-card'))">save</button>
+                    <button class="remove-btn" onclick="deleteShow({{ show.id }}, this.closest('.show-card'))">&times;</button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <button class="add-btn" onclick="addShow()">+ add show</button>
+    </div>
+
+    <div class="section">
+        <div class="section-title">photos</div>
+        <div class="photo-grid">
+            {% for photo in photos %}
+            <div class="photo-card" data-id="{{ photo.id }}">
+                <img src="{{ url_for('static', filename=photo.filename) }}" alt="{{ photo.alt_text }}">
+                <div class="photo-card-info">
+                    <input type="text" value="{{ photo.alt_text }}" placeholder="alt text">
+                    <button class="card-btn delete" onclick="deletePhoto({{ photo.id }}, this.closest('.photo-card'))">delete</button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        function addLinkRow(editor) {
+            const row = document.createElement('div');
+            row.className = 'link-row';
+            row.innerHTML = '<input type="text" placeholder="label" data-lfield="label"><input type="text" placeholder="url" data-lfield="url"><button class="remove-btn" onclick="this.parentElement.remove()" style="font-size:14px;">&times;</button>';
+            editor.insertBefore(row, editor.querySelector('.small-btn'));
+        }
+
+        async function saveShow(card) {
+            const id = parseInt(card.dataset.id);
+            const links = [];
+            card.querySelectorAll('.link-row').forEach(row => {
+                const label = row.querySelector('[data-lfield="label"]').value;
+                const url = row.querySelector('[data-lfield="url"]').value;
+                if (label || url) links.push({label, url});
+            });
+            const data = {
+                id,
+                role: card.querySelector('[data-field="role"]').value,
+                title: card.querySelector('[data-field="title"]').value,
+                venue: card.querySelector('[data-field="venue"]').value,
+                location: card.querySelector('[data-field="location"]').value,
+                links
+            };
+            const btn = card.querySelector('.save-btn');
+            btn.textContent = 'saving...';
+            const res = await fetch('/api/lighting-shows/update', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+            if (res.ok) {
+                btn.textContent = 'saved!'; btn.classList.add('saved');
+                setTimeout(() => { btn.textContent = 'save'; btn.classList.remove('saved'); }, 2000);
+            }
+        }
+
+        async function addShow() {
+            const res = await fetch('/api/lighting-shows/add', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({title: 'New Show', role: '', venue: '', location: '', links: []})
+            });
+            if (res.ok) location.reload();
+        }
+
+        async function deleteShow(id, el) {
+            if (!confirm('Delete?')) return;
+            await fetch('/api/lighting-shows/delete', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({id})
+            });
+            el.remove();
+        }
+
+        async function deletePhoto(id, el) {
+            if (!confirm('Delete?')) return;
+            await fetch('/api/lighting-photos/delete', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({id})
+            });
+            el.remove();
+        }
+    </script>
+</body>
+</html>

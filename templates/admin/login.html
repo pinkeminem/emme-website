@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>emme - admin</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Calibri, 'Trebuchet MS', sans-serif; background: #111; color: #ccc; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .login-box { width: 100%; max-width: 350px; padding: 40px; }
+        h1 { font-weight: normal; font-size: 14px; color: #666; letter-spacing: 1px; margin-bottom: 40px; text-align: center; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 10px; color: #444; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
+        .form-group input { width: 100%; background: #0a0a0a; border: 1px solid #222; color: #ccc; padding: 12px; font-size: 13px; font-family: inherit; outline: none; transition: border-color 0.3s; }
+        .form-group input:focus { border-color: #444; }
+        .submit-btn { width: 100%; background: transparent; border: 1px solid #333; color: #888; padding: 12px; font-size: 12px; letter-spacing: 2px; text-transform: lowercase; cursor: pointer; transition: all 0.3s ease; font-family: inherit; }
+        .submit-btn:hover { color: #fff; border-color: #666; }
+        .error { color: #a46; font-size: 12px; margin-bottom: 20px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h1>admin</h1>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="error">{{ messages[0] }}</div>
+        {% endif %}
+        {% endwith %}
+        <form method="POST">
+            <div class="form-group">
+                <label for="username">username</label>
+                <input type="text" id="username" name="username" required autocomplete="username">
+            </div>
+            <div class="form-group">
+                <label for="password">password</label>
+                <input type="password" id="password" name="password" required autocomplete="current-password">
+            </div>
+            <button type="submit" class="submit-btn">login</button>
+        </form>
+    </div>
+</body>
+</html>

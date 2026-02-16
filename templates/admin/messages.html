@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>emme - messages</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Calibri, 'Trebuchet MS', sans-serif; background: #111; color: #ccc; min-height: 100vh; padding: 40px; }
+        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; }
+        .back { color: #666; text-decoration: none; font-size: 12px; }
+        .back:hover { color: #fff; }
+        h1 { font-weight: normal; font-size: 14px; color: #888; letter-spacing: 1px; }
+        .message-card { padding: 20px; background: #1a1a1a; border: 1px solid #222; margin-bottom: 15px; transition: border-color 0.3s; }
+        .message-card.unread { border-left: 3px solid #4a6; }
+        .message-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .message-from { color: #ccc; font-size: 13px; }
+        .message-email { color: #666; font-size: 11px; }
+        .message-date { color: #444; font-size: 10px; }
+        .message-subject { color: #888; font-size: 12px; margin-bottom: 10px; font-weight: bold; }
+        .message-body { color: #777; font-size: 12px; line-height: 1.6; white-space: pre-wrap; }
+        .message-actions { display: flex; gap: 10px; margin-top: 12px; }
+        .action-btn { background: none; border: 1px solid #333; color: #666; padding: 4px 12px; font-size: 10px; cursor: pointer; font-family: inherit; transition: all 0.3s; }
+        .action-btn:hover { color: #fff; border-color: #666; }
+        .action-btn.delete:hover { color: #a46; border-color: #a46; }
+        .empty { color: #444; font-size: 13px; text-align: center; padding: 60px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>messages ({{ messages | length }})</h1>
+        <a href="{{ url_for('admin.dashboard') }}" class="back">&larr; dashboard</a>
+    </div>
+
+    {% if messages %}
+        {% for msg in messages %}
+        <div class="message-card {% if not msg.is_read %}unread{% endif %}" data-id="{{ msg.id }}">
+            <div class="message-header">
+                <div>
+                    <span class="message-from">{{ msg.name }}</span>
+                    <span class="message-email">&lt;{{ msg.email }}&gt;</span>
+                </div>
+                <span class="message-date">{{ msg.created_at }}</span>
+            </div>
+            {% if msg.subject %}
+            <div class="message-subject">{{ msg.subject }}</div>
+            {% endif %}
+            <div class="message-body">{{ msg.message }}</div>
+            <div class="message-actions">
+                <a href="mailto:{{ msg.email }}?subject=Re: {{ msg.subject }}" class="action-btn">reply</a>
+                {% if not msg.is_read %}
+                <button class="action-btn" onclick="markRead({{ msg.id }}, this.closest('.message-card'))">mark read</button>
+                {% endif %}
+                <button class="action-btn delete" onclick="deleteMsg({{ msg.id }}, this.closest('.message-card'))">delete</button>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty">no messages yet</div>
+    {% endif %}
+
+    <script>
+        async function markRead(id, el) {
+            await fetch('/api/messages/mark-read', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({id})
+            });
+            el.classList.remove('unread');
+        }
+
+        async function deleteMsg(id, el) {
+            if (!confirm('Delete this message?')) return;
+            await fetch('/api/messages/delete', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({id})
+            });
+            el.remove();
+        }
+    </script>
+</body>
+</html>

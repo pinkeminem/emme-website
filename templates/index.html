@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+
+{% block title %}emme{% endblock %}
+
+{% block head %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="{{ url_for('static', filename='videos/logo-animation-web.mp4') }}" as="video" type="video/mp4">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap" rel="stylesheet"></noscript>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; overflow: hidden; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #000; color: #fff; min-height: 100vh;
+        }
+        .hero { position: relative; width: 100%; height: 100vh; height: 100dvh; overflow: hidden; }
+        .hero-video {
+            position: absolute; top: 50%; left: 50%;
+            min-width: 100%; min-height: 100%; width: auto; height: auto;
+            transform: translate(-50%, -50%); object-fit: cover;
+        }
+        .mobile-logo {
+            display: none; position: absolute; top: 30%; left: 50%;
+            transform: translate(-50%, -50%); z-index: 5;
+            width: 40%; max-width: 150px; opacity: 0.9; filter: invert(1);
+        }
+        .hero-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.05) 20%, rgba(0,0,0,0.05) 80%, rgba(0,0,0,0.7) 100%);
+        }
+        .nav {
+            position: absolute; top: 40px; left: 0; right: 0; z-index: 10;
+            display: flex; flex-direction: row; align-items: center; justify-content: center;
+            gap: 0; flex-wrap: wrap; padding: 0 20px;
+        }
+        .nav-btn {
+            position: relative; padding: 10px 14px; background: transparent; border: none;
+            color: rgba(255,255,255,0.6); font-size: 14px; letter-spacing: 2px;
+            text-transform: lowercase; cursor: pointer; text-decoration: none;
+            font-weight: 400; transition: color 0.2s ease;
+        }
+        .nav-btn:hover { color: #fff; }
+        .nav-btn span { position: relative; display: inline-block; }
+        .nav-sep {
+            color: rgba(255,255,255,0.25); font-size: 14px; padding: 0 6px;
+            animation: sepGlitch 4s ease-in-out infinite; user-select: none;
+        }
+        .nav-sep:nth-child(4n) { animation-delay: 0.5s; }
+        .nav-sep:nth-child(4n+1) { animation-delay: 1.2s; }
+        .nav-sep:nth-child(4n+2) { animation-delay: 2.1s; }
+        .nav-sep:nth-child(4n+3) { animation-delay: 3.3s; }
+        @keyframes sepGlitch {
+            0%, 100% { opacity: 0.25; transform: translateY(0); }
+            48% { opacity: 0.25; transform: translateY(0); }
+            50% { opacity: 0.8; transform: translateY(-2px); color: #fff; }
+            52% { opacity: 0.1; transform: translateY(1px); }
+            54% { opacity: 0.6; transform: translateY(0); }
+            56% { opacity: 0.25; transform: translateY(0); }
+        }
+        .social {
+            position: absolute; bottom: 40px; left: 0; right: 0;
+            display: flex; justify-content: center; gap: 30px; z-index: 10;
+        }
+        .social a {
+            color: rgba(255,255,255,0.5); text-decoration: none; font-size: 12px;
+            letter-spacing: 2px; text-transform: lowercase;
+            transition: all 0.3s ease; font-weight: 300;
+        }
+        .social a:hover { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .nav { animation: fadeIn 1s ease 0.3s both; }
+        .social { animation: fadeInUp 1s ease 0.6s both; }
+
+        @media (max-width: 900px) {
+            .nav { top: 30px; }
+            .nav-btn { padding: 5px 6px; font-size: 10px; }
+            .nav-sep { padding: 0 2px; }
+            .social { bottom: 30px; gap: 20px; flex-wrap: wrap; padding: 0 20px; }
+            .social a { font-size: 9px; }
+        }
+        @media (max-width: 480px) {
+            .nav { top: 20px; }
+            .nav-btn { padding: 4px 5px; font-size: 9px; letter-spacing: 1px; }
+            .nav-sep { padding: 0 1px; font-size: 9px; }
+            .social { gap: 15px; bottom: 25px; }
+        }
+        .mobile-links, .mobile-contact { display: none; }
+        @media (max-width: 768px) {
+            .hero-video { top: 35%; }
+            .mobile-logo { display: block; top: 18%; }
+            .nav, .social { display: none !important; }
+            .mobile-links {
+                display: flex; position: absolute; top: 30%; left: 50%;
+                transform: translateX(-50%); flex-direction: column; align-items: center;
+                gap: 8px; z-index: 100; width: 65%; max-width: 220px;
+            }
+            .mobile-link {
+                display: block; width: 100%; padding: 8px 0; background: transparent;
+                border: none; text-decoration: none; color: rgba(255,255,255,0.7);
+                font-size: 12px; letter-spacing: 2px; text-transform: lowercase;
+                text-align: center; position: relative;
+            }
+            .mobile-link::before { content: '//'; position: absolute; left: 0; color: rgba(255,255,255,0.15); animation: slashFlicker 4s infinite; }
+            .mobile-link::after { content: '//'; position: absolute; right: 0; color: rgba(255,255,255,0.15); animation: slashFlicker 4s infinite 0.5s; }
+            .mobile-link:nth-child(1)::before { animation-delay: 0.2s; } .mobile-link:nth-child(1)::after { animation-delay: 2.1s; }
+            .mobile-link:nth-child(2)::before { animation-delay: 1.3s; } .mobile-link:nth-child(2)::after { animation-delay: 3.4s; }
+            .mobile-link:nth-child(3)::before { animation-delay: 0.7s; } .mobile-link:nth-child(3)::after { animation-delay: 2.8s; }
+            .mobile-link:nth-child(4)::before { animation-delay: 1.9s; } .mobile-link:nth-child(4)::after { animation-delay: 0.4s; }
+            .mobile-link:nth-child(5)::before { animation-delay: 2.5s; } .mobile-link:nth-child(5)::after { animation-delay: 1.1s; }
+            .mobile-link:nth-child(6)::before { animation-delay: 0.9s; } .mobile-link:nth-child(6)::after { animation-delay: 3.2s; }
+            .mobile-link:nth-child(7)::before { animation-delay: 1.6s; } .mobile-link:nth-child(7)::after { animation-delay: 2.4s; }
+            .mobile-link:nth-child(8)::before { animation-delay: 3.1s; } .mobile-link:nth-child(8)::after { animation-delay: 0.8s; }
+            @keyframes slashFlicker {
+                0%, 100% { opacity: 0.15; } 2% { opacity: 0.9; color: #fff; } 4% { opacity: 0.05; }
+                6% { opacity: 0.7; } 8% { opacity: 0.1; } 10% { opacity: 0.15; }
+                50% { opacity: 0.15; } 52% { opacity: 0.6; color: #fff; } 53% { opacity: 0; }
+                54% { opacity: 0.8; } 56% { opacity: 0.15; }
+            }
+            .mobile-link:active { color: #fff; }
+            .mobile-contact {
+                display: block; position: absolute; bottom: 5%; left: 50%;
+                transform: translateX(-50%); z-index: 100; text-align: center;
+            }
+            .mobile-contact a { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 10px; letter-spacing: 1px; }
+            .mobile-contact a:active { color: #fff; }
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <section class="hero">
+        <video class="hero-video" autoplay muted playsinline webkit-playsinline loop poster="{{ url_for('static', filename='images/video-poster.jpg') }}" preload="metadata" id="heroVideo">
+            <source src="{{ url_for('static', filename='videos/logo-animation-web.mp4') }}" type="video/mp4">
+        </video>
+        <img src="{{ url_for('static', filename='images/logo-scrawl.png') }}" alt="emme" class="mobile-logo">
+        <div class="hero-overlay"></div>
+
+        <nav class="nav">
+            {% for link in nav_links %}
+                <a href="{{ link.href }}" class="nav-btn"><span>{{ link.label }}</span></a>
+                {% if not loop.last %}<span class="nav-sep">/</span>{% endif %}
+            {% endfor %}
+        </nav>
+
+        <div class="social">
+            {% for link in social_links %}
+                <a href="{{ link.url }}" target="_blank" rel="noopener">{{ link.label }}</a>
+            {% endfor %}
+        </div>
+
+        <div class="mobile-links">
+            {% for link in mobile_links %}
+                <a href="{{ link.href }}" class="mobile-link" {% if link.get('external') %}target="_blank"{% endif %}>{{ link.label }}</a>
+            {% endfor %}
+        </div>
+
+        <div class="mobile-contact">
+            <a href="mailto:booking@emme-em.me">booking@emme-em.me</a>
+        </div>
+    </section>
+
+    <script>
+        const video = document.getElementById('heroVideo');
+        function forcePlay() { video.muted = true; video.play().catch(() => {}); }
+        forcePlay();
+        video.addEventListener('loadeddata', forcePlay);
+        video.addEventListener('canplay', forcePlay);
+        setTimeout(forcePlay, 100); setTimeout(forcePlay, 500); setTimeout(forcePlay, 1000);
+        ['click', 'touchstart', 'touchend', 'scroll'].forEach(evt => {
+            document.addEventListener(evt, forcePlay, { once: true });
+        });
+        document.addEventListener('visibilitychange', () => { if (!document.hidden) forcePlay(); });
+
+        const glitchMaps = {
+            'A':['α','Λ','Δ','א','ą','ά','Ą','λ'],'B':['β','ß','ב','Ɓ','ъ','ь','Ḃ','Þ'],
+            'C':['ς','ͻ','ç','ć','ɕ','ק','Ͻ','č'],'D':['δ','ð','ď','đ','ד','Ɗ','ɗ','ḋ'],
+            'E':['ε','є','ė','ē','ə','ξ','Ɛ','ę'],'F':['ƒ','φ','ḟ','ſ','ף','ϝ','Ḟ','ʄ'],
+            'G':['γ','ğ','ġ','ɡ','ג','Ɠ','ǥ','ɠ'],'H':['η','ħ','ĥ','ḥ','ה','Ħ','ℏ','ђ'],
+            'I':['ι','ï','į','í','ɨ','ί','ı','Ι'],'J':['ј','ʝ','ĵ','ϳ','ɉ','ǰ','Ј','Ĵ'],
+            'K':['κ','ĸ','ķ','כ','Ƙ','ƙ','Κ','ḳ'],'L':['ł','ℓ','ļ','ŀ','ל','Ł','Ļ','ľ'],
+            'M':['μ','ɱ','ṁ','ɯ','מ','Μ','Ṁ','ḿ'],'N':['η','ñ','ń','ň','נ','ղ','ŋ','Ń'],
+            'O':['ο','σ','ő','ø','ơ','Ο','Ø','ם'],'P':['ρ','þ','ƥ','פ','Ρ','Þ','Ƥ','ṗ'],
+            'Q':['ϙ','ʠ','ԛ','ק','Ϙ','Ԛ','զ','Զ'],'R':['я','ŕ','ř','ŗ','ר','Я','Ŕ','ɾ'],
+            'S':['ѕ','š','ş','ś','ש','Ѕ','Š','ṡ'],'T':['τ','ť','ţ','ț','ת','Τ','Ť','ŧ'],
+            'U':['υ','ū','ů','ű','ü','Υ','Ū','ų'],'V':['ν','ṿ','ʋ','ѵ','ו','Ѵ','Ṿ','ʌ'],
+            'W':['ω','ŵ','ẁ','ẃ','װ','Ω','Ŵ','Ẃ'],'X':['χ','ẋ','ẍ','ӽ','ץ','Χ','Ẋ','ҳ'],
+            'Y':['υ','ÿ','ý','ŷ','י','Υ','Ÿ','Ý'],'Z':['ζ','ž','ź','ż','ז','Ζ','Ž','Ź'],
+            'a':['α','ą','ā','ά','ă','ǎ','ạ','ả'],'b':['β','ъ','ь','ɓ','ḃ','ḅ','ƅ','ƀ'],
+            'c':['ς','ç','ć','č','ċ','ĉ','ƈ','ͻ'],'d':['δ','ð','ď','đ','ḋ','ḍ','ɖ','ɗ'],
+            'e':['ε','є','ė','ē','ě','ə','ę','ẹ'],'f':['ƒ','φ','ḟ','ſ','ʄ','ϝ','ɸ','ғ'],
+            'g':['γ','ğ','ġ','ģ','ǧ','ǥ','ɡ','ɠ'],'h':['η','ħ','ĥ','ḥ','ḩ','ℎ','ɦ','ђ'],
+            'i':['ι','ï','į','í','ì','ɨ','ı','ị'],'j':['ј','ʝ','ĵ','ǰ','ϳ','ɉ','ʲ','յ'],
+            'k':['κ','ķ','ĸ','ƙ','ḳ','ǩ','ḵ','ҟ'],'l':['ł','ℓ','ļ','ľ','ŀ','ḷ','ĺ','ƚ'],
+            'm':['μ','ɱ','ṁ','ḿ','ɯ','ṃ','ɰ','ო'],'n':['η','ñ','ń','ň','ņ','ṅ','ṇ','ŋ'],
+            'o':['ο','σ','ő','ø','ơ','ö','ọ','ỏ'],'p':['ρ','þ','ҏ','ƥ','ṗ','ᵽ','ṕ','ք'],
+            'q':['ϙ','ʠ','ԛ','ɋ','զ','գ','ԛ','ʠ'],'r':['я','ŕ','ř','ŗ','ṙ','ṛ','ɾ','ɍ'],
+            's':['ѕ','š','ş','ș','ś','ṣ','ṡ','ƨ'],'t':['τ','ť','ţ','ț','ṭ','ṫ','ŧ','ƭ'],
+            'u':['υ','ū','ů','ű','ü','ú','ų','ụ'],'v':['ν','ṿ','ʋ','ṽ','ʌ','ѵ','ṿ','վ'],
+            'w':['ω','ŵ','ẁ','ẃ','ẇ','ẅ','ẉ','ա'],'x':['χ','ẋ','ẍ','ӽ','ẍ','ӿ','ҳ','խ'],
+            'y':['υ','ÿ','ý','ŷ','ỳ','ȳ','ɣ','ẏ'],'z':['ζ','ž','ź','ż','ẓ','ẕ','ʐ','ƶ']
+        };
+        const diacriticsAbove = ['\u0300','\u0301','\u0302','\u0303','\u0304','\u0305','\u0306','\u0307','\u0308','\u0309','\u030A','\u030B','\u030C','\u030D','\u030E','\u030F','\u0310','\u0311','ً','ٌ','َ','ُ','ّ','ْ'];
+        const diacriticsBelow = ['\u0316','\u0317','\u0318','\u0319','\u031C','\u031D','\u031E','\u031F','\u0320','\u0321','\u0322','\u0323','\u0324','\u0325','\u0326','\u0327','\u0328','\u0329','ِ','ٍ'];
+        const overlayMarks = ['\u0335','\u0336','\u0337','\u0338'];
+        const diacriticSafe = ['α','β','γ','δ','ε','ζ','η','θ','ι','κ','λ','μ','ν','ξ','ο','π','ρ','ς','σ','τ','υ','φ','χ','ψ','ω','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','ð','þ','ß','ƒ','ł','ŵ','я'];
+        function glitchText(text, level = 2) {
+            let result = '';
+            for (let i = 0; i < text.length; i++) {
+                let char = text[i];
+                const map = glitchMaps[char];
+                if (map) {
+                    char = map[Math.floor(Math.random() * map.length)];
+                    if (diacriticSafe.includes(char)) {
+                        const numAbove = Math.floor(level * 1.5) + Math.floor(Math.random() * 2);
+                        const numBelow = Math.floor(level * 1.5) + Math.floor(Math.random() * 2);
+                        for (let j = 0; j < numAbove; j++) char += diacriticsAbove[Math.floor(Math.random() * diacriticsAbove.length)];
+                        for (let j = 0; j < numBelow; j++) char += diacriticsBelow[Math.floor(Math.random() * diacriticsBelow.length)];
+                        if (Math.random() < 0.2) char += overlayMarks[Math.floor(Math.random() * overlayMarks.length)];
+                    }
+                }
+                result += char;
+            }
+            return result;
+        }
+        document.querySelectorAll('.nav-btn span, .social a').forEach(el => {
+            const originalText = el.textContent;
+            el.addEventListener('mouseenter', () => { el.textContent = glitchText(originalText, 2); });
+            el.addEventListener('mouseleave', () => { el.textContent = originalText; });
+        });
+    </script>
+{% endblock %}

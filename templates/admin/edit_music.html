@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>emme - edit music</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Calibri, 'Trebuchet MS', sans-serif; background: #111; color: #ccc; min-height: 100vh; padding: 40px; }
+        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; }
+        .back { color: #666; text-decoration: none; font-size: 12px; }
+        .back:hover { color: #fff; }
+        h1 { font-weight: normal; font-size: 14px; color: #888; letter-spacing: 1px; }
+        .section { margin-bottom: 40px; padding: 25px; background: #1a1a1a; border: 1px solid #222; }
+        .section-title { font-size: 11px; color: #555; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; }
+        .form-group { margin-bottom: 10px; }
+        .form-group label { display: block; font-size: 10px; color: #444; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+        .form-group input { width: 100%; background: #0a0a0a; border: 1px solid #222; color: #ccc; padding: 8px; font-size: 12px; font-family: inherit; outline: none; }
+        .form-group input:focus { border-color: #444; }
+        .list-item { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; padding: 8px; background: #151515; }
+        .list-item input { background: #0a0a0a; border: 1px solid #222; color: #ccc; padding: 8px; font-size: 12px; font-family: inherit; outline: none; flex: 1; }
+        .remove-btn { background: none; border: none; color: #666; cursor: pointer; font-size: 16px; padding: 0 5px; }
+        .remove-btn:hover { color: #a46; }
+        .save-btn { background: transparent; border: 1px solid #333; color: #888; padding: 8px 25px; font-size: 11px; letter-spacing: 1px; cursor: pointer; transition: all 0.3s; font-family: inherit; margin-top: 10px; }
+        .save-btn:hover { color: #fff; border-color: #666; }
+        .save-btn.saved { border-color: #4a6; color: #4a6; }
+        .add-btn { background: transparent; border: 1px dashed #333; color: #555; padding: 8px 15px; font-size: 11px; cursor: pointer; transition: all 0.3s; font-family: inherit; width: 100%; margin-top: 8px; }
+        .add-btn:hover { color: #fff; border-color: #666; }
+        .release-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+        .release-card { background: #151515; border: 1px solid #222; }
+        .release-card img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+        .release-card-info { padding: 8px; }
+        .release-card-info input { width: 100%; background: #0a0a0a; border: 1px solid #222; color: #ccc; padding: 5px; font-size: 11px; font-family: inherit; margin-bottom: 4px; }
+        .card-btn { background: none; border: 1px solid #333; color: #666; padding: 3px 8px; font-size: 10px; cursor: pointer; font-family: inherit; }
+        .card-btn:hover { color: #fff; border-color: #666; }
+        .card-btn.delete:hover { color: #a46; border-color: #a46; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>edit: music</h1>
+        <a href="{{ url_for('admin.dashboard') }}" class="back">&larr; dashboard</a>
+    </div>
+
+    <div class="section">
+        <div class="section-title">discography</div>
+        <div class="release-grid" id="releaseGrid">
+            {% for r in releases %}
+            <div class="release-card" data-id="{{ r.id }}">
+                <img src="{{ url_for('static', filename=r.cover_image) }}" alt="{{ r.title }}">
+                <div class="release-card-info">
+                    <input type="text" value="{{ r.title }}" placeholder="title" data-field="title">
+                    <input type="text" value="{{ r.bandcamp_url }}" placeholder="bandcamp url" data-field="bandcamp_url">
+                    <button class="card-btn delete" onclick="deleteRelease({{ r.id }}, this.closest('.release-card'))">delete</button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <button class="add-btn" onclick="addRelease()">+ add release</button>
+    </div>
+
+    <div class="section">
+        <div class="section-title">soundcloud tracks</div>
+        <div id="tracks-list">
+            {% for t in tracks %}
+            <div class="list-item" data-id="{{ t.id }}">
+                <input type="text" placeholder="title" value="{{ t.title }}" data-field="title">
+                <input type="text" placeholder="url" value="{{ t.url }}" data-field="url">
+                <button class="remove-btn" onclick="deleteTrack({{ t.id }}, this.closest('.list-item'))">&times;</button>
+            </div>
+            {% endfor %}
+        </div>
+        <button class="add-btn" onclick="addTrack()">+ add track</button>
+    </div>
+
+    <div class="section">
+        <div class="section-title">work in progress</div>
+        <div class="form-group">
+            <label>title</label>
+            <input type="text" id="wip-title" value="{{ wip.title }}">
+        </div>
+        <div class="form-group">
+            <label>cover image path</label>
+            <input type="text" id="wip-cover" value="{{ wip.cover }}">
+        </div>
+        <div class="form-group">
+            <label>url</label>
+            <input type="text" id="wip-url" value="{{ wip.url }}">
+        </div>
+        <button class="save-btn" onclick="saveWip(this)">save wip</button>
+    </div>
+
+    <div class="section">
+        <div class="section-title">listen links</div>
+        <div id="listen-links-list">
+            {% for link in listen_links %}
+            <div class="list-item">
+                <input type="text" placeholder="label" value="{{ link.label }}" data-field="label">
+                <input type="text" placeholder="url" value="{{ link.url }}" data-field="url">
+                <button class="remove-btn" onclick="this.parentElement.remove()">&times;</button>
+            </div>
+            {% endfor %}
+        </div>
+        <button class="add-btn" onclick="addListenLink()">+ add link</button>
+        <br>
+        <button class="save-btn" onclick="saveListenLinks(this)">save links</button>
+    </div>
+
+    <script>
+        async function saveContent(page, section, content, btn) {
+            btn.textContent = 'saving...';
+            const res = await fetch('/api/save-content', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({page, section, content})
+            });
+            if (res.ok) {
+                btn.textContent = 'saved!'; btn.classList.add('saved');
+                setTimeout(() => { btn.textContent = 'save'; btn.classList.remove('saved'); }, 2000);
+            }
+        }
+
+        async function addRelease() {
+            const title = prompt('Release title:');
+            if (!title) return;
+            const url = prompt('Bandcamp URL:') || '';
+            const cover = prompt('Cover image path (e.g. images/albums/cover.jpg):') || '';
+            const res = await fetch('/api/releases/add', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({title, bandcamp_url: url, cover_image: cover})
+            });
+            if (res.ok) location.reload();
+        }
+
+        async function deleteRelease(id, el) {
+            if (!confirm('Delete this release?')) return;
+            const res = await fetch('/api/releases/delete', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({id})
+            });
+            if (res.ok) el.remove();
+        }
+
+        async function addTrack() {
+            const res = await fetch('/api/tracks/add', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({title: 'new track', url: ''})
+            });
+            if (res.ok) location.reload();
+        }
+
+        async function deleteTrack(id, el) {
+            if (!confirm('Delete?')) return;
+            const res = await fetch('/api/tracks/delete', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({id})
+            });
+            if (res.ok) el.remove();
+        }
+
+        function saveWip(btn) {
+            saveContent('music', 'wip', {
+                title: document.getElementById('wip-title').value,
+                cover: document.getElementById('wip-cover').value,
+                url: document.getElementById('wip-url').value,
+            }, btn);
+        }
+
+        function addListenLink() {
+            const list = document.getElementById('listen-links-list');
+            const item = document.createElement('div');
+            item.className = 'list-item';
+            item.innerHTML = '<input type="text" placeholder="label" data-field="label"><input type="text" placeholder="url" data-field="url"><button class="remove-btn" onclick="this.parentElement.remove()">&times;</button>';
+            list.appendChild(item);
+        }
+
+        function saveListenLinks(btn) {
+            const items = document.querySelectorAll('#listen-links-list .list-item');
+            const links = Array.from(items).map(item => ({
+                label: item.querySelector('[data-field="label"]').value,
+                url: item.querySelector('[data-field="url"]').value,
+            })).filter(l => l.label);
+            saveContent('music', 'listen_links', links, btn);
+        }
+    </script>
+</body>
+</html>
