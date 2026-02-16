@@ -20,14 +20,9 @@
             position: absolute; top: 50%; left: 50%;
             min-width: 100%; min-height: 100%; width: auto; height: auto;
             transform: translate(-50%, -50%); object-fit: cover;
-            pointer-events: none;
         }
-        /* Hide native play button on iOS */
-        video::-webkit-media-controls-start-playback-button,
-        video::-webkit-media-controls-play-button,
-        video::-webkit-media-controls-panel,
-        video::-webkit-media-controls { display: none !important; -webkit-appearance: none; }
-        video::--webkit-media-controls { display: none !important; }
+        .hero-gif { display: none; }
+        .hero-vid { display: block; }
         .mobile-logo {
             display: none; position: absolute; top: 30%; left: 50%;
             transform: translate(-50%, -50%); z-index: 5;
@@ -96,6 +91,8 @@
         }
         .mobile-links, .mobile-contact { display: none; }
         @media (max-width: 768px) {
+            .hero-gif { display: block; }
+            .hero-vid { display: none; }
             .hero-video { top: 35%; }
             .mobile-logo { display: block; top: 18%; }
             .nav, .social { display: none !important; }
@@ -139,10 +136,10 @@
 
 {% block body %}
     <section class="hero">
-        <video class="hero-video" autoplay muted playsinline webkit-playsinline loop disableRemotePlayback x-webkit-airplay="deny" preload="auto" id="heroVideo">
+        <img src="{{ url_for('static', filename='images/logo-animation-mobile.webp') }}" class="hero-video hero-gif" alt="">
+        <video class="hero-video hero-vid" autoplay muted playsinline webkit-playsinline loop disableRemotePlayback x-webkit-airplay="deny" preload="auto" id="heroVideo">
             <source src="{{ url_for('static', filename='videos/logo-animation-web.mp4') }}" type="video/mp4">
         </video>
-        <canvas class="hero-video" id="heroCanvas" style="z-index:1;"></canvas>
         <img src="{{ url_for('static', filename='images/logo-scrawl.png') }}" alt="emme" class="mobile-logo">
         <div class="hero-overlay"></div>
 
@@ -171,29 +168,8 @@
     </section>
 
     <script>
+        // Desktop video autoplay (mobile uses animated WebP image instead)
         const video = document.getElementById('heroVideo');
-        const canvas = document.getElementById('heroCanvas');
-        const ctx = canvas.getContext('2d');
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
-
-        function drawFrame() {
-            if (video.readyState >= 2) {
-                const vw = video.videoWidth, vh = video.videoHeight;
-                const cw = canvas.width, ch = canvas.height;
-                const scale = Math.max(cw / vw, ch / vh);
-                const w = vw * scale, h = vh * scale;
-                ctx.drawImage(video, (cw - w) / 2, (ch - h) / 2, w, h);
-            }
-            requestAnimationFrame(drawFrame);
-        }
-        requestAnimationFrame(drawFrame);
-
         function forcePlay() {
             video.muted = true;
             var p = video.play();
@@ -202,10 +178,7 @@
         forcePlay();
         video.addEventListener('loadeddata', forcePlay);
         video.addEventListener('canplay', forcePlay);
-        [50, 100, 300, 600, 1000, 2000].forEach(t => setTimeout(forcePlay, t));
-        ['click', 'touchstart', 'touchend', 'pointerdown'].forEach(evt => {
-            document.addEventListener(evt, forcePlay, { once: true, passive: true });
-        });
+        [100, 500, 1000].forEach(t => setTimeout(forcePlay, t));
         document.addEventListener('visibilitychange', () => { if (!document.hidden) forcePlay(); });
 
         const glitchMaps = {
