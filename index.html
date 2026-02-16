@@ -367,7 +367,8 @@
 </head>
 <body>
     <section class="hero">
-        <video class="hero-video" autoplay muted playsinline webkit-playsinline loop disableRemotePlayback x-webkit-airplay="deny" poster="images/video-poster.jpg" preload="auto" id="heroVideo">
+        <canvas class="hero-video" id="heroCanvas"></canvas>
+        <video id="heroVideo" autoplay muted playsinline webkit-playsinline loop disableRemotePlayback x-webkit-airplay="deny" preload="auto" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;">
             <source src="videos/logo-animation-web.mp4" type="video/mp4">
         </video>
         <img src="images/logo-scrawl.png" alt="emme" class="mobile-logo">
@@ -412,26 +413,41 @@
 
     <script>
         const video = document.getElementById('heroVideo');
-        video.removeAttribute('controls');
+        const canvas = document.getElementById('heroCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        function drawFrame() {
+            if (video.readyState >= 2) {
+                const vw = video.videoWidth, vh = video.videoHeight;
+                const cw = canvas.width, ch = canvas.height;
+                const scale = Math.max(cw / vw, ch / vh);
+                const w = vw * scale, h = vh * scale;
+                ctx.drawImage(video, (cw - w) / 2, (ch - h) / 2, w, h);
+            }
+            requestAnimationFrame(drawFrame);
+        }
+        requestAnimationFrame(drawFrame);
+
         function forcePlay() {
             video.muted = true;
-            video.removeAttribute('controls');
             var p = video.play();
             if (p !== undefined) p.catch(() => {});
         }
         forcePlay();
         video.addEventListener('loadeddata', forcePlay);
         video.addEventListener('canplay', forcePlay);
-        video.addEventListener('loadedmetadata', forcePlay);
-        video.addEventListener('suspend', forcePlay);
-        [50, 100, 200, 500, 1000, 2000, 3000].forEach(t => setTimeout(forcePlay, t));
-        ['click', 'touchstart', 'touchend', 'scroll', 'pointerdown'].forEach(evt => {
+        [50, 100, 300, 600, 1000, 2000].forEach(t => setTimeout(forcePlay, t));
+        ['click', 'touchstart', 'touchend', 'pointerdown'].forEach(evt => {
             document.addEventListener(evt, forcePlay, { once: true, passive: true });
         });
         document.addEventListener('visibilitychange', () => { if (!document.hidden) forcePlay(); });
-        if ('IntersectionObserver' in window) {
-            new IntersectionObserver(entries => { if (entries[0].isIntersecting) forcePlay(); }).observe(video);
-        }
 
         // Glitch text generator
         const glitchMaps = {
