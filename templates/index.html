@@ -20,7 +20,14 @@
             position: absolute; top: 50%; left: 50%;
             min-width: 100%; min-height: 100%; width: auto; height: auto;
             transform: translate(-50%, -50%); object-fit: cover;
+            pointer-events: none;
         }
+        /* Hide native play button on iOS */
+        video::-webkit-media-controls-start-playback-button,
+        video::-webkit-media-controls-play-button,
+        video::-webkit-media-controls-panel,
+        video::-webkit-media-controls { display: none !important; -webkit-appearance: none; }
+        video::--webkit-media-controls { display: none !important; }
         .mobile-logo {
             display: none; position: absolute; top: 30%; left: 50%;
             transform: translate(-50%, -50%); z-index: 5;
@@ -132,7 +139,7 @@
 
 {% block body %}
     <section class="hero">
-        <video class="hero-video" autoplay muted playsinline webkit-playsinline loop poster="{{ url_for('static', filename='images/video-poster.jpg') }}" preload="metadata" id="heroVideo">
+        <video class="hero-video" autoplay muted playsinline webkit-playsinline loop disableRemotePlayback x-webkit-airplay="deny" poster="{{ url_for('static', filename='images/video-poster.jpg') }}" preload="auto" id="heroVideo">
             <source src="{{ url_for('static', filename='videos/logo-animation-web.mp4') }}" type="video/mp4">
         </video>
         <img src="{{ url_for('static', filename='images/logo-scrawl.png') }}" alt="emme" class="mobile-logo">
@@ -164,15 +171,29 @@
 
     <script>
         const video = document.getElementById('heroVideo');
-        function forcePlay() { video.muted = true; video.play().catch(() => {}); }
+        video.removeAttribute('controls');
+        function forcePlay() {
+            video.muted = true;
+            video.removeAttribute('controls');
+            var p = video.play();
+            if (p !== undefined) p.catch(() => {});
+        }
         forcePlay();
         video.addEventListener('loadeddata', forcePlay);
         video.addEventListener('canplay', forcePlay);
-        setTimeout(forcePlay, 100); setTimeout(forcePlay, 500); setTimeout(forcePlay, 1000);
-        ['click', 'touchstart', 'touchend', 'scroll'].forEach(evt => {
-            document.addEventListener(evt, forcePlay, { once: true });
+        video.addEventListener('loadedmetadata', forcePlay);
+        video.addEventListener('suspend', forcePlay);
+        // Retry aggressively
+        [50, 100, 200, 500, 1000, 2000, 3000].forEach(t => setTimeout(forcePlay, t));
+        // Any user gesture triggers play
+        ['click', 'touchstart', 'touchend', 'scroll', 'pointerdown'].forEach(evt => {
+            document.addEventListener(evt, forcePlay, { once: true, passive: true });
         });
         document.addEventListener('visibilitychange', () => { if (!document.hidden) forcePlay(); });
+        // IntersectionObserver fallback
+        if ('IntersectionObserver' in window) {
+            new IntersectionObserver(entries => { if (entries[0].isIntersecting) forcePlay(); }).observe(video);
+        }
 
         const glitchMaps = {
             'A':['α','Λ','Δ','א','ą','ά','Ą','λ'],'B':['β','ß','ב','Ɓ','ъ','ь','Ḃ','Þ'],
