@@ -367,10 +367,10 @@
 </head>
 <body>
     <section class="hero">
-        <canvas class="hero-video" id="heroCanvas"></canvas>
-        <video id="heroVideo" autoplay muted playsinline webkit-playsinline loop disableRemotePlayback x-webkit-airplay="deny" preload="auto" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;">
+        <video class="hero-video" autoplay muted playsinline webkit-playsinline loop disableRemotePlayback x-webkit-airplay="deny" preload="auto" id="heroVideo">
             <source src="videos/logo-animation-web.mp4" type="video/mp4">
         </video>
+        <canvas class="hero-video" id="heroCanvas" style="z-index:1;"></canvas>
         <img src="images/logo-scrawl.png" alt="emme" class="mobile-logo">
         <div class="hero-overlay"></div>
 
