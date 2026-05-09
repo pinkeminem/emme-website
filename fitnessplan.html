@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shape & Sculpt — June Start</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;600;700;800&family=Syne+Mono&display=swap');
+
+  :root {
+    --bg: #f7f3ef;
+    --surface: #f0ebe4;
+    --card: #ede7df;
+    --border: #d8cfc5;
+    --dark: #1a1510;
+    --accent: #c4622d;
+    --plum: #8b3a8b;
+    --green: #3a7a52;
+    --text: #1a1510;
+    --muted: #8a7e74;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Cormorant Garamond', serif; line-height: 1.6; }
+
+  .nav {
+    background: var(--dark);
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 2px solid var(--accent);
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav-tab {
+    font-family: 'Syne Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(247,243,239,0.4);
+    padding: 14px 22px;
+    cursor: pointer;
+    white-space: nowrap;
+    border-right: 1px solid rgba(255,255,255,0.06);
+    transition: color 0.15s, background 0.15s;
+    user-select: none;
+  }
+  .nav-tab:hover { color: rgba(247,243,239,0.75); }
+  .nav-tab.active { color: var(--accent); background: rgba(196,98,45,0.08); }
+
+  .hero {
+    background: var(--dark);
+    padding: 56px 44px 44px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before { content:''; position:absolute; bottom:-80px; right:-80px; width:380px; height:380px; border-radius:50%; border:1px solid rgba(196,98,45,0.12); pointer-events:none; }
+  .hero::after { content:''; position:absolute; bottom:-120px; right:-120px; width:520px; height:520px; border-radius:50%; border:1px solid rgba(139,58,139,0.08); pointer-events:none; }
+  .hero-eye { font-family:'Syne Mono',monospace; font-size:9px; letter-spacing:4px; color:var(--accent); text-transform:uppercase; margin-bottom:16px; }
+  .hero h1 { font-family:'Syne',sans-serif; font-weight:800; font-size:clamp(36px,6vw,72px); line-height:1.0; color:#f7f3ef; }
+  .hero h1 em { font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:300; color:var(--accent); }
+  .hero-sub { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:14px; color:rgba(247,243,239,0.4); margin-top:14px; max-width:500px; }
+
+  .stats-bar { background:var(--accent); display:flex; flex-wrap:wrap; }
+  .stat { flex:1; min-width:110px; padding:13px 20px; border-right:1px solid rgba(255,255,255,0.2); }
+  .stat:last-child { border-right:none; }
+  .stat-l { font-family:'Syne Mono',monospace; font-size:8px; letter-spacing:2px; color:rgba(255,255,255,0.6); text-transform:uppercase; display:block; margin-bottom:2px; }
+  .stat-v { font-family:'Syne',sans-serif; font-weight:700; font-size:17px; color:#fff; }
+
+  .page { display:none; }
+  .page.active { display:block; }
+  .container { max-width:1060px; margin:0 auto; padding:44px 40px; }
+
+  .sh { display:flex; align-items:baseline; gap:14px; margin-bottom:22px; padding-bottom:10px; border-bottom:1px solid var(--border); }
+  .sh-t { font-family:'Syne',sans-serif; font-weight:700; font-size:12px; letter-spacing:3px; text-transform:uppercase; }
+  .sh-s { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:14px; color:var(--muted); }
+
+  /* TRACKER */
+  .tracker-wrap { background:var(--dark); padding:36px 44px; border-bottom:1px solid rgba(255,255,255,0.06); }
+  .tracker-top { display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:6px; }
+  .tracker-title { font-family:'Syne',sans-serif; font-weight:800; font-size:20px; color:#f7f3ef; }
+  .tracker-date { font-family:'Syne Mono',monospace; font-size:10px; letter-spacing:2px; color:var(--accent); text-transform:uppercase; }
+  .tracker-sub { font-family:'Syne Mono',monospace; font-size:9px; letter-spacing:2px; color:rgba(247,243,239,0.3); text-transform:uppercase; margin-bottom:18px; }
+  .cg { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:7px; }
+  .ci { display:flex; align-items:flex-start; gap:11px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.07); border-radius:3px; padding:11px 14px; cursor:pointer; transition:background 0.15s,border-color 0.15s; user-select:none; }
+  .ci:hover { background:rgba(255,255,255,0.07); }
+  .ci.done { background:rgba(58,122,82,0.1); border-color:rgba(58,122,82,0.28); }
+  .ci.done .ci-l { color:rgba(247,243,239,0.35); text-decoration:line-through; }
+  .ci-b { width:18px; height:18px; border:1.5px solid rgba(247,243,239,0.18); border-radius:3px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:11px; transition:background 0.15s,border-color 0.15s; margin-top:2px; }
+  .ci.done .ci-b { background:var(--green); border-color:var(--green); color:#fff; }
+  .ci-l { font-family:'Syne',sans-serif; font-size:12px; font-weight:600; color:#f0ebe4; line-height:1.4; flex:1; }
+  .ci-tag { font-family:'Syne Mono',monospace; font-size:8px; letter-spacing:1px; text-transform:uppercase; padding:2px 6px; border-radius:10px; flex-shrink:0; margin-top:3px; }
+  .tg { color:var(--plum); background:rgba(139,58,139,0.14); }
+  .tc { color:#60a5fa; background:rgba(96,165,250,0.12); }
+  .tf { color:var(--accent); background:rgba(196,98,45,0.12); }
+  .tr { color:var(--green); background:rgba(58,122,82,0.12); }
+  .prog-row { display:flex; align-items:center; gap:14px; margin-top:18px; }
+  .prog-bar { flex:1; height:3px; background:rgba(255,255,255,0.07); border-radius:2px; overflow:hidden; }
+  .prog-fill { height:100%; background:var(--green); border-radius:2px; transition:width 0.3s; }
+  .prog-txt { font-family:'Syne Mono',monospace; font-size:9px; color:rgba(247,243,239,0.35); white-space:nowrap; }
+  .rest-msg { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:17px; color:rgba(247,243,239,0.4); padding:10px 0; }
+
+  /* WEEK GRID */
+  .week-strip { display:grid; grid-template-columns:repeat(7,1fr); gap:3px; margin-bottom:44px; }
+  .wday { background:#fff; border:1px solid var(--border); border-radius:2px; padding:14px 12px; min-height:130px; }
+  .wday.today { border-color:var(--accent); }
+  .wday.rest { background:var(--surface); }
+  .wday.has-tresor { border-top:3px solid var(--plum); }
+  .wday.has-school { border-top:3px solid #60a5fa; }
+  .wday-name { font-family:'Syne Mono',monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+  .wday.today .wday-name { color:var(--accent); }
+  .wday-w { font-family:'Syne',sans-serif; font-size:11px; font-weight:700; color:var(--text); margin-bottom:5px; line-height:1.3; }
+  .wday-n { font-size:11px; color:var(--muted); line-height:1.5; }
+  .badge { display:inline-block; font-family:'Syne Mono',monospace; font-size:7px; padding:1px 5px; border-radius:10px; margin-top:4px; margin-right:2px; }
+  .b-t { background:rgba(139,58,139,0.12); color:var(--plum); border:1px solid rgba(139,58,139,0.2); }
+  .b-s { background:rgba(96,165,250,0.1); color:#4080c8; border:1px solid rgba(96,165,250,0.2); }
+  .b-r { background:rgba(58,122,82,0.08); color:var(--green); border:1px solid rgba(58,122,82,0.18); }
+
+  /* PHASES */
+  .phases { margin-bottom:44px; }
+  .phase { border:1px solid var(--border); border-radius:2px; margin-bottom:3px; background:#fff; overflow:hidden; cursor:pointer; transition:box-shadow 0.2s; }
+  .phase:hover { box-shadow:0 2px 14px rgba(28,21,16,0.07); }
+  .phase.active { box-shadow:0 4px 22px rgba(28,21,16,0.10); border-color:var(--accent); }
+  .ph { display:flex; align-items:center; gap:18px; padding:20px 26px; user-select:none; }
+  .ph-bar { width:4px; height:44px; border-radius:2px; flex-shrink:0; transition:height 0.2s; }
+  .p1 .ph-bar { background:var(--green); }
+  .p2 .ph-bar { background:var(--accent); }
+  .p3 .ph-bar { background:var(--plum); }
+  .phase.active .ph-bar { height:54px; }
+  .ph-meta { flex:1; }
+  .ph-name { font-family:'Syne',sans-serif; font-weight:700; font-size:15px; letter-spacing:0.5px; }
+  .ph-sub { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:13px; color:var(--muted); margin-top:2px; }
+  .ph-pills { display:flex; gap:5px; flex-wrap:wrap; }
+  .pill { font-family:'Syne Mono',monospace; font-size:8px; letter-spacing:1px; text-transform:uppercase; padding:2px 8px; border-radius:20px; border:1px solid; }
+  .pg { color:var(--green); border-color:rgba(58,122,82,0.3); background:rgba(58,122,82,0.06); }
+  .po { color:var(--accent); border-color:rgba(196,98,45,0.3); background:rgba(196,98,45,0.06); }
+  .pp { color:var(--plum); border-color:rgba(139,58,139,0.3); background:rgba(139,58,139,0.06); }
+  .ph-caret { font-size:18px; color:var(--muted); transition:transform 0.2s,color 0.2s; }
+  .phase.active .ph-caret { transform:rotate(90deg); color:var(--accent); }
+  .pb { display:none; padding:0 26px 26px; border-top:1px solid var(--border); animation:fi 0.2s ease; }
+  .phase.active .pb { display:block; }
+  @keyframes fi { from{opacity:0;transform:translateY(-4px)} to{opacity:1;transform:translateY(0)} }
+
+  .day-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:12px; margin-top:20px; }
+  .dc { background:var(--surface); border:1px solid var(--border); border-radius:2px; padding:15px 17px; }
+  .dc-label { font-family:'Syne Mono',monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--accent); margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+  .dc-label::after { content:''; flex:1; height:1px; background:var(--border); }
+  .wi { font-size:13px; color:#3a3028; padding:4px 0; border-bottom:1px solid rgba(0,0,0,0.04); display:flex; gap:9px; line-height:1.5; }
+  .wi:last-child { border-bottom:none; }
+  .wi .dot { color:var(--accent); flex-shrink:0; font-size:11px; margin-top:2px; }
+  .ftag { display:inline-block; font-family:'Syne Mono',monospace; font-size:7px; letter-spacing:1px; text-transform:uppercase; padding:1px 4px; border-radius:2px; margin-left:3px; vertical-align:middle; background:rgba(139,58,139,0.1); color:var(--plum); border:1px solid rgba(139,58,139,0.18); }
+  .insight { margin-top:18px; padding:16px 18px; background:linear-gradient(135deg,rgba(139,58,139,0.04),rgba(196,98,45,0.04)); border:1px solid rgba(139,58,139,0.12); border-radius:2px; font-size:13.5px; color:#5a4a40; line-height:1.75; }
+  .insight-l { font-family:'Syne Mono',monospace; font-size:8px; letter-spacing:2px; text-transform:uppercase; color:var(--plum); margin-bottom:8px; }
+  .insight p { margin-bottom:7px; }
+  .insight p:last-child { margin-bottom:0; }
+
+  /* MEALS */
+  .meals-intro { background:var(--dark); padding:26px 40px; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:15px; color:rgba(247,243,239,0.55); line-height:1.7; border-bottom:2px solid var(--accent); }
+  .meal-cats { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:3px; margin-bottom:44px; }
+  .meal-cat { background:#fff; border:1px solid var(--border); border-radius:2px; overflow:hidden; }
+  .meal-cat-head { background:var(--dark); padding:14px 20px; display:flex; align-items:center; gap:12px; }
+  .meal-cat-icon { font-size:18px; }
+  .meal-cat-title { font-family:'Syne',sans-serif; font-weight:700; font-size:13px; color:#f7f3ef; }
+  .meal-cat-sub { font-family:'Syne Mono',monospace; font-size:8px; letter-spacing:1px; color:rgba(247,243,239,0.4); margin-top:1px; }
+  .meal-item { padding:13px 20px; border-bottom:1px solid var(--border); transition:background 0.12s; }
+  .meal-item:last-child { border-bottom:none; }
+  .meal-item:hover { background:var(--surface); }
+  .meal-item.fav { border-left:3px solid var(--accent); }
+  .meal-name { font-family:'Syne',sans-serif; font-weight:600; font-size:13px; color:var(--text); margin-bottom:3px; }
+  .meal-desc { font-size:12px; color:var(--muted); line-height:1.5; font-style:italic; }
+  .meal-macros { display:flex; gap:10px; margin-top:5px; }
+  .mm { font-family:'Syne Mono',monospace; font-size:8px; color:var(--muted); }
+  .mm span { color:var(--text); }
+
+  /* FODMAP */
+  .fodmap-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:44px; }
+  .fp { border-radius:2px; padding:22px; }
+  .fp-safe { background:rgba(58,122,82,0.06); border:1px solid rgba(58,122,82,0.2); }
+  .fp-avoid { background:rgba(196,98,45,0.06); border:1px solid rgba(196,98,45,0.2); }
+  .fp-title { font-family:'Syne',sans-serif; font-weight:700; font-size:11px; letter-spacing:2px; text-transform:uppercase; margin-bottom:14px; }
+  .fp-safe .fp-title { color:var(--green); }
+  .fp-avoid .fp-title { color:var(--accent); }
+  .fp-cat { margin-bottom:12px; }
+  .fp-cat-n { font-family:'Syne Mono',monospace; font-size:8px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin-bottom:5px; }
+  .fp-items { display:flex; flex-wrap:wrap; gap:4px; }
+  .fpi { font-size:11px; font-family:'Cormorant Garamond',serif; padding:2px 9px; border-radius:20px; background:rgba(28,21,16,0.05); color:var(--text); border:1px solid var(--border); }
+
+  /* RULES */
+  .rules-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:3px; margin-bottom:44px; }
+  .rule { background:var(--card); border:1px solid var(--border); padding:20px; border-radius:2px; }
+  .rule-n { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:44px; color:rgba(28,21,16,0.07); line-height:1; margin-bottom:8px; }
+  .rule-t { font-family:'Syne',sans-serif; font-weight:700; font-size:12px; color:var(--text); margin-bottom:6px; }
+  .rule-b { font-size:13px; color:var(--muted); line-height:1.7; }
+
+  /* EXERCISES */
+  .ex-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(185px,1fr)); gap:3px; margin-bottom:44px; }
+  .ex { background:var(--dark); padding:20px 18px; border-radius:2px; position:relative; overflow:hidden; }
+  .ex::before { content:''; position:absolute; top:0; left:0; width:3px; height:100%; }
+  .ex.glute::before { background:var(--plum); }
+  .ex.thigh::before { background:var(--accent); }
+  .ex.hip::before { background:var(--green); }
+  .ex-cat { font-family:'Syne Mono',monospace; font-size:8px; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; }
+  .ex.glute .ex-cat { color:rgba(139,58,139,0.65); }
+  .ex.thigh .ex-cat { color:rgba(196,98,45,0.65); }
+  .ex.hip .ex-cat { color:rgba(58,122,82,0.65); }
+  .ex-name { font-family:'Syne',sans-serif; font-weight:700; font-size:14px; color:#f7f3ef; margin-bottom:4px; }
+  .ex-sets { font-family:'Syne Mono',monospace; font-size:9px; color:var(--accent); margin-bottom:5px; }
+  .ex-why { font-family:'Cormorant Garamond',serif; font-size:12px; color:rgba(247,243,239,0.5); line-height:1.5; }
+
+  .footer { background:var(--dark); padding:26px 40px; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:13px; color:rgba(247,243,239,0.45); text-align:center; border-top:2px solid var(--accent); line-height:1.7; }
+  .footer strong { font-style:normal; font-family:'Syne',sans-serif; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:#f7f3ef; }
+
+  @media(max-width:640px){
+    .hero{padding:40px 22px 32px;}
+    .tracker-wrap{padding:26px 22px;}
+    .container{padding:32px 20px;}
+    .week-strip{grid-template-columns:repeat(4,1fr);}
+    .fodmap-row{grid-template-columns:1fr;}
+    .ph-pills{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-eye">12-Week Program · Starts June 9, 2026</div>
+  <h1>Shape &amp; <em>Sculpt</em></h1>
+  <div class="hero-sub">Glute &amp; thigh focus · Low-FODMAP · Built around Babylonia A2 + Tresor shifts · No calorie counting</div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat"><span class="stat-l">Start</span><span class="stat-v">180 lbs</span></div>
+  <div class="stat"><span class="stat-l">Target</span><span class="stat-v">~150 lbs</span></div>
+  <div class="stat"><span class="stat-l">School</span><span class="stat-v">Babylonia A2</span></div>
+  <div class="stat"><span class="stat-l">Work</span><span class="stat-v">Tresor Shifts</span></div>
+  <div class="stat"><span class="stat-l">Train Window</span><span class="stat-v">Mornings</span></div>
+  <div class="stat"><span class="stat-l">Starts</span><span class="stat-v">Jun 9</span></div>
+</div>
+
+<div class="nav">
+  <div class="nav-tab active" onclick="switchPage(this,'today')">Today</div>
+  <div class="nav-tab" onclick="switchPage(this,'schedule')">Schedule</div>
+  <div class="nav-tab" onclick="switchPage(this,'phases')">Training Phases</div>
+  <div class="nav-tab" onclick="switchPage(this,'exercises')">Exercises</div>
+  <div class="nav-tab" onclick="switchPage(this,'meals')">Meal Rotation</div>
+  <div class="nav-tab" onclick="switchPage(this,'fodmap')">FODMAP Guide</div>
+  <div class="nav-tab" onclick="switchPage(this,'rules')">Rules</div>
+</div>
+
+<!-- TODAY -->
+<div id="page-today" class="page active">
+  <div class="tracker-wrap">
+    <div class="tracker-top">
+      <div class="tracker-title">Today's Checklist</div>
+      <div class="tracker-date" id="t-date"></div>
+    </div>
+    <div class="tracker-sub" id="t-label"></div>
+    <div id="t-content"></div>
+    <div class="prog-row" id="t-prog" style="display:none">
+      <div class="prog-bar"><div class="prog-fill" id="t-fill" style="width:0%"></div></div>
+      <div class="prog-txt" id="t-txt"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SCHEDULE -->
+<div id="page-schedule" class="page">
+  <div class="container">
+    <div class="sh"><span class="sh-t">Weekly Template</span><span class="sh-s">Babylonia A2: Mon–Thu 14:00–17:30 · Train mornings</span></div>
+    <div class="week-strip" id="week-strip"></div>
+    <div class="sh"><span class="sh-t">Schedule Rules</span></div>
+    <div class="rules-grid">
+      <div class="rule"><div class="rule-n">01</div><div class="rule-t">Train 8–11 AM</div><div class="rule-b">Babylonia locks your afternoons Mon–Thu. The morning window is your only consistent training slot. Get it done before class.</div></div>
+      <div class="rule"><div class="rule-n">02</div><div class="rule-t">Tresor Night = Light Next Morning</div><div class="rule-b">After a Tresor shift you've been standing for hours. Next morning: yoga + walk only. No hard training.</div></div>
+      <div class="rule"><div class="rule-n">03</div><div class="rule-t">Saturday = Rest Before Shift</div><div class="rule-b">Walk or light yoga only on Saturdays. Never heavy strength work before a long Tresor shift.</div></div>
+      <div class="rule"><div class="rule-n">04</div><div class="rule-t">Friday is Flexible</div><div class="rule-b">No afternoon class on Fridays. Use that window for a longer run or makeup session if you missed anything during the week.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASES -->
+<div id="page-phases" class="page">
+  <div class="container">
+    <div class="sh"><span class="sh-t">Training Phases</span><span class="sh-s">click to expand</span></div>
+    <div class="phases">
+
+      <div class="phase p1 active" onclick="togglePhase(this)">
+        <div class="ph">
+          <div class="ph-bar"></div>
+          <div class="ph-meta">
+            <div class="ph-name">Phase 1 — Foundation</div>
+            <div class="ph-sub">Weeks 1–4 (Jun 9 – Jul 6) · Weighted from day one, build morning habit</div>
+          </div>
+          <div class="ph-pills"><span class="pill pg">Moderate-Hard</span><span class="pill pg">Load + Form</span></div>
+          <div class="ph-caret">›</div>
+        </div>
+        <div class="pb">
+          <div class="day-grid">
+            <div class="dc">
+              <div class="dc-label">Mon / Thu — Lower Body (~45 min)</div>
+              <div class="wi"><span class="dot">◆</span>Hip thrusts 4×10 — weighted from day one <span class="ftag">priority</span></div>
+              <div class="wi"><span class="dot">◆</span>Sumo goblet squat 4×12 <span class="ftag">inner thigh</span></div>
+              <div class="wi"><span class="dot">◆</span>Romanian deadlift 3×12 <span class="ftag">posterior chain</span></div>
+              <div class="wi"><span class="dot">◆</span>Clamshells + lateral band walks 3×20 <span class="ftag">hip width</span></div>
+              <div class="wi"><span class="dot">◆</span>Donkey kicks 3×15 each side <span class="ftag">upper glute</span></div>
+              <div class="wi"><span class="dot">◆</span>Dead bugs 3×12 (core)</div>
+            </div>
+            <div class="dc">
+              <div class="dc-label">Tue / Fri — Run</div>
+              <div class="wi"><span class="dot">◆</span>Tuesday: 5K with 2 hard segments — 8 min easy / 4 min hard / 8 min easy / 4 min hard / cool down</div>
+              <div class="wi"><span class="dot">◆</span>Friday: easy 5K or 6K slow — no pushing</div>
+              <div class="wi"><span class="dot">◆</span>5 min walk warmup + cooldown always</div>
+            </div>
+            <div class="dc">
+              <div class="dc-label">Wed — Yoga + Hip Work</div>
+              <div class="wi"><span class="dot">◆</span>Full yoga session</div>
+              <div class="wi"><span class="dot">◆</span>Pigeon pose 2 min each side · Low lunge · Couch stretch</div>
+              <div class="wi"><span class="dot">◆</span>Non-negotiable for glute activation</div>
+            </div>
+            <div class="dc">
+              <div class="dc-label">Sat / Sun</div>
+              <div class="wi"><span class="dot">◆</span>Saturday: 30 min walk or light yoga (pre-Tresor only)</div>
+              <div class="wi"><span class="dot">◆</span>Sunday: full rest — especially post-Tresor Sat night</div>
+            </div>
+          </div>
+          <div class="insight">
+            <div class="insight-l">Phase 1 Notes</div>
+            <p>Weighted hip thrusts from day one — not bodyweight. Start with a weight you can do 10 clean reps with and add load every week. Slow the tempo: 3 sec down, 1 sec squeeze at the top. You should feel the glute, not the quad or lower back.</p>
+            <p>Morning after a Tresor shift: yoga and walk only. Sleep and recovery beat one workout.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase p2" onclick="togglePhase(this)">
+        <div class="ph">
+          <div class="ph-bar"></div>
+          <div class="ph-meta">
+            <div class="ph-name">Phase 2 — Load</div>
+            <div class="ph-sub">Weeks 5–8 (Jul 7 – Aug 3) · Supersets, heavier, tempo runs</div>
+          </div>
+          <div class="ph-pills"><span class="pill po">Hard</span><span class="pill po">Supersets</span><span class="pill po">Tempo</span></div>
+          <div class="ph-caret">›</div>
+        </div>
+        <div class="pb">
+          <div class="day-grid">
+            <div class="dc">
+              <div class="dc-label">Mon / Thu — Superset Format (~50 min)</div>
+              <div class="wi"><span class="dot">◆</span>A1: Heavy hip thrusts 4×8 → A2: Band lateral walks 20 steps (no rest) <span class="ftag">glute complex</span></div>
+              <div class="wi"><span class="dot">◆</span>B1: Bulgarian split squat 4×8 each → B2: Clamshells 4×20 (no rest) <span class="ftag">thigh + hip</span></div>
+              <div class="wi"><span class="dot">◆</span>C1: RDL 4×10 → C2: Glute kickbacks 4×15 (no rest) <span class="ftag">posterior</span></div>
+              <div class="wi"><span class="dot">◆</span>Finisher: Band abductions 3×25 each <span class="ftag">hip width</span></div>
+            </div>
+            <div class="dc">
+              <div class="dc-label">Tue — Intervals · Fri — Tempo</div>
+              <div class="wi"><span class="dot">◆</span>Tuesday: 10 × (1 min hard / 1 min easy jog) — no walk breaks</div>
+              <div class="wi"><span class="dot">◆</span>Friday: 25 min tempo — comfortably hard, can't hold a conversation</div>
+            </div>
+            <div class="dc">
+              <div class="dc-label">Wed / Sat / Sun</div>
+              <div class="wi"><span class="dot">◆</span>Wednesday: yoga + pigeon/couch stretch. Still mandatory.</div>
+              <div class="wi"><span class="dot">◆</span>Saturday: 40 min easy walk</div>
+              <div class="wi"><span class="dot">◆</span>Sunday: full rest</div>
+            </div>
+          </div>
+          <div class="insight">
+            <div class="insight-l">Phase 2 Notes</div>
+            <p>Supersets are the intensity jump. No rest between paired exercises — your cardiovascular system gets hit alongside the muscles. The hip thrust → lateral walk combo will make your lungs work. That's the point.</p>
+            <p>Fight or Flight: SEX runs Jul 10–19. Adjust hard training around production days — before, not after long venue days.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase p3" onclick="togglePhase(this)">
+        <div class="ph">
+          <div class="ph-bar"></div>
+          <div class="ph-meta">
+            <div class="ph-name">Phase 3 — Sculpt</div>
+            <div class="ph-sub">Weeks 9–12 (Aug 4 – Aug 31) · Max load, full volume, sub-26 5K</div>
+          </div>
+          <div class="ph-pills"><span class="pill pp">Very Hard</span><span class="pill pp">Max Load</span><span class="pill pp">Full Volume</span></div>
+          <div class="ph-caret">›</div>
+        </div>
+        <div class="pb">
+          <div class="day-grid">
+            <div class="dc">
+              <div class="dc-label">Mon / Thu — Heavy + Volume (~55 min)</div>
+              <div class="wi"><span class="dot">◆</span>Hip thrusts 5×6 — max load, clean squeeze <span class="ftag">priority</span></div>
+              <div class="wi"><span class="dot">◆</span>Bulgarian split squat 4×10 each (add weight) <span class="ftag">thigh volume</span></div>
+              <div class="wi"><span class="dot">◆</span>RDL 4×10 heavier than Phase 2 <span class="ftag">posterior chain</span></div>
+              <div class="wi"><span class="dot">◆</span>Sumo squat 4×12 heavy + cable abductions 4×25 <span class="ftag">hip width</span></div>
+              <div class="wi"><span class="dot">◆</span>Kickbacks 4×15 · Fire hydrants 4×20 · Hollow holds 3×40s</div>
+            </div>
+            <div class="dc">
+              <div class="dc-label">Tue — All-Out Intervals · Fri — Pace 5K</div>
+              <div class="wi"><span class="dot">◆</span>Tuesday: 12 × (1 min all-out / 45 sec easy) — brutal, essential</div>
+              <div class="wi"><span class="dot">◆</span>Friday: timed 5K — push for sub-26 by week 12</div>
+              <div class="wi"><span class="dot">◆</span>Saturday (no Tresor): 7–8K easy long run</div>
+            </div>
+            <div class="dc">
+              <div class="dc-label">Wed / Sun</div>
+              <div class="wi"><span class="dot">◆</span>Wednesday: yoga + deep hip work. At this intensity recovery matters more than ever.</div>
+              <div class="wi"><span class="dot">◆</span>Sunday: non-negotiable full rest.</div>
+            </div>
+          </div>
+          <div class="insight">
+            <div class="insight-l">Phase 3 Notes</div>
+            <p>This is where visual shape change accelerates. The muscle is there — this phase brings out the definition and separation. Trust the process even if the scale isn't moving fast.</p>
+            <p>MBAAS premieres autumn 2026. You'll be going into that production carrying a different body than you started with. That's the point of all of this.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EXERCISES -->
+<div id="page-exercises" class="page">
+  <div class="container">
+    <div class="sh"><span class="sh-t">Priority Movements</span><span class="sh-s">what builds the shape and why</span></div>
+    <div class="ex-grid">
+      <div class="ex glute">
+        <div class="ex-cat">Glute Max · Priority #1</div>
+        <div class="ex-name">Hip Thrust</div>
+        <div class="ex-sets">P1: 4×10 · P2: 4×8 heavy · P3: 5×6 max</div>
+        <div class="ex-why">Best glute builder that exists. Weighted from day one. Add load every week without exception.</div>
+      </div>
+      <div class="ex glute">
+        <div class="ex-cat">Glute Max + Hamstring</div>
+        <div class="ex-name">Romanian Deadlift</div>
+        <div class="ex-sets">P1: 3×12 · P2: 4×10 · P3: 4×10 heavier</div>
+        <div class="ex-why">Builds the glute-hamstring tie-in — the fullness and roundness below the glute. Hip hinge, not a squat.</div>
+      </div>
+      <div class="ex thigh">
+        <div class="ex-cat">Quad + Inner Thigh</div>
+        <div class="ex-name">Sumo Squat</div>
+        <div class="ex-sets">P1: 4×12 · P2–3: 4×12 heavy</div>
+        <div class="ex-why">Wide stance hits inner thigh and glute med more than standard squats. Creates thigh fullness from the front.</div>
+      </div>
+      <div class="ex thigh">
+        <div class="ex-cat">Quad + Glute Separation</div>
+        <div class="ex-name">Bulgarian Split Squat</div>
+        <div class="ex-sets">P1: 3×10 each · P2: 4×8 · P3: 4×10 weighted</div>
+        <div class="ex-why">Hardest movement in the program. Builds unilateral thigh volume and glute definition. Non-negotiable.</div>
+      </div>
+      <div class="ex hip">
+        <div class="ex-cat">Glute Med · Hip Width</div>
+        <div class="ex-name">Clamshells + Lateral Walks</div>
+        <div class="ex-sets">Every session · 3–4×20</div>
+        <div class="ex-why">Glute medius = hip width. The muscle most responsible for a wider silhouette. Never skip it.</div>
+      </div>
+      <div class="ex hip">
+        <div class="ex-cat">Outer Glute + Hip</div>
+        <div class="ex-name">Band/Cable Abductions</div>
+        <div class="ex-sets">P1: 3×20 · P2–3: 4×25</div>
+        <div class="ex-why">Standing abduction with resistance. Add ankle weights to progress. Targets the hip shelf directly.</div>
+      </div>
+      <div class="ex glute">
+        <div class="ex-cat">Upper Glute</div>
+        <div class="ex-name">Donkey Kicks + Fire Hydrants</div>
+        <div class="ex-sets">3–4×15 each · every session</div>
+        <div class="ex-why">Isolation for the upper and outer glute — the round shelf. Progress with ankle weights or cable.</div>
+      </div>
+      <div class="ex hip">
+        <div class="ex-cat">Core + Lumbar Protection</div>
+        <div class="ex-name">Dead Bugs + Hollow Holds</div>
+        <div class="ex-sets">3×12 dead bugs / 3×40s hollow holds</div>
+        <div class="ex-why">Protects your lower back under heavy hip thrusts and RDLs. Replaces generic planks — these are harder.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MEALS -->
+<div id="page-meals" class="page">
+  <div class="meals-intro">
+    No calorie counting. No tracking. Every meal below is low-FODMAP, protein-forward, and portion-correct. Pick one from each category, eat it, move on. Swap freely within each category — the math is already done. Starred meals are the simplest to prep.
+  </div>
+  <div class="container">
+    <div class="sh"><span class="sh-t">Meal Rotation</span><span class="sh-s">pick one per slot · swap freely · ★ = easiest to prep</span></div>
+    <div class="meal-cats">
+
+      <div class="meal-cat">
+        <div class="meal-cat-head"><div class="meal-cat-icon">🌅</div><div><div class="meal-cat-title">Breakfast</div><div class="meal-cat-sub">~450–500 cal · ~35–42g protein</div></div></div>
+        <div class="meal-item fav"><div class="meal-name">★ Oat + Egg Bowl</div><div class="meal-desc">½ cup rolled oats + blueberries + 3 scrambled eggs + 1 tbsp peanut butter</div><div class="meal-macros"><span class="mm">~<span>480</span> cal</span><span class="mm">~<span>38g</span> protein</span></div></div>
+        <div class="meal-item"><div class="meal-name">★ Rice Cake Stack</div><div class="meal-desc">4 rice cakes + 2 tbsp peanut butter + 3 hard boiled eggs + strawberries</div><div class="meal-macros"><span class="mm">~<span>460</span> cal</span><span class="mm">~<span>36g</span> protein</span></div></div>
+        <div class="meal-item"><div class="meal-name">LF Yogurt Bowl</div><div class="meal-desc">200g lactose-free Greek yogurt + ½ cup oats + blueberries + 2 boiled eggs on the side</div><div class="meal-macros"><span class="mm">~<span>490</span> cal</span><span class="mm">~<span>40g</span> protein</span></div></div>
+        <div class="meal-item"><div class="meal-name">Tofu Scramble + Rice</div><div class="meal-desc">150g firm tofu scrambled with spinach + bell pepper + soy sauce + 1 cup rice</div><div class="meal-macros"><span class="mm">~<span>450</span> cal</span><span class="mm">~<span>32g</span> protein</span></div></div>
+        <div class="meal-item"><div class="meal-name">Smoked Salmon + Rice</div><div class="meal-desc">100g smoked salmon + 1 cup rice + cucumber + 2 eggs + olive oil</div><div class="meal-macros"><span class="mm">~<span>500</span> cal</span><span class="mm">~<span>42g</span> protein</span></div></div>
+      </div>
+
+      <div class="meal-cat">
+        <div class="meal-cat-head"><div class="meal-cat-icon">☀️</div><div><div class="meal-cat-title">Lunch</div><div class="meal-cat-sub">~480–530 cal · ~38–45g protein</div></div></div>
+        <div class="meal-item fav"><div class="meal-name">★ Chicken Rice Bowl</div><div class="meal-desc">150g grilled chicken thighs + 1 cup rice + roasted zucchini + bell pepper + garlic-infused oil</div><div class="meal-macros"><span class="mm">~<span>520</span> cal</span><span class="mm">~<span>44g</span> protein</span></div></div>
+        <div class="meal-item"><div class="meal-name">★ Tuna Potato Bowl</div><div class="meal-desc">1 can tuna + medium roasted potato + spinach + olive oil + mustard</div><div class="meal-macros"><span class="mm">~<span>480</span> cal</span><span class="mm">~<span>40g</span> protein</span></div></div>
+        <div class="meal-item"><div class="meal-name">Turkey Stir Fry + Rice</div><div class="meal-desc">150g ground turkey + bok choy + carrot + soy sauce + ginger + 1 cup rice</div><div class="meal-macros"><span class="mm">~<span>510</span> cal</span><span class="mm">~<span>42g</span> protein</span></div></div>
+        <div class="meal-item"><div class="meal-name">Tofu Rice Bowl</div><div class="meal-desc">180g firm tofu pan-fried + 1 cup rice + green beans + sesame oil + soy sauce</div><div class="meal-macros"><span class="mm">~<span>490</span> cal</span><span class="mm">~<span>34g</span> protein</span></div></div>
+        <div class="meal-item"><div class="meal-name">Egg Fried Rice</div><div class="meal-desc">3 eggs + 1 cup cooked rice + scallion tops + carrot + soy sauce + sesame oil</div><div class="meal-macros"><span class="mm">~<span>500</span> cal</span><span class="mm">~<span>22g</span> protein</span></div></div>
+      </div>
+
+      <div class="meal-cat">
+        <div class="meal-cat-head"><div class="meal-cat-icon">🌙</div><div><div class="meal-cat-title">Dinner</div><div class="meal-cat-sub">~480–520 cal · ~38–44g protein</div></div></div>
+        <div class="meal-item fav"><div class="meal-name">★ Salmon + Potato</div><div class="meal-desc">150g salmon + roasted potato + steamed green beans + spinach + olive oil + mustard</div><div class="meal-macros"><span class="mm">~<span>490</span> cal</span><span class="mm">~<span>40g</span> protein</span></div></div>
+        <div class="meal-item"><div class="meal-name">Chicken Thigh + Sweet Potato</div><div class="meal-desc">150g roasted chicken thighs + small sweet potato + kale + olive oil + ginger</div><div class="meal-macros"><span class="mm">~<span>500</span> cal</span><span class="mm">~<span>42g</span> protein</span></div></div>
+        <div class="meal-item"><div class="meal-name">★ Tuna Rice Bowl</div><div class="meal-desc">1 can tuna + 1 cup rice + cucumber + soy sauce + sesame oil + scallion tops</div><div class="meal-macros"><span class="mm">~<span>480</span> cal</span><span class="mm">~<span>38g</span> protein</span></div></div>
+        <div class="meal-item"><div class="meal-name">Turkey Meatballs + Rice</div><div class="meal-desc">150g ground turkey meatballs (no breadcrumbs) + 1 cup rice + roasted zucchini</div><div class="meal-macros"><span class="mm">~<span>510</span> cal</span><span class="mm">~<span>44g</span> protein</span></div></div>
+        <div class="meal-item"><div class="meal-name">Baked Tofu + Rice Noodles</div><div class="meal-desc">180g baked tofu + rice noodles + bok choy + peanut-ginger sauce (PB + soy + ginger + lime)</div><div class="meal-macros"><span class="mm">~<span>500</span> cal</span><span class="mm">~<span>32g</span> protein</span></div></div>
+      </div>
+
+      <div class="meal-cat">
+        <div class="meal-cat-head"><div class="meal-cat-icon">🌿</div><div><div class="meal-cat-title">Snack + Late Night</div><div class="meal-cat-sub">~150–220 cal · ~15–22g protein · pre-portion before smoking</div></div></div>
+        <div class="meal-item fav"><div class="meal-name">★ LF Yogurt + Berries</div><div class="meal-desc">150g lactose-free Greek yogurt + strawberries or blueberries. Bowl pre-portioned before you smoke.</div><div class="meal-macros"><span class="mm">~<span>160</span> cal</span><span class="mm">~<span>20g</span> protein</span></div></div>
+        <div class="meal-item fav"><div class="meal-name">★ Rice Cakes + PB</div><div class="meal-desc">3 rice cakes + 1.5 tbsp natural peanut butter. Pre-plate it. Not from the jar.</div><div class="meal-macros"><span class="mm">~<span>210</span> cal</span><span class="mm">~<span>7g</span> protein</span></div></div>
+        <div class="meal-item"><div class="meal-name">Hard Boiled Eggs</div><div class="meal-desc">3 hard boiled eggs + pinch of salt. Batch-cook on Sunday. Done for the week.</div><div class="meal-macros"><span class="mm">~<span>210</span> cal</span><span class="mm">~<span>18g</span> protein</span></div></div>
+        <div class="meal-item"><div class="meal-name">LF Cottage Cheese + Fruit</div><div class="meal-desc">150g lactose-free cottage cheese + kiwi or grapes. High protein, light, satisfying.</div><div class="meal-macros"><span class="mm">~<span>170</span> cal</span><span class="mm">~<span>22g</span> protein</span></div></div>
+        <div class="meal-item"><div class="meal-name">★ Tuna on Rice Cakes</div><div class="meal-desc">½ can tuna + mustard on 2 rice cakes. Boring but perfect.</div><div class="meal-macros"><span class="mm">~<span>175</span> cal</span><span class="mm">~<span>22g</span> protein</span></div></div>
+      </div>
+    </div>
+
+    <div class="sh"><span class="sh-t">How the Diet System Works</span></div>
+    <div class="rules-grid">
+      <div class="rule"><div class="rule-n">01</div><div class="rule-t">Pick, Don't Plan</div><div class="rule-b">Hungry? Pick one from each list. Any combination works. No planning, no math, no tracking required.</div></div>
+      <div class="rule"><div class="rule-n">02</div><div class="rule-t">Protein Anchor</div><div class="rule-b">Every meal has a protein source. If you improvise something, it must also have protein. This is the only rule.</div></div>
+      <div class="rule"><div class="rule-n">03</div><div class="rule-t">Pre-Portion the Night Snack</div><div class="rule-b">Before you smoke: portion snack into a bowl. Non-negotiable. This single habit prevents 300–500 extra cal/night.</div></div>
+      <div class="rule"><div class="rule-n">04</div><div class="rule-t">Garlic Oil Not Garlic</div><div class="rule-b">Garlic-infused oil is FODMAP-safe, raw garlic is not. Buy a bottle. Use it everywhere garlic is called for.</div></div>
+      <div class="rule"><div class="rule-n">05</div><div class="rule-t">Eating Out in Berlin</div><div class="rule-b">Sushi (salmon/tuna, no onion sauce) · Döner bowl (extra meat, hold sauce) · Thai rice dishes · Grilled meat + potato anywhere.</div></div>
+      <div class="rule"><div class="rule-n">06</div><div class="rule-t">Training vs Rest Days</div><div class="rule-b">Training days: all 3 meals + snack. Rest days: eat when hungry, always keep the protein snack. Don't skip protein even if not very hungry.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- FODMAP -->
+<div id="page-fodmap" class="page">
+  <div class="container">
+    <div class="sh"><span class="sh-t">Low-FODMAP Reference</span></div>
+    <div class="fodmap-row">
+      <div class="fp fp-safe">
+        <div class="fp-title">✓ Eat Freely</div>
+        <div class="fp-cat"><div class="fp-cat-n">Protein</div><div class="fp-items"><span class="fpi">Eggs</span><span class="fpi">Chicken</span><span class="fpi">Turkey</span><span class="fpi">Salmon</span><span class="fpi">Tuna</span><span class="fpi">Firm tofu</span><span class="fpi">LF Greek yogurt</span><span class="fpi">LF cottage cheese</span></div></div>
+        <div class="fp-cat"><div class="fp-cat-n">Carbs</div><div class="fp-items"><span class="fpi">White rice</span><span class="fpi">Brown rice</span><span class="fpi">Rolled oats</span><span class="fpi">Potato</span><span class="fpi">Sweet potato (small)</span><span class="fpi">Rice cakes</span><span class="fpi">Rice noodles</span><span class="fpi">GF bread</span></div></div>
+        <div class="fp-cat"><div class="fp-cat-n">Vegetables</div><div class="fp-items"><span class="fpi">Zucchini</span><span class="fpi">Spinach</span><span class="fpi">Bell pepper</span><span class="fpi">Carrot</span><span class="fpi">Cucumber</span><span class="fpi">Kale</span><span class="fpi">Green beans</span><span class="fpi">Bok choy</span><span class="fpi">Scallion tops ✓</span><span class="fpi">Tomato (small)</span></div></div>
+        <div class="fp-cat"><div class="fp-cat-n">Fruit</div><div class="fp-items"><span class="fpi">Strawberries</span><span class="fpi">Blueberries</span><span class="fpi">Oranges</span><span class="fpi">Grapes</span><span class="fpi">Kiwi</span><span class="fpi">Firm banana</span></div></div>
+        <div class="fp-cat"><div class="fp-cat-n">Flavor</div><div class="fp-items"><span class="fpi">Garlic-infused oil ✓</span><span class="fpi">Ginger</span><span class="fpi">Soy sauce (small)</span><span class="fpi">Mustard</span><span class="fpi">Olive oil</span><span class="fpi">Sesame oil</span><span class="fpi">Maple syrup (small)</span></div></div>
+      </div>
+      <div class="fp fp-avoid">
+        <div class="fp-title">✗ Avoid</div>
+        <div class="fp-cat"><div class="fp-cat-n">Alliums (biggest trigger)</div><div class="fp-items"><span class="fpi">Raw garlic</span><span class="fpi">Onion</span><span class="fpi">Shallots</span><span class="fpi">Leek (white part)</span><span class="fpi">Scallion whites</span></div></div>
+        <div class="fp-cat"><div class="fp-cat-n">Legumes (large portions)</div><div class="fp-items"><span class="fpi">Chickpeas</span><span class="fpi">Lentils</span><span class="fpi">Black beans</span><span class="fpi">Kidney beans</span></div></div>
+        <div class="fp-cat"><div class="fp-cat-n">Dairy</div><div class="fp-items"><span class="fpi">Regular milk</span><span class="fpi">Soft cheese</span><span class="fpi">Regular yogurt</span><span class="fpi">Ice cream</span><span class="fpi">Cream</span></div></div>
+        <div class="fp-cat"><div class="fp-cat-n">Wheat</div><div class="fp-items"><span class="fpi">Regular bread</span><span class="fpi">Wheat pasta</span><span class="fpi">Most cereals</span></div></div>
+        <div class="fp-cat"><div class="fp-cat-n">High-Fructose Fruit</div><div class="fp-items"><span class="fpi">Mango</span><span class="fpi">Apple</span><span class="fpi">Pear</span><span class="fpi">Watermelon</span><span class="fpi">Cherries</span></div></div>
+        <div class="fp-cat"><div class="fp-cat-n">Sweeteners</div><div class="fp-items"><span class="fpi">Honey</span><span class="fpi">Agave</span><span class="fpi">HFCS</span><span class="fpi">Sorbitol / Xylitol</span></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RULES -->
+<div id="page-rules" class="page">
+  <div class="container">
+    <div class="sh"><span class="sh-t">Core Principles</span></div>
+    <div class="rules-grid">
+      <div class="rule"><div class="rule-n">01</div><div class="rule-t">Hip Thrusts, Every Week, Always Heavier</div><div class="rule-b">The single movement most directly responsible for glute shape. Add load every 1–2 weeks without exception. 1.25 kg counts.</div></div>
+      <div class="rule"><div class="rule-n">02</div><div class="rule-t">Train the Glute Med for Width</div><div class="rule-b">Clamshells and abduction work = hip width. Most programs skip this. It's the difference between a round vs flat silhouette from the front.</div></div>
+      <div class="rule"><div class="rule-n">03</div><div class="rule-t">Stretch Hip Flexors Daily</div><div class="rule-b">Tight hip flexors prevent glutes from firing. Your yoga practice is an actual asset here. Pigeon + low lunge every day.</div></div>
+      <div class="rule"><div class="rule-n">04</div><div class="rule-t">Mornings Are Your Window</div><div class="rule-b">Babylonia owns your afternoons. Train 8–11 AM. Build the morning habit in June and it sustains through the full 12 weeks.</div></div>
+      <div class="rule"><div class="rule-n">05</div><div class="rule-t">Tresor Night = Recovery Morning</div><div class="rule-b">You're on your feet for hours on a shift. That's physical load. Yoga + walk the morning after. Sleep wins over one session.</div></div>
+      <div class="rule"><div class="rule-n">06</div><div class="rule-t">Measurements Over Scale</div><div class="rule-b">Muscle is denser than fat. You may gain weight on the scale while visually transforming. Measure hips and thighs weekly.</div></div>
+      <div class="rule"><div class="rule-n">07</div><div class="rule-t">Pre-Portion Before Smoking</div><div class="rule-b">Bowl of snack, portioned, sitting on the counter. Done before you smoke. This one habit is worth more than any other diet rule.</div></div>
+      <div class="rule"><div class="rule-n">08</div><div class="rule-t">HRT + Training Compound</div><div class="rule-b">Estrogen redistributes fat to hips and thighs. The muscle you're building gives that redistribution its shape — roundness, not just softness.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <strong>Program Note</strong><br>
+  Vacation stays vacation through May — program starts June 9 when you're back in Berlin. Fight or Flight: SEX runs Jul 10–19, adjust Phase 2 intensity around production days. MBAAS premieres autumn 2026. You'll go into that production carrying a different body than you started with.
+</div>
+
+<script>
+function switchPage(tab, id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  tab.classList.add('active');
+}
+
+function togglePhase(el) {
+  const was = el.classList.contains('active');
+  document.querySelectorAll('.phase').forEach(p => p.classList.remove('active'));
+  if (!was) el.classList.add('active');
+}
+
+// Week strip
+const weekData = [
+  { name:'Mon', w:'Lower Body', n:'Hip thrusts · Sumo · RDL · Clams', badges:['school'] },
+  { name:'Tue', w:'Interval Run', n:'5K with hard segments · Walk warmup', badges:['school'] },
+  { name:'Wed', w:'Yoga + Hips', n:'Full session · Pigeon · Low lunge', badges:['school'] },
+  { name:'Thu', w:'Lower Body', n:'Hip thrusts · Split squat · Kickbacks', badges:['school'] },
+  { name:'Fri', w:'Easy 5K / Long Run', n:'Conversational pace or 6K easy', badges:[] },
+  { name:'Sat', w:'Walk / Light Yoga', n:'Pre-Tresor: walk only, no heavy lifting', badges:['tresor'] },
+  { name:'Sun', w:'Full Rest', n:'Recover · Sleep · Non-negotiable', badges:['rest'] },
+];
+const today = new Date().getDay(); // 0=Sun
+const strip = document.getElementById('week-strip');
+weekData.forEach((d, i) => {
+  const dayIndex = (i + 1) % 7; // Mon=1...Sun=0
+  const isToday = dayIndex === today;
+  let cls = 'wday';
+  if (d.badges.includes('rest')) cls += ' rest';
+  if (d.badges.includes('tresor')) cls += ' has-tresor';
+  if (d.badges.includes('school')) cls += ' has-school';
+  if (isToday) cls += ' today';
+  let badges = d.badges.map(b => {
+    if (b==='tresor') return '<span class="badge b-t">Tresor</span>';
+    if (b==='school') return '<span class="badge b-s">14:00–17:30</span>';
+    if (b==='rest') return '<span class="badge b-r">Rest</span>';
+    return '';
+  }).join('');
+  strip.innerHTML += `<div class="${cls}"><div class="wday-name">${d.name}${isToday?' · today':''}</div><div class="wday-w">${d.w}</div><div class="wday-n">${d.n}</div>${badges}</div>`;
+});
+
+// Daily tracker
+const schedule = {
+  0: { label:'Sunday — Full Rest', rest:true, items:[] },
+  1: { label:'Monday — Lower Body + Babylonia', rest:false, items:[
+    {t:'Hip thrusts (weighted, 4 sets)',c:'tg'},{t:'Sumo goblet squats',c:'tg'},
+    {t:'Romanian deadlifts',c:'tg'},{t:'Clamshells + band lateral walks',c:'tg'},
+    {t:'Donkey kicks (both sides)',c:'tg'},{t:'Dead bugs (core)',c:'tg'},
+    {t:'Hip flexor stretch post-workout',c:'tr'},{t:'Protein breakfast before training',c:'tf'},
+    {t:'Pre-portion tonight\'s snack now',c:'tf'},{t:'3L+ water today',c:'tf'},
+  ]},
+  2: { label:'Tuesday — Interval Run + Babylonia', rest:false, items:[
+    {t:'5 min walk warmup',c:'tc'},{t:'Intervals: 8 min easy / 4 min hard × 2 (or 10 × 1 min hard)',c:'tc'},
+    {t:'5 min walk cooldown',c:'tc'},{t:'Protein breakfast',c:'tf'},
+    {t:'Pre-portion tonight\'s snack now',c:'tf'},{t:'3L+ water today',c:'tf'},
+  ]},
+  3: { label:'Wednesday — Yoga + Recovery + Babylonia', rest:false, items:[
+    {t:'Full yoga session',c:'tr'},{t:'Pigeon pose — 2 min each side',c:'tr'},
+    {t:'Low lunge + couch stretch',c:'tr'},{t:'Protein breakfast',c:'tf'},
+    {t:'3L+ water today',c:'tf'},
+  ]},
+  4: { label:'Thursday — Lower Body + Babylonia', rest:false, items:[
+    {t:'Hip thrusts — go heavier than Monday',c:'tg'},{t:'Bulgarian split squats (both legs)',c:'tg'},
+    {t:'RDL + glute kickbacks',c:'tg'},{t:'Band abductions',c:'tg'},
+    {t:'Dead bugs',c:'tg'},{t:'Hip flexor stretch post-workout',c:'tr'},
+    {t:'Protein breakfast before training',c:'tf'},{t:'Pre-portion tonight\'s snack now',c:'tf'},
+    {t:'3L+ water today',c:'tf'},
+  ]},
+  5: { label:'Friday — Easy Run / Long Run', rest:false, items:[
+    {t:'5 min walk warmup',c:'tc'},{t:'Easy 5K or 6K slow — no pace pressure',c:'tc'},
+    {t:'5 min walk cooldown',c:'tc'},{t:'Protein breakfast',c:'tf'},
+    {t:'Weigh in tomorrow morning (fasted)',c:'tr'},{t:'3L+ water today',c:'tf'},
+  ]},
+  6: { label:'Saturday — Walk / Light Yoga (+ Tresor if working)', rest:false, items:[
+    {t:'Weigh in this morning — fasted, post-bathroom',c:'tr'},
+    {t:'Note hip + thigh measurements weekly',c:'tr'},
+    {t:'30–40 min easy walk or light yoga only',c:'tc'},
+    {t:'No hard training before a Tresor shift',c:'tr'},
+    {t:'Eat a full protein meal before shift if working',c:'tf'},
+    {t:'3L+ water today',c:'tf'},
+  ]},
+};
+const tagLabels = {tg:'glute',tc:'cardio',tf:'nutrition',tr:'recovery'};
+const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+function key() { const d=new Date(); return `fp2_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`; }
+function load() { try{return JSON.parse(localStorage.getItem(key())||'{}')}catch(e){return{}} }
+function save(s) { localStorage.setItem(key(),JSON.stringify(s)); }
+
+function render() {
+  const now = new Date(), d = now.getDay(), day = schedule[d], state = load();
+  document.getElementById('t-date').textContent = `${dayNames[d]}, ${monthNames[now.getMonth()]} ${now.getDate()}`;
+  document.getElementById('t-label').textContent = day.label;
+  const content = document.getElementById('t-content'), prog = document.getElementById('t-prog');
+  if (day.rest) {
+    content.innerHTML = '<div class="rest-msg">Rest day. Recovery is when the muscle grows and shape sets. ✦</div>';
+    prog.style.display='none'; return;
+  }
+  let html = '<div class="cg">';
+  day.items.forEach((item,i) => {
+    const done = !!state[i];
+    html += `<div class="ci${done?' done':''}" onclick="check(${i})"><div class="ci-b">${done?'✓':''}</div><div class="ci-l">${item.t}</div><span class="ci-tag ${item.c}">${tagLabels[item.c]}</span></div>`;
+  });
+  html += '</div>';
+  content.innerHTML = html;
+  const done = day.items.filter((_,i)=>!!state[i]).length, total = day.items.length;
+  prog.style.display='flex';
+  document.getElementById('t-fill').style.width = Math.round(done/total*100)+'%';
+  document.getElementById('t-txt').textContent = `${done} / ${total} done`;
+}
+
+function check(i) { const s=load(); s[i]=!s[i]; save(s); render(); }
+render();
+const n=new Date(), m=new Date(n); m.setHours(24,0,0,0);
+setTimeout(()=>{render();setInterval(render,86400000);}, m-n);
+</script>
+</body>
+</html>
