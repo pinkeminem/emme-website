@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Body Recomposition — Feminine Shape Program</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Syne:wght@400;500;700;800&family=Syne+Mono&display=swap');
+
+  :root {
+    --bg: #f7f3ef;
+    --surface: #f0ebe4;
+    --card: #ede7df;
+    --border: #d8cfc5;
+    --dark: #1c1712;
+    --accent: #c4622d;
+    --accent2: #8b3a8b;
+    --text: #1c1712;
+    --muted: #8a7e74;
+    --green: #3a7a52;
+    --terracotta: #c4622d;
+    --plum: #8b3a8b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Cormorant Garamond', serif;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--dark);
+    padding: 70px 50px 50px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; right: -60px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    border: 1px solid rgba(196,98,45,0.2);
+    pointer-events: none;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    bottom: -90px; right: -90px;
+    width: 420px; height: 420px;
+    border-radius: 50%;
+    border: 1px solid rgba(139,58,139,0.15);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Syne Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(38px, 7vw, 80px);
+    line-height: 1.0;
+    color: #f7f3ef;
+    margin-bottom: 16px;
+  }
+
+  .hero h1 em {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--accent);
+  }
+
+  .hero-desc {
+    font-size: 15px;
+    color: rgba(247,243,239,0.5);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    max-width: 480px;
+    line-height: 1.7;
+    margin-top: 12px;
+  }
+
+  /* STATS BAR */
+  .stats-bar {
+    background: var(--accent);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+  }
+
+  .stat {
+    flex: 1;
+    min-width: 120px;
+    padding: 16px 24px;
+    border-right: 1px solid rgba(255,255,255,0.2);
+  }
+
+  .stat:last-child { border-right: none; }
+
+  .stat-label {
+    font-family: 'Syne Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.7);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 3px;
+  }
+
+  .stat-val {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    color: #fff;
+  }
+
+  /* MAIN LAYOUT */
+  .container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 50px 40px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+
+  .section-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  /* PHASE ACCORDION */
+  .phases { margin-bottom: 56px; }
+
+  .phase {
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    margin-bottom: 4px;
+    background: #fff;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+
+  .phase:hover { box-shadow: 0 2px 16px rgba(28,23,18,0.06); }
+  .phase.active { box-shadow: 0 4px 24px rgba(28,23,18,0.1); }
+
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 22px 28px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .phase-marker {
+    width: 4px;
+    height: 48px;
+    border-radius: 2px;
+    flex-shrink: 0;
+    transition: height 0.2s;
+  }
+
+  .p1 .phase-marker { background: var(--green); }
+  .p2 .phase-marker { background: var(--terracotta); }
+  .p3 .phase-marker { background: var(--plum); }
+
+  .phase.active .phase-marker { height: 56px; }
+
+  .phase-meta { flex: 1; }
+
+  .phase-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--text);
+    letter-spacing: 0.5px;
+  }
+
+  .phase-descriptor {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .phase-pills {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .pill {
+    font-family: 'Syne Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 20px;
+    border: 1px solid;
+  }
+
+  .pill-green { color: var(--green); border-color: rgba(58,122,82,0.3); background: rgba(58,122,82,0.06); }
+  .pill-orange { color: var(--terracotta); border-color: rgba(196,98,45,0.3); background: rgba(196,98,45,0.06); }
+  .pill-plum { color: var(--plum); border-color: rgba(139,58,139,0.3); background: rgba(139,58,139,0.06); }
+
+  .phase-caret {
+    font-size: 20px;
+    color: var(--muted);
+    transition: transform 0.25s;
+  }
+
+  .phase.active .phase-caret { transform: rotate(90deg); color: var(--accent); }
+
+  .phase-body {
+    display: none;
+    padding: 0 28px 28px;
+    border-top: 1px solid var(--border);
+    animation: fadeIn 0.2s ease;
+  }
+
+  .phase.active .phase-body { display: block; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+
+  .week-schedule {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 14px;
+    margin-top: 22px;
+  }
+
+  .day-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 16px 18px;
+  }
+
+  .day-label {
+    font-family: 'Syne Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .day-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .workout-item {
+    font-size: 13.5px;
+    color: #3a3228;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    display: flex;
+    gap: 10px;
+    line-height: 1.5;
+  }
+
+  .workout-item:last-child { border-bottom: none; }
+
+  .workout-item .dot {
+    color: var(--accent);
+    flex-shrink: 0;
+    margin-top: 1px;
+    font-size: 12px;
+  }
+
+  .focus-tag {
+    display: inline-block;
+    font-family: 'Syne Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 1px 5px;
+    border-radius: 2px;
+    margin-left: 4px;
+    vertical-align: middle;
+    background: rgba(139,58,139,0.1);
+    color: var(--plum);
+    border: 1px solid rgba(139,58,139,0.2);
+  }
+
+  .phase-insight {
+    margin-top: 20px;
+    padding: 18px 20px;
+    background: linear-gradient(135deg, rgba(139,58,139,0.05), rgba(196,98,45,0.05));
+    border: 1px solid rgba(139,58,139,0.15);
+    border-radius: 2px;
+  }
+
+  .insight-label {
+    font-family: 'Syne Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--plum);
+    margin-bottom: 10px;
+  }
+
+  .insight-body {
+    font-size: 14px;
+    color: #5a4e44;
+    line-height: 1.75;
+  }
+
+  .insight-body p { margin-bottom: 8px; }
+  .insight-body p:last-child { margin-bottom: 0; }
+
+  /* GLUTE FOCUS SECTION */
+  .glute-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 3px;
+    margin-bottom: 56px;
+  }
+
+  .exercise-card {
+    background: var(--dark);
+    padding: 22px 20px;
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .exercise-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+  }
+
+  .exercise-card.glute::before { background: var(--plum); }
+  .exercise-card.thigh::before { background: var(--terracotta); }
+  .exercise-card.hip::before { background: var(--green); }
+
+  .ex-cat {
+    font-family: 'Syne Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .exercise-card.glute .ex-cat { color: rgba(139,58,139,0.7); }
+  .exercise-card.thigh .ex-cat { color: rgba(196,98,45,0.7); }
+  .exercise-card.hip .ex-cat { color: rgba(58,122,82,0.7); }
+
+  .ex-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: #f7f3ef;
+    margin-bottom: 6px;
+  }
+
+  .ex-why {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    color: rgba(247,243,239,0.55);
+    line-height: 1.6;
+  }
+
+  /* FODMAP SECTION */
+  .fodmap-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 56px;
+  }
+
+  @media (max-width: 640px) {
+    .fodmap-layout { grid-template-columns: 1fr; }
+  }
+
+  .fodmap-panel {
+    border-radius: 2px;
+    padding: 24px;
+  }
+
+  .fodmap-safe {
+    background: rgba(58,122,82,0.06);
+    border: 1px solid rgba(58,122,82,0.2);
+  }
+
+  .fodmap-avoid {
+    background: rgba(196,98,45,0.06);
+    border: 1px solid rgba(196,98,45,0.2);
+  }
+
+  .fodmap-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .fodmap-safe .fodmap-title { color: var(--green); }
+  .fodmap-avoid .fodmap-title { color: var(--terracotta); }
+
+  .fodmap-category {
+    margin-bottom: 14px;
+  }
+
+  .fodmap-cat-name {
+    font-family: 'Syne Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .fodmap-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .fodmap-item {
+    font-size: 12px;
+    font-family: 'Cormorant Garamond', serif;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: rgba(28,23,18,0.06);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  /* MEAL EXAMPLES */
+  .meals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 3px;
+    margin-bottom: 56px;
+  }
+
+  .meal-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    padding: 20px;
+    border-radius: 2px;
+  }
+
+  .meal-time {
+    font-family: 'Syne Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  .meal-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .meal-macros {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .macro {
+    font-family: 'Syne Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .macro span {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .meal-items {
+    font-size: 13px;
+    color: #5a4e44;
+    line-height: 1.7;
+    font-style: italic;
+  }
+
+  /* RULES */
+  .rules-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 3px;
+    margin-bottom: 56px;
+  }
+
+  .rule-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 22px;
+    border-radius: 2px;
+  }
+
+  .rule-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 48px;
+    color: rgba(28,23,18,0.08);
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+
+  .rule-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .rule-body {
+    font-size: 13.5px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* FOOTER */
+  .footer-note {
+    background: var(--dark);
+    color: rgba(247,243,239,0.6);
+    padding: 30px 40px;
+    font-size: 13.5px;
+    line-height: 1.8;
+    font-style: italic;
+    text-align: center;
+    border-top: 3px solid var(--accent);
+  }
+
+  .footer-note strong {
+    color: #f7f3ef;
+    font-style: normal;
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 600px) {
+    .hero { padding: 48px 24px 36px; }
+    .container { padding: 36px 20px; }
+    .phase-pills { display: none; }
+    .phase-header { padding: 18px 20px; }
+    .phase-body { padding: 0 20px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-eyebrow">12-Week Feminine Body Recomposition</div>
+  <h1>Shape &amp; <em>Sculpt</em></h1>
+  <div class="hero-desc">Glute &amp; thigh-focused training · Low-FODMAP nutrition · Progressive overload from foundation to full intensity</div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat"><span class="stat-label">Start</span><span class="stat-val">180 lbs</span></div>
+  <div class="stat"><span class="stat-label">Target</span><span class="stat-val">~150 lbs</span></div>
+  <div class="stat"><span class="stat-label">Priority</span><span class="stat-val">Glutes + Thighs</span></div>
+  <div class="stat"><span class="stat-label">Diet Protocol</span><span class="stat-val">Low-FODMAP</span></div>
+  <div class="stat"><span class="stat-label">Current 5K</span><span class="stat-val">30:00</span></div>
+  <div class="stat"><span class="stat-label">Duration</span><span class="stat-val">12 Weeks</span></div>
+</div>
+
+<div class="container">
+
+  <!-- KEY EXERCISES -->
+  <div class="section-header">
+    <span class="section-title">Priority Exercises</span>
+    <span class="section-sub">the movements that build the shape you're after</span>
+  </div>
+  <div class="glute-grid" style="margin-bottom: 56px;">
+    <div class="exercise-card glute">
+      <div class="ex-cat">Glute Max</div>
+      <div class="ex-name">Hip Thrust</div>
+      <div class="ex-why">The single best glute builder. Bar none. Build up to weighted barbell thrusts. This is your anchor movement every week.</div>
+    </div>
+    <div class="exercise-card glute">
+      <div class="ex-cat">Glute Max + Med</div>
+      <div class="ex-name">Romanian Deadlift</div>
+      <div class="ex-why">Builds the posterior chain — glute/hamstring tie-in that creates fullness and roundness. Use dumbbells to start.</div>
+    </div>
+    <div class="exercise-card thigh">
+      <div class="ex-cat">Quad + Glute</div>
+      <div class="ex-name">Sumo Squat</div>
+      <div class="ex-why">Wide stance targets inner thigh and glute more than regular squats. Creates thigh fullness and hip width illusion.</div>
+    </div>
+    <div class="exercise-card thigh">
+      <div class="ex-cat">Quad + Balance</div>
+      <div class="ex-name">Bulgarian Split Squat</div>
+      <div class="ex-why">Unilateral work forces each leg independently. Builds thigh volume and glute-quad separation. Hard but essential.</div>
+    </div>
+    <div class="exercise-card hip">
+      <div class="ex-cat">Glute Med</div>
+      <div class="ex-name">Clamshells + Abduction</div>
+      <div class="ex-why">Glute medius = hip width. Underdeveloped in most people. Resistance band work here directly widens the hip silhouette.</div>
+    </div>
+    <div class="exercise-card hip">
+      <div class="ex-cat">Posterior + Shape</div>
+      <div class="ex-name">Donkey Kicks / Glute Kickbacks</div>
+      <div class="ex-why">Isolation work that targets the upper and outer glute. Add ankle weights or cable for progressive resistance.</div>
+    </div>
+  </div>
+
+  <!-- PHASES -->
+  <div class="section-header">
+    <span class="section-title">Training Phases</span>
+    <span class="section-sub">click each phase to expand</span>
+  </div>
+  <div class="phases">
+
+    <!-- PHASE 1 -->
+    <div class="phase p1 active" onclick="toggle(this)">
+      <div class="phase-header">
+        <div class="phase-marker"></div>
+        <div class="phase-meta">
+          <div class="phase-name">Phase 1 — Foundation</div>
+          <div class="phase-descriptor">Weeks 1–4 · Learn the movements, build the habit</div>
+        </div>
+        <div class="phase-pills">
+          <span class="pill pill-green">Easy</span>
+          <span class="pill pill-green">Bodyweight</span>
+          <span class="pill pill-green">Form First</span>
+        </div>
+        <div class="phase-caret">›</div>
+      </div>
+      <div class="phase-body">
+        <div class="week-schedule">
+          <div class="day-card">
+            <div class="day-label">Mon / Thu — Lower Body</div>
+            <div class="workout-item"><span class="dot">◆</span>Yoga warmup 10–15 min (keep your practice)</div>
+            <div class="workout-item"><span class="dot">◆</span>Bodyweight glute bridges 3×15 <span class="focus-tag">glutes</span></div>
+            <div class="workout-item"><span class="dot">◆</span>Sumo squats 3×12 <span class="focus-tag">thighs</span></div>
+            <div class="workout-item"><span class="dot">◆</span>Donkey kicks 3×12 each side <span class="focus-tag">glute upper</span></div>
+            <div class="workout-item"><span class="dot">◆</span>Clamshells with band (light) 3×15 each <span class="focus-tag">hip width</span></div>
+            <div class="workout-item"><span class="dot">◆</span>Total: ~25 min. No rushing — focus on feeling the muscle contract</div>
+          </div>
+          <div class="day-card">
+            <div class="day-label">Tue / Fri — Running</div>
+            <div class="workout-item"><span class="dot">◆</span>5K at easy conversational pace — keep your existing rhythm</div>
+            <div class="workout-item"><span class="dot">◆</span>5 min walk warmup + 5 min cooldown</div>
+            <div class="workout-item"><span class="dot">◆</span>Don't push pace this phase — just consistency</div>
+          </div>
+          <div class="day-card">
+            <div class="day-label">Wed — Active Recovery</div>
+            <div class="workout-item"><span class="dot">◆</span>Yoga full session (your existing low-intensity practice)</div>
+            <div class="workout-item"><span class="dot">◆</span>Focus on hip flexor stretching and pigeon pose — opens hips, helps glute development</div>
+          </div>
+          <div class="day-card">
+            <div class="day-label">Sat / Sun</div>
+            <div class="workout-item"><span class="dot">◆</span>Saturday: 20–30 min walk or very easy jog</div>
+            <div class="workout-item"><span class="dot">◆</span>Sunday: full rest</div>
+          </div>
+        </div>
+        <div class="phase-insight">
+          <div class="insight-label">Phase 1 Focus</div>
+          <div class="insight-body">
+            <p>This phase is about learning to feel your glutes fire. Most people are "quad dominant" — they squat and feel it in their quads, not their glutes. Slow down the reps (3 sec down, 1 sec squeeze at top) until you feel the right muscle working.</p>
+            <p>Diet: don't stress calories yet. Start the FODMAP transition — swap out garlic, onion, wheat, and high-lactose dairy. Use garlic-infused oil (FODMAP safe) and the green tops of scallions instead. This week is about building the habit, not perfection.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="phase p2" onclick="toggle(this)">
+      <div class="phase-header">
+        <div class="phase-marker"></div>
+        <div class="phase-meta">
+          <div class="phase-name">Phase 2 — Load</div>
+          <div class="phase-descriptor">Weeks 5–8 · Add resistance, introduce hip thrusts</div>
+        </div>
+        <div class="phase-pills">
+          <span class="pill pill-orange">Moderate</span>
+          <span class="pill pill-orange">Add Weight</span>
+          <span class="pill pill-orange">Intervals</span>
+        </div>
+        <div class="phase-caret">›</div>
+      </div>
+      <div class="phase-body">
+        <div class="week-schedule">
+          <div class="day-card">
+            <div class="day-label">Mon / Thu — Lower Body (Weighted)</div>
+            <div class="workout-item"><span class="dot">◆</span>Hip thrusts 4×10 — use dumbbells on hips or barbell if available <span class="focus-tag">priority</span></div>
+            <div class="workout-item"><span class="dot">◆</span>Romanian deadlifts 3×10 with dumbbells <span class="focus-tag">glute/hamstring</span></div>
+            <div class="workout-item"><span class="dot">◆</span>Sumo squat with dumbbell (goblet) 3×12 <span class="focus-tag">inner thigh</span></div>
+            <div class="workout-item"><span class="dot">◆</span>Resistance band clamshells 3×20 + lateral walks 3×10 steps each <span class="focus-tag">hip width</span></div>
+            <div class="workout-item"><span class="dot">◆</span>Glute kickbacks with ankle weight 3×15 each <span class="focus-tag">upper glute</span></div>
+          </div>
+          <div class="day-card">
+            <div class="day-label">Tue — Interval Run</div>
+            <div class="workout-item"><span class="dot">◆</span>5 min walk warmup</div>
+            <div class="workout-item"><span class="dot">◆</span>8 × (90 sec faster / 90 sec easy jog)</div>
+            <div class="workout-item"><span class="dot">◆</span>5 min cooldown walk</div>
+            <div class="workout-item"><span class="dot">◆</span>This is your fat-burning anchor session of the week</div>
+          </div>
+          <div class="day-card">
+            <div class="day-label">Wed — Yoga / Recovery</div>
+            <div class="workout-item"><span class="dot">◆</span>Full yoga session, emphasize hip openers</div>
+            <div class="workout-item"><span class="dot">◆</span>Add 10 min: seated hip abduction stretch, figure-four, low lunge</div>
+          </div>
+          <div class="day-card">
+            <div class="day-label">Fri — Easy 5K · Sat — Walk · Sun — Rest</div>
+            <div class="workout-item"><span class="dot">◆</span>Friday: conversational pace 5K</div>
+            <div class="workout-item"><span class="dot">◆</span>Saturday: 30–40 min walk — active recovery, aids fat metabolism</div>
+            <div class="workout-item"><span class="dot">◆</span>Sunday: full rest</div>
+          </div>
+        </div>
+        <div class="phase-insight">
+          <div class="insight-label">Phase 2 Focus</div>
+          <div class="insight-body">
+            <p>Hip thrusts are the most important new movement. If you don't have a gym: use a couch or low bench, place a heavy backpack across your hips. Progress the weight every 1–2 weeks — even small increases matter.</p>
+            <p>Now start tracking calories loosely. Target 1,800 cal/day, 130–145g protein. FODMAP-safe protein stars: eggs, chicken, canned tuna/salmon, lactose-free Greek yogurt, firm tofu, tempeh (in small portions).</p>
+            <p>Running intervals will start cutting your 5K time toward 27–28 min by end of this phase.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div class="phase p3" onclick="toggle(this)">
+      <div class="phase-header">
+        <div class="phase-marker"></div>
+        <div class="phase-meta">
+          <div class="phase-name">Phase 3 — Sculpt</div>
+          <div class="phase-descriptor">Weeks 9–12 · Heavy load, tempo running, dial in diet</div>
+        </div>
+        <div class="phase-pills">
+          <span class="pill pill-plum">Intense</span>
+          <span class="pill pill-plum">Heavy Lifts</span>
+          <span class="pill pill-plum">Caloric Precision</span>
+        </div>
+        <div class="phase-caret">›</div>
+      </div>
+      <div class="phase-body">
+        <div class="week-schedule">
+          <div class="day-card">
+            <div class="day-label">Mon / Thu — Lower Body (Heavy)</div>
+            <div class="workout-item"><span class="dot">◆</span>Barbell / heavy dumbbell hip thrusts 4×8 — go heavy, full squeeze at top <span class="focus-tag">priority</span></div>
+            <div class="workout-item"><span class="dot">◆</span>Bulgarian split squats 4×8 each leg (add weight) <span class="focus-tag">thigh volume</span></div>
+            <div class="workout-item"><span class="dot">◆</span>Romanian deadlifts 4×10 (increase weight from P2) <span class="focus-tag">posterior chain</span></div>
+            <div class="workout-item"><span class="dot">◆</span>Sumo squats 3×12 heavy + cable/band abductions 3×20 <span class="focus-tag">hip width</span></div>
+            <div class="workout-item"><span class="dot">◆</span>Finish: 3×15 glute kickbacks each side + 3×20 fire hydrants</div>
+          </div>
+          <div class="day-card">
+            <div class="day-label">Tue — Tempo Run</div>
+            <div class="workout-item"><span class="dot">◆</span>5 min warmup</div>
+            <div class="workout-item"><span class="dot">◆</span>20 min tempo — "comfortably hard," can't hold a conversation</div>
+            <div class="workout-item"><span class="dot">◆</span>5 min cooldown</div>
+          </div>
+          <div class="day-card">
+            <div class="day-label">Wed — Yoga · Fri — 5K Push</div>
+            <div class="workout-item"><span class="dot">◆</span>Wednesday: yoga + deep hip/glute stretching — essential for recovery between heavy days</div>
+            <div class="workout-item"><span class="dot">◆</span>Friday: timed 5K — push for sub-27, ideally sub-26 by week 12</div>
+          </div>
+          <div class="day-card">
+            <div class="day-label">Sat — Long Run · Sun — Rest</div>
+            <div class="workout-item"><span class="dot">◆</span>Saturday: 6–7K easy. Don't rush. Long slow cardio accelerates fat loss while protecting muscle.</div>
+            <div class="workout-item"><span class="dot">◆</span>Sunday: non-negotiable rest. Recovery is when muscle grows.</div>
+          </div>
+        </div>
+        <div class="phase-insight">
+          <div class="insight-label">Phase 3 Focus</div>
+          <div class="insight-body">
+            <p>Tighten calories to 1,600–1,750/day. Keep protein at 140–155g. This is the hardest phase nutritionally — you'll feel the deficit. That's expected. Fuel your training days slightly more (add 100–150 cal on Mon/Thu).</p>
+            <p>By now your glutes and thighs should be noticeably fuller and firmer. The shape change outpaces the scale — don't get fixated on the number if you're seeing visual change and strength gains.</p>
+            <p>If you're on HRT: this phase coincides with where training + hormones compound together most visibly. Estrogen preferentially deposits fat in hips and thighs, and the muscle you've built here gives that fat a rounder, fuller shape to fill.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FODMAP SECTION -->
+  <div class="section-header">
+    <span class="section-title">Low-FODMAP Nutrition Guide</span>
+    <span class="section-sub">safe foods and what to avoid</span>
+  </div>
+  <div class="fodmap-layout">
+    <div class="fodmap-panel fodmap-safe">
+      <div class="fodmap-title">✓ Eat Freely</div>
+      <div class="fodmap-category">
+        <div class="fodmap-cat-name">Protein</div>
+        <div class="fodmap-items">
+          <span class="fodmap-item">Eggs</span>
+          <span class="fodmap-item">Chicken</span>
+          <span class="fodmap-item">Turkey</span>
+          <span class="fodmap-item">Salmon</span>
+          <span class="fodmap-item">Tuna</span>
+          <span class="fodmap-item">Firm tofu</span>
+          <span class="fodmap-item">Tempeh (small)</span>
+          <span class="fodmap-item">LF Greek yogurt</span>
+        </div>
+      </div>
+      <div class="fodmap-category">
+        <div class="fodmap-cat-name">Carbs</div>
+        <div class="fodmap-items">
+          <span class="fodmap-item">White/brown rice</span>
+          <span class="fodmap-item">Rolled oats</span>
+          <span class="fodmap-item">Potatoes</span>
+          <span class="fodmap-item">Sweet potato (small)</span>
+          <span class="fodmap-item">Sourdough (spelt)</span>
+          <span class="fodmap-item">Gluten-free bread</span>
+          <span class="fodmap-item">Rice cakes</span>
+        </div>
+      </div>
+      <div class="fodmap-category">
+        <div class="fodmap-cat-name">Vegetables</div>
+        <div class="fodmap-items">
+          <span class="fodmap-item">Zucchini</span>
+          <span class="fodmap-item">Spinach</span>
+          <span class="fodmap-item">Bell pepper</span>
+          <span class="fodmap-item">Carrot</span>
+          <span class="fodmap-item">Cucumber</span>
+          <span class="fodmap-item">Bok choy</span>
+          <span class="fodmap-item">Green beans</span>
+          <span class="fodmap-item">Tomato (small)</span>
+          <span class="fodmap-item">Kale</span>
+          <span class="fodmap-item">Scallion tops</span>
+        </div>
+      </div>
+      <div class="fodmap-category">
+        <div class="fodmap-cat-name">Fruit</div>
+        <div class="fodmap-items">
+          <span class="fodmap-item">Strawberries</span>
+          <span class="fodmap-item">Blueberries</span>
+          <span class="fodmap-item">Oranges</span>
+          <span class="fodmap-item">Grapes</span>
+          <span class="fodmap-item">Kiwi</span>
+          <span class="fodmap-item">Banana (firm)</span>
+        </div>
+      </div>
+      <div class="fodmap-category">
+        <div class="fodmap-cat-name">Flavor</div>
+        <div class="fodmap-items">
+          <span class="fodmap-item">Garlic-infused oil ✓</span>
+          <span class="fodmap-item">Ginger</span>
+          <span class="fodmap-item">Soy sauce (small)</span>
+          <span class="fodmap-item">Maple syrup (small)</span>
+          <span class="fodmap-item">Mustard</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="fodmap-panel fodmap-avoid">
+      <div class="fodmap-title">✗ Avoid</div>
+      <div class="fodmap-category">
+        <div class="fodmap-cat-name">Alliums</div>
+        <div class="fodmap-items">
+          <span class="fodmap-item">Garlic (raw)</span>
+          <span class="fodmap-item">Onion</span>
+          <span class="fodmap-item">Shallots</span>
+          <span class="fodmap-item">Leek (white part)</span>
+        </div>
+      </div>
+      <div class="fodmap-category">
+        <div class="fodmap-cat-name">Legumes (large portions)</div>
+        <div class="fodmap-items">
+          <span class="fodmap-item">Regular lentils</span>
+          <span class="fodmap-item">Chickpeas</span>
+          <span class="fodmap-item">Black beans</span>
+          <span class="fodmap-item">Kidney beans</span>
+        </div>
+      </div>
+      <div class="fodmap-category">
+        <div class="fodmap-cat-name">Dairy</div>
+        <div class="fodmap-items">
+          <span class="fodmap-item">Regular milk</span>
+          <span class="fodmap-item">Soft cheese</span>
+          <span class="fodmap-item">Regular yogurt</span>
+          <span class="fodmap-item">Ice cream</span>
+          <span class="fodmap-item">Cream</span>
+        </div>
+      </div>
+      <div class="fodmap-category">
+        <div class="fodmap-cat-name">Wheat</div>
+        <div class="fodmap-items">
+          <span class="fodmap-item">Regular bread</span>
+          <span class="fodmap-item">Pasta (wheat)</span>
+          <span class="fodmap-item">Most cereals</span>
+          <span class="fodmap-item">Crackers (wheat)</span>
+        </div>
+      </div>
+      <div class="fodmap-category">
+        <div class="fodmap-cat-name">High-Fructose Fruit</div>
+        <div class="fodmap-items">
+          <span class="fodmap-item">Mango</span>
+          <span class="fodmap-item">Apple</span>
+          <span class="fodmap-item">Pear</span>
+          <span class="fodmap-item">Watermelon</span>
+          <span class="fodmap-item">Cherries</span>
+        </div>
+      </div>
+      <div class="fodmap-category">
+        <div class="fodmap-cat-name">Sweeteners</div>
+        <div class="fodmap-items">
+          <span class="fodmap-item">Honey</span>
+          <span class="fodmap-item">Agave</span>
+          <span class="fodmap-item">HFCS</span>
+          <span class="fodmap-item">Sorbitol / Xylitol</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SAMPLE MEALS -->
+  <div class="section-header">
+    <span class="section-title">Sample Day of Eating</span>
+    <span class="section-sub">~1,800 cal · ~140g protein · low-FODMAP</span>
+  </div>
+  <div class="meals-grid">
+    <div class="meal-card">
+      <div class="meal-time">Breakfast</div>
+      <div class="meal-name">Oat + Egg Bowl</div>
+      <div class="meal-macros">
+        <span class="macro">Cal <span>~480</span></span>
+        <span class="macro">Pro <span>~38g</span></span>
+      </div>
+      <div class="meal-items">½ cup rolled oats with blueberries + 3 scrambled eggs + 1 tbsp peanut butter (natural, no additives)</div>
+    </div>
+    <div class="meal-card">
+      <div class="meal-time">Lunch</div>
+      <div class="meal-name">Rice Bowl</div>
+      <div class="meal-macros">
+        <span class="macro">Cal <span>~520</span></span>
+        <span class="macro">Pro <span>~42g</span></span>
+      </div>
+      <div class="meal-items">1 cup rice, 150g grilled chicken thighs, roasted zucchini + bell pepper with garlic-infused oil, soy sauce</div>
+    </div>
+    <div class="meal-card">
+      <div class="meal-time">Snack</div>
+      <div class="meal-name">Post-Workout</div>
+      <div class="meal-macros">
+        <span class="macro">Cal <span>~230</span></span>
+        <span class="macro">Pro <span>~28g</span></span>
+      </div>
+      <div class="meal-items">Lactose-free Greek yogurt (200g) + strawberries + small handful walnuts</div>
+    </div>
+    <div class="meal-card">
+      <div class="meal-time">Dinner</div>
+      <div class="meal-name">Salmon + Potato</div>
+      <div class="meal-macros">
+        <span class="macro">Cal <span>~480</span></span>
+        <span class="macro">Pro <span>~38g</span></span>
+      </div>
+      <div class="meal-items">150g salmon, medium roasted potato, steamed green beans + spinach, olive oil + mustard dressing</div>
+    </div>
+    <div class="meal-card">
+      <div class="meal-time">Late Snack (munchies plan)</div>
+      <div class="meal-name">Pre-Prepped Night Option</div>
+      <div class="meal-macros">
+        <span class="macro">Cal <span>~150</span></span>
+        <span class="macro">Pro <span>~15g</span></span>
+      </div>
+      <div class="meal-items">Rice cakes with peanut butter, or lactose-free cottage cheese with blueberries. Pre-portion it before you smoke.</div>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div class="section-header">
+    <span class="section-title">Core Principles</span>
+    <span class="section-sub">what actually moves the needle</span>
+  </div>
+  <div class="rules-list">
+    <div class="rule-card">
+      <div class="rule-number">01</div>
+      <div class="rule-title">Hip Thrusts Are Non-Negotiable</div>
+      <div class="rule-body">This is the movement most directly linked to glute growth. Every week, every phase. Increase the load every 1–2 weeks. Even 2.5 lbs more counts as progressive overload.</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-number">02</div>
+      <div class="rule-title">Train the Glute Med for Width</div>
+      <div class="rule-body">Clamshells, lateral band walks, and abduction work target the gluteus medius — the muscle that creates hip width. Most programs skip it. Don't. It's the difference between a flat vs. rounded silhouette.</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-number">03</div>
+      <div class="rule-title">Stretch Your Hip Flexors</div>
+      <div class="rule-body">Tight hip flexors inhibit glute activation — your glutes literally can't fire properly. Low lunge, pigeon, couch stretch daily. Your yoga practice is actually an asset here — use it.</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-number">04</div>
+      <div class="rule-title">Protein Every Meal, FODMAP Safe</div>
+      <div class="rule-body">140g/day minimum. Eggs, chicken, salmon, lactose-free Greek yogurt, firm tofu. Without protein, you lose the muscle you're building. With it, you build shape while cutting fat.</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-number">05</div>
+      <div class="rule-title">Pre-Plan Your Munchies</div>
+      <div class="rule-body">You smoke daily — plan for it. Portion your late snack before you smoke. Rice cakes + peanut butter, LF cottage cheese, protein bar (check for FODMAP-safe ingredients). Don't freestyle the kitchen.</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-number">06</div>
+      <div class="rule-title">The Scale Lies Mid-Program</div>
+      <div class="rule-body">Muscle weighs more than fat. In weeks 4–8 you may gain 1–2 lbs while visually transforming. Trust measurements (hips, thighs) and how clothes fit over scale weight. Body recomp doesn't always show on the scale first.</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer-note">
+  <strong>A note on HRT + training</strong><br>
+  If you're on estrogen, training and hormones work together, not separately. Estrogen gradually redistributes fat toward hips, thighs, and glutes over months to years. Resistance training accelerates this by building the underlying muscle that gives that redistribution its shape. The glute and hip work in this program is directly synergistic with feminizing HRT. You're building the structure that the hormones will fill in.
+</div>
+
+<script>
+  function toggle(el) {
+    const wasActive = el.classList.contains('active');
+    document.querySelectorAll('.phase').forEach(p => p.classList.remove('active'));
+    if (!wasActive) el.classList.add('active');
+  }
+</script>
+</body>
+</html>
