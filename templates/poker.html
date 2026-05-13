@@ -10,13 +10,14 @@
     padding:20px 12px 40px;
   }
   .topnav{display:flex;justify-content:space-between;align-items:center;
-    width:100%;max-width:700px;margin-bottom:16px;}
+    width:100%;max-width:1060px;margin-bottom:16px;}
   .topnav img{height:22px;}
   .topnav a{color:#444;text-decoration:none;font-size:11px;}
   .topnav a:hover{color:#aaa;}
-  #wrap{width:100%;max-width:700px;}
+  #wrap{width:100%;max-width:1060px;}
+  #layout{display:flex;gap:10px;align-items:flex-start;}
   pre{font-family:inherit;font-size:13px;line-height:1.45;
-    white-space:pre;overflow-x:auto;tab-size:4;}
+    white-space:pre;overflow-x:auto;}
   #btns{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;}
   .btn{padding:3px 14px;background:transparent;border:1px solid #2a2a2a;
     color:#666;font:13px/1 'SF Mono',Monaco,'Courier New',monospace;
@@ -24,11 +25,11 @@
   .btn:hover{border-color:#666;color:#bbb;}
   .bf:hover{border-color:#c0392b;color:#c0392b;}
   .br:hover{border-color:#22c55e;color:#22c55e;}
-  /* color spans used inside <pre> via innerHTML */
+  .bact{border-color:#444!important;color:#aaa!important;}
   .g{color:#22c55e;}.r{color:#ef4444;}.y{color:#f59e0b;}
   .d{color:#333;}.w{color:#fff;}.chip{color:#d4a843;}
-  .sr{color:#dd4444;}  /* red suits */
-  @media(max-width:560px){pre{font-size:9.5px;}}
+  .sr{color:#dd4444;}
+  @media(max-width:560px){pre{font-size:9px;}}
 </style>
 {% endblock %}
 {% block body %}
@@ -39,12 +40,15 @@
   <a href="{{ url_for('public.index') }}">← back</a>
 </div>
 <div id="wrap">
-  <pre id="disp"></pre>
+  <div id="layout">
+    <pre id="disp"></pre>
+    <pre id="odds" style="display:none"></pre>
+  </div>
   <div id="btns"></div>
 </div>
 
 <script>
-// ── constants ──────────────────────────────────────────────
+// ── constants ──────────────────────────────────────────────────────
 const SUITS  = ['♠','♥','♦','♣'];
 const IS_RED = s => s==='♥'||s==='♦';
 const RANKS  = ['2','3','4','5','6','7','8','9','10','J','Q','K','A'];
@@ -53,10 +57,13 @@ const HNAMES = ['High Card','One Pair','Two Pair','Three of a Kind',
                 'Straight','Flush','Full House','Four of a Kind',
                 'Straight Flush','Royal Flush'];
 const PHASES = ['preflop','flop','turn','river'];
-const W = 66;   // total box width (including ╔╗)
-const IW = W-2; // inner width = 64
 
-// ── deck ───────────────────────────────────────────────────
+// main box
+const W=66, IW=W-2;
+// odds panel box  (two 17-char cells per row: 17 + ' │ ' + 17 = 37)
+const WO=39, IWO=WO-2;
+
+// ── deck ───────────────────────────────────────────────────────────
 const newDeck = ()=>RANKS.flatMap(r=>SUITS.map(s=>({r,s,v:RVAL[r]})));
 const ckey = c=>c.r+c.s;
 function shuffle(a){
@@ -65,7 +72,7 @@ function shuffle(a){
   return b;
 }
 
-// ── hand eval ──────────────────────────────────────────────
+// ── hand eval ──────────────────────────────────────────────────────
 function evalFive(cards){
   const vals=cards.map(c=>c.v).sort((a,b)=>b-a);
   const suits=cards.map(c=>c.s);
@@ -99,7 +106,7 @@ function evalBest(cards){
   return best;
 }
 
-// ── monte carlo ────────────────────────────────────────────
+// ── monte carlo ────────────────────────────────────────────────────
 function monte(pCards,comm,nOpp,iters=600){
   const known=new Set([...pCards,...comm].map(ckey));
   const rem=newDeck().filter(c=>!known.has(ckey(c)));
@@ -119,16 +126,27 @@ function monte(pCards,comm,nOpp,iters=600){
   return wins/iters*100;
 }
 
-// ── ascii helpers ──────────────────────────────────────────
-const strip = s=>s.replace(/<[^>]+>/g,'');
+// per-card conditional odds: for each remaining card, win% if that card appears next
+function calcCardOdds(pCards,comm,nOpp){
+  const known=new Set([...pCards,...comm].map(ckey));
+  const rem=newDeck().filter(c=>!known.has(ckey(c)));
+  // adaptive iters: fewer when more cards remain (keep total work ~constant)
+  const iters=Math.max(15,Math.min(60,Math.floor(900/rem.length)));
+  return rem.map(c=>{
+    const pct=monte(pCards,[...comm,c],nOpp,iters);
+    return {c,pct};
+  });
+}
 
-// Box frame lines
-const bTop  = ()=>'╔'+'═'.repeat(IW)+'╗';
-const bBot  = ()=>'╚'+'═'.repeat(IW)+'╝';
-const bSep  = ()=>'╠'+'═'.repeat(IW)+'╣';
-const bBlank= ()=>bLine('');
+// ── ascii helpers ──────────────────────────────────────────────────
+const strip=s=>s.replace(/<[^>]+>/g,'');
 
-function bLine(html, lpad=1){
+// main box lines
+const bTop =()=>'╔'+'═'.repeat(IW)+'╗';
+const bBot =()=>'╚'+'═'.repeat(IW)+'╝';
+const bSep =()=>'╠'+'═'.repeat(IW)+'╣';
+const bBlank=()=>bLine('');
+function bLine(html,lpad=1){
   const len=lpad+strip(html).length;
   return '║'+' '.repeat(lpad)+html+' '.repeat(Math.max(0,IW-len))+'║';
 }
@@ -138,35 +156,40 @@ function bCenter(html){
   return '║'+' '.repeat(lp)+html+' '.repeat(Math.max(0,IW-len-lp))+'║';
 }
 
-// Card — returns 5-element array, each string 7 chars (plain) + optional color spans
+// odds panel box lines
+const oTop =()=>'╔'+'═'.repeat(IWO)+'╗';
+const oBot =()=>'╚'+'═'.repeat(IWO)+'╝';
+const oSep =()=>'╠'+'═'.repeat(IWO)+'╣';
+function oLine(html,lpad=1){
+  const len=lpad+strip(html).length;
+  return '║'+' '.repeat(lpad)+html+' '.repeat(Math.max(0,IWO-len))+'║';
+}
+
+// cards
 function card(c,{back=false,empty=false}={}){
   if(empty)return['┌─────┐','│     │','│     │','│     │','└─────┘'];
   if(back) return['┌─────┐','│░░░░░│','│░░░░░│','│░░░░░│','└─────┘'];
   const r=c.r,s=c.s;
-  const t=r.length===2?r+'   ':r+'    '; // 5 chars
-  const b=r.length===2?'   '+r:'    '+r; // 5 chars
+  const t=r.length===2?r+'   ':r+'    ';
+  const b=r.length===2?'   '+r:'    '+r;
   const sc=IS_RED(s)?`<span class="sr">${s}</span>`:s;
   return['┌─────┐',`│${t}│`,`│  ${sc}  │`,`│${b}│`,'└─────┘'];
 }
-
-// Row of cards side-by-side → 5 lines
 function cardRow(cards,opts=[]){
   const rs=cards.map((c,i)=>card(c,opts[i]||{}));
   return Array.from({length:5},(_,row)=>rs.map(r=>r[row]).join(' '));
 }
 
-// Progress bar
+// progress bar
 function pbar(pct,w=14){
   const n=Math.round(pct/100*w);
   return '█'.repeat(n)+'░'.repeat(w-n);
 }
 
-// Phase dots: PRE-FLOP ● ● ○ ○
-function pdots(idx){
-  return PHASES.map((_,i)=>i<=idx?'●':'○').join(' ');
-}
+// phase dots
+function pdots(idx){return PHASES.map((_,i)=>i<=idx?'●':'○').join(' ');}
 
-// Advice
+// advice
 function advise(odds,phaseIdx){
   if(phaseIdx===0){
     const [c1,c2]=G.pCards;
@@ -179,26 +202,29 @@ function advise(odds,phaseIdx){
     if(hi>=11)        return{t:'Decent high card.',   a:'CALL',      cl:'y'};
     return                  {t:'Weak hand.',          a:'FOLD',      cl:'r'};
   }
-  if(odds>=70)return{t:'Strong odds.',       a:'BET/RAISE',   cl:'g'};
-  if(odds>=50)return{t:'Favored.',           a:'BET/CALL',    cl:'g'};
-  if(odds>=35)return{t:'Marginal.',          a:'CHECK/CALL',  cl:'y'};
-  if(odds>=18)return{t:'Behind.',            a:'CHECK/FOLD',  cl:'r'};
-  return            {t:'Likely dominated.', a:'FOLD',         cl:'r'};
+  if(odds>=70)return{t:'Strong odds.',      a:'BET/RAISE',  cl:'g'};
+  if(odds>=50)return{t:'Favored.',          a:'BET/CALL',   cl:'g'};
+  if(odds>=35)return{t:'Marginal.',         a:'CHECK/CALL', cl:'y'};
+  if(odds>=18)return{t:'Behind.',           a:'CHECK/FOLD', cl:'r'};
+  return            {t:'Likely dominated.',a:'FOLD',        cl:'r'};
 }
-
-// Pre-flop hand description
 function pfDesc(){
   const [c1,c2]=G.pCards;
   if(c1.v===c2.v)return`Pair of ${c1.r}s`;
   return c1.s===c2.s?`${c1.r}${c2.r} suited`:`${c1.r}${c2.r} offsuit`;
 }
 
-// ── game state ─────────────────────────────────────────────
-const G={opponents:2,diff:'easy',deck:[],pCards:[],comm:[],
-  chips:1000,pot:0,phaseIdx:0,folded:[],sd:null};
+// ── game state ─────────────────────────────────────────────────────
+const G={
+  opponents:2, diff:'easy', sort:'rank',
+  deck:[], pCards:[], comm:[],
+  chips:1000, pot:0, phaseIdx:0, folded:[],
+  cardOdds:null, currentOdds:50, sd:null,
+};
 
-// ── render engine ──────────────────────────────────────────
+// ── render engine ──────────────────────────────────────────────────
 const disp=document.getElementById('disp');
+const oddsEl=document.getElementById('odds');
 const btns=document.getElementById('btns');
 
 function render(html,buttons){
@@ -217,8 +243,56 @@ document.addEventListener('keydown',e=>{
   });
 });
 
-// ── MENU ───────────────────────────────────────────────────
+function hideOdds(){oddsEl.style.display='none';}
+
+// ── odds panel render ──────────────────────────────────────────────
+function renderOddsPanel(){
+  const co=G.cardOdds;
+  if(!co||co.length===0){hideOdds();return;}
+  oddsEl.style.display='block';
+
+  // sort
+  const sorted=G.sort==='prob'
+    ?[...co].sort((a,b)=>b.pct-a.pct)
+    :[...co].sort((a,b)=>{
+        const ri=RANKS.indexOf(b.c.r)-RANKS.indexOf(a.c.r);
+        return ri!==0?ri:SUITS.indexOf(a.c.s)-SUITS.indexOf(b.c.s);
+      });
+
+  const base=G.currentOdds;
+  const rLabel=G.sort==='rank'?'[rank*]':'[rank] ';
+  const pLabel=G.sort==='prob'?'[prob*]':'[prob] ';
+
+  // cell: exactly 17 visible chars
+  // format: "{r:2}{s}  {pct:2}%  {bar:7}"
+  function cell(item){
+    if(!item)return' '.repeat(17);
+    const {c,pct}=item;
+    const r=c.r.padStart(2);
+    const sc=IS_RED(c.s)?`<span class="sr">${c.s}</span>`:c.s;
+    const p=Math.round(pct).toString().padStart(2);
+    const b=pbar(pct,7);
+    // color the bar based on whether this card helps, hurts, or is neutral
+    const delta=pct-base;
+    const bcl=delta>4?'g':delta<-4?'r':'d';
+    return`${r}${sc}  ${p}%  <span class="${bcl}">${b}</span>`;
+  }
+
+  const lines=[oTop(),oLine('CARD ODDS'),oLine(`${rLabel} ${pLabel}`),oSep()];
+  for(let i=0;i<sorted.length;i+=2){
+    const l=cell(sorted[i]);
+    const rx=cell(sorted[i+1]);
+    // visible length of row = 17 + 3 + 17 = 37 = IWO
+    const row=`${l} │ ${rx}`;
+    lines.push('║'+row+'║');
+  }
+  lines.push(oBot());
+  oddsEl.innerHTML=lines.join('\n');
+}
+
+// ── MENU ───────────────────────────────────────────────────────────
 function showMenu(){
+  hideOdds();
   const lines=[
     bTop(),
     bBlank(),
@@ -241,24 +315,16 @@ function showMenu(){
   ]);
 }
 
-// ── SETTINGS ───────────────────────────────────────────────
+// ── SETTINGS ───────────────────────────────────────────────────────
 function showSettings(){
+  hideOdds();
   const oppRow=[1,2,3,4].map(n=>`[${n}${n===G.opponents?'✓':''}]`).join('  ');
   const difRow=['easy','medium','hard'].map(d=>`[${d}${d===G.diff?'✓':''}]`).join('  ');
   const lines=[
-    bTop(),
-    bBlank(),
-    bLine('  SETTINGS'),
-    bBlank(),
-    bSep(),
-    bBlank(),
-    bLine('  OPPONENTS:   '+oppRow),
-    bBlank(),
-    bLine('  DIFFICULTY:  '+difRow),
-    bBlank(),
-    bSep(),
-    bLine('  [B] back to menu'),
-    bBot(),
+    bTop(),bBlank(),bLine('  SETTINGS'),bBlank(),bSep(),bBlank(),
+    bLine('  OPPONENTS:   '+oppRow),bBlank(),
+    bLine('  DIFFICULTY:  '+difRow),bBlank(),
+    bSep(),bLine('  [B] back to menu'),bBot(),
   ].join('\n');
   render(lines,[
     ...[1,2,3,4].map(n=>({label:`opp:${n}`,fn:()=>{G.opponents=n;showSettings();},k:`${n}`})),
@@ -267,20 +333,22 @@ function showSettings(){
   ]);
 }
 
-// ── DEAL ───────────────────────────────────────────────────
+// ── DEAL ───────────────────────────────────────────────────────────
 function dealRound(){
   G.deck=shuffle(newDeck());
   G.pCards=[G.deck.pop(),G.deck.pop()];
   G.comm=[];G.pot=30;G.chips-=10;G.phaseIdx=0;
-  G.folded=Array(G.opponents).fill(false);G.sd=null;
+  G.folded=Array(G.opponents).fill(false);
+  G.cardOdds=null;G.sd=null;
   renderGame();
 }
 
-// ── GAME SCREEN ────────────────────────────────────────────
+// ── GAME SCREEN ────────────────────────────────────────────────────
 function renderGame(){
   const phase=PHASES[G.phaseIdx];
   const nActive=Math.max(1,G.opponents-G.folded.filter(Boolean).length);
   const odds=monte(G.pCards,G.comm,nActive);
+  G.currentOdds=odds;
   const all=[...G.pCards,...G.comm];
   const best=evalBest(all);
   const hName=all.length>=5?HNAMES[best[0]]:pfDesc();
@@ -289,44 +357,37 @@ function renderGame(){
   const callAmt=phase==='preflop'?20:15;
   const raiseAmt=phase==='preflop'?40:30;
 
-  // ── opponent section ──────────────────────────────────
-  // Two card-backs per opponent, centered, with name below
-  const oppBlockW=14; // 7+7
-  const gapW=3;
+  // opponent section
+  const oppBlockW=14,gapW=3;
   const totalOppW=G.opponents*oppBlockW+(G.opponents-1)*gapW;
-  const oppLpad=Math.max(1,Math.floor((IW-totalOppW)/2));
+  const oppLpad=Math.max(0,Math.floor((IW-totalOppW)/2));
+  const sep3=' '.repeat(gapW);
 
-  // Build 7 opponent lines: name row + 5 card lines + status row
   const oppNames=[];
   const oppCardLines=Array.from({length:5},()=>[]);
   const oppStatus=[];
-
   for(let i=0;i<G.opponents;i++){
-    const lbl=(`  P${i+2}  `).padEnd(14).slice(0,14);
-    oppNames.push(lbl);
-    const cLines=G.folded[i]?
-      Array.from({length:5},()=>'<span class="d">┌─────┐┌─────┐</span>'):
-      cardRow([{r:'?',s:'?'},{r:'?',s:'?'}],[{back:true},{back:true}]).map(l=>l.replace(' ',''));
-    // cardRow gives "┌─────┐ ┌─────┐" with a space — remove it for tight backs
-    for(let row=0;row<5;row++) oppCardLines[row].push(cLines[row]);
+    oppNames.push((`  P${i+2}  `).slice(0,14).padEnd(14));
+    const cl=G.folded[i]
+      ?Array.from({length:5},()=>'<span class="d">┌─────┐┌─────┐</span>')
+      :cardRow([{r:'?',s:'?'},{r:'?',s:'?'}],[{back:true},{back:true}]).map(l=>l.replace(' ',''));
+    for(let row=0;row<5;row++)oppCardLines[row].push(cl[row]);
     oppStatus.push(G.folded[i]?'<span class="r">folded</span>':'  in  ');
   }
+  const pad0=' '.repeat(oppLpad);
+  const nameRow=pad0+oppNames.join(sep3);
+  const statRow=pad0+oppStatus.join(sep3);
+  const cRows=oppCardLines.map(cols=>pad0+cols.join(sep3));
 
-  const sep2=' '.repeat(gapW);
-  const nameRow=oppLpad<=0?' ':' '.repeat(oppLpad)+oppNames.join(sep2);
-  const statRow=' '.repeat(oppLpad)+oppStatus.join(sep2);
-  const cardRowLines=oppCardLines.map(cols=>' '.repeat(oppLpad)+cols.join(sep2));
-
-  // ── community cards ───────────────────────────────────
+  // community cards
   const commCards=Array.from({length:5},(_,i)=>G.comm[i]||null);
   const commOpts=commCards.map(c=>c?{}:{empty:true});
   const commLines=cardRow(commCards.map(c=>c||{r:'',s:'',v:0}),commOpts);
-  const commLpad=Math.max(1,Math.floor((IW-39)/2)); // 5 cards * 7 + 4 spaces = 39
+  const commLpad=Math.max(0,Math.floor((IW-39)/2));
 
-  // ── player hand + stats (side by side) ───────────────
-  const pCardLines=cardRow(G.pCards);
-  // Left col: 15 chars (2 cards + 1 gap), right col: rest
+  // player hand + stats (side by side, LC chars left, rest right)
   const LC=16;
+  const pCardLines=cardRow(G.pCards);
   const statsLines=[
     `WIN: <span class="${oc}">${odds.toFixed(1)}%</span>  <span class="${oc}">${pbar(odds)}</span>`,
     `HAND: ${hName}`,
@@ -334,27 +395,22 @@ function renderGame(){
     `<span class="${advCl}">→ ${advA}</span>`,
     `chips: $${G.chips}   pot: $${G.pot}`,
   ];
-
   const playerSection=pCardLines.map((pl,i)=>{
-    const plainPl=strip(pl);
-    const padded=plainPl.padEnd(LC);
-    return padded+(statsLines[i]||'');
+    return strip(pl).padEnd(LC)+(statsLines[i]||'');
   });
 
-  // ── phase header ──────────────────────────────────────
+  // phase header
   const pLabel=phase.replace('preflop','PRE-FLOP').toUpperCase();
-  const dots=pdots(G.phaseIdx);
-  const phStr=`── ${pLabel}  ${dots} `;
+  const phStr=`── ${pLabel}  ${pdots(G.phaseIdx)} `;
   const phFill='─'.repeat(Math.max(0,IW-2-phStr.length));
 
-  // ── assemble ──────────────────────────────────────────
   const out=[
     bTop(),
     bCenter('<span class="w">♠ POKER ADVISOR ♠</span>'),
     bSep(),
     bBlank(),
     bLine(nameRow,0),
-    ...cardRowLines.map(l=>bLine(l,0)),
+    ...cRows.map(l=>bLine(l,0)),
     bLine(statRow,0),
     bBlank(),
     bLine(phStr+phFill),
@@ -370,48 +426,65 @@ function renderGame(){
   ].join('\n');
 
   render(out,[
-    {label:`[F] fold`,    cls:'bf',fn:()=>act('fold'),k:'f'},
-    {label:`[C] call $${callAmt}`, fn:()=>act('call'),k:'c'},
+    {label:'[F] fold',    cls:'bf',fn:()=>act('fold'), k:'f'},
+    {label:`[C] call $${callAmt}`,  fn:()=>act('call'), k:'c'},
     {label:`[R] raise $${raiseAmt}`,cls:'br',fn:()=>act('raise'),k:'r'},
-    {label:'[M] menu',   fn:showMenu,k:'m'},
+    {label:'[M] menu',    fn:showMenu, k:'m'},
+    {label:'sort: rank',  cls:G.sort==='rank'?'bact':'',fn:()=>setSort('rank')},
+    {label:'sort: prob',  cls:G.sort==='prob'?'bact':'',fn:()=>setSort('prob')},
   ]);
+
+  // compute card odds async so game renders first
+  oddsEl.style.display='block';
+  oddsEl.innerHTML=oTop()+'\n'+oLine('calculating...')+'\n'+oBot();
+
+  if(G.comm.length<5){
+    setTimeout(()=>{
+      G.cardOdds=calcCardOdds(G.pCards,G.comm,nActive);
+      renderOddsPanel();
+    },0);
+  } else {
+    G.cardOdds=null;
+    oddsEl.innerHTML=oTop()+'\n'+oLine('board is final')+'\n'+oLine('no cards to come')+'\n'+oBot();
+  }
 }
 
-// ── ACT ────────────────────────────────────────────────────
+function setSort(s){G.sort=s;renderOddsPanel();
+  // refresh sort button highlights without re-rendering game
+  btns.querySelectorAll('.btn').forEach(b=>{
+    if(b.textContent==='sort: rank')b.className='btn '+(s==='rank'?'bact':'');
+    if(b.textContent==='sort: prob')b.className='btn '+(s==='prob'?'bact':'');
+  });
+}
+
+// ── ACT ────────────────────────────────────────────────────────────
 function act(type){
   if(type==='fold'){doShowdown(true);return;}
   const phase=PHASES[G.phaseIdx];
   const spent=type==='raise'?(phase==='preflop'?40:30):(phase==='preflop'?20:15);
   G.chips=Math.max(0,G.chips-spent);G.pot+=spent;
-
   for(let i=0;i<G.opponents;i++){
     if(G.folded[i])continue;
     const fp=G.diff==='easy'?.1:G.diff==='medium'?.2:.3;
     if(Math.random()<fp){G.folded[i]=true;}
     else{G.pot+=Math.floor(spent*(.5+Math.random()*.7));}
   }
-
   G.phaseIdx++;
   if(G.phaseIdx>=PHASES.length){doShowdown(false);return;}
-
   const np=PHASES[G.phaseIdx];
   if(np==='flop'){G.deck.pop();G.comm.push(G.deck.pop(),G.deck.pop(),G.deck.pop());}
   else if(np==='turn'||np==='river'){G.deck.pop();G.comm.push(G.deck.pop());}
-
   renderGame();
 }
 
-// ── SHOWDOWN ───────────────────────────────────────────────
+// ── SHOWDOWN ───────────────────────────────────────────────────────
 function doShowdown(folded){
-  if(folded){
-    G.sd={folded:true};
-    renderShowdown();return;
-  }
+  hideOdds();G.cardOdds=null;
+  if(folded){G.sd={folded:true};renderShowdown();return;}
   const pBest=evalBest([...G.pCards,...G.comm]);
   const known=new Set([...G.pCards,...G.comm].map(ckey));
   const rem=shuffle(newDeck().filter(c=>!known.has(ckey(c))));
   let pos=0,won=true,winCards=null,winBest=null;
-
   for(let i=0;i<G.opponents;i++){
     if(G.folded[i])continue;
     const oc=[rem[pos++],rem[pos++]];
@@ -420,58 +493,41 @@ function doShowdown(folded){
       won=false;winCards=oc;winBest=ob;break;
     }
   }
-
   const win=won?Math.floor(G.pot*.95):0;
   G.chips+=win;
   G.sd={folded:false,won,pBest,winCards,winBest,win,comm:[...G.comm]};
   renderShowdown();
 }
 
-// ── SHOWDOWN SCREEN ────────────────────────────────────────
 function renderShowdown(){
   const sd=G.sd;
-  const lines=[];
-
+  let lines=[];
   if(sd.folded){
-    lines.push(
-      bTop(),
-      bBlank(),
-      bCenter('<span class="d">F O L D E D</span>'),
-      bBlank(),
+    lines=[
+      bTop(),bBlank(),
+      bCenter('<span class="d">F O L D E D</span>'),bBlank(),
       bLine('  your cards:'),
       ...cardRow(G.pCards).map(l=>bLine('  '+l,0)),
-      bBlank(),
-      bLine(`  chips remaining: $${G.chips}`),
-      bBlank(),
-      bSep(),
-      bLine('  [N] next round    [M] main menu'),
-      bBot()
-    );
+      bBlank(),bLine(`  chips remaining: $${G.chips}`),bBlank(),
+      bSep(),bLine('  [N] next round    [M] main menu'),bBot(),
+    ];
   } else if(sd.won){
-    lines.push(
-      bTop(),
-      bBlank(),
+    lines=[
+      bTop(),bBlank(),
       bCenter('<span class="g">W I N</span>'),
-      bCenter(HNAMES[sd.pBest[0]]),
-      bBlank(),
+      bCenter(HNAMES[sd.pBest[0]]),bBlank(),
       bLine('  your hand:'),
       ...cardRow(G.pCards).map(l=>bLine('  '+l,0)),
       bLine('  community:'),
       ...cardRow(sd.comm).map(l=>bLine('  '+l,0)),
       bBlank(),
       bLine(`  <span class="chip">+$${sd.win}</span>   chips: $${G.chips}`),
-      bBlank(),
-      bSep(),
-      bLine('  [N] next round    [M] main menu'),
-      bBot()
-    );
+      bBlank(),bSep(),bLine('  [N] next round    [M] main menu'),bBot(),
+    ];
   } else {
-    // Loss — show dealer hand
-    lines.push(
-      bTop(),
-      bBlank(),
-      bCenter('<span class="r">L O S E</span>'),
-      bBlank(),
+    lines=[
+      bTop(),bBlank(),
+      bCenter('<span class="r">L O S E</span>'),bBlank(),
       bLine(`  your hand: ${HNAMES[sd.pBest[0]]}`),
       ...cardRow(G.pCards).map(l=>bLine('  '+l,0)),
       bBlank(),
@@ -480,22 +536,17 @@ function renderShowdown(){
       bBlank(),
       bLine('  community:'),
       ...cardRow(sd.comm).map(l=>bLine('  '+l,0)),
-      bBlank(),
-      bLine(`  chips: $${G.chips}`),
-      bBlank(),
-      bSep(),
-      bLine('  [N] next round    [M] main menu'),
-      bBot()
-    );
+      bBlank(),bLine(`  chips: $${G.chips}`),bBlank(),
+      bSep(),bLine('  [N] next round    [M] main menu'),bBot(),
+    ];
   }
-
   render(lines.join('\n'),[
     {label:'[N] next round',cls:'br',fn:dealRound,k:'n'},
     {label:'[M] main menu', fn:showMenu,k:'m'},
   ]);
 }
 
-// ── init ───────────────────────────────────────────────────
+// ── init ───────────────────────────────────────────────────────────
 showMenu();
 </script>
 {% endblock %}
