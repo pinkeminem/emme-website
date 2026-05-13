@@ -258,6 +258,11 @@ def lighting():
     return render_template('lighting.html', shows=shows, photos=photos)
 
 
+@public.route('/poker')
+def poker():
+    return render_template('poker.html')
+
+
 @public.route('/archive')
 def archive():
     articles = get_rows('archive_articles', order_by='year DESC, id')
